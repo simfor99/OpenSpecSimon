@@ -1,0 +1,29 @@
+flywheel_round: 0
+ground_truth:
+  change_name: "{{CHANGE_NAME}}"
+  change_path: "{{CHANGE_PATH}}"
+  verify_report: "{{VERIFY_REPORT_PATH}}"
+  ground_truth_summary: "{{GROUND_TRUTH_SUMMARY}}"
+  auftrag_an_red: "{{RED_REVIEW_ASSIGNMENT}}"
+scope:
+  allowed_paths:
+    - "{{CHANGE_PATH}}/**"
+  out_of_scope_paths: []
+  out_of_scope_themes:
+    - "Spec sync without Simon approval"
+    - "Archive move or restore"
+    - "External writes"
+decision_triggers:
+  - "Public contract change"
+  - "Architecture shift"
+  - "Spec sync or main spec modification"
+  - "Database, API, LLM, browser, or live-system write"
+  - "File outside allowed_paths"
+  - "External reality discrepancy"
+  - "Open CEO decision"
+ground_truth_verification:
+  verified_against:
+    - "{{VERIFIED_AGAINST}}"
+  assumed_not_verified:
+    - "{{ASSUMED_NOT_VERIFIED}}"
+
