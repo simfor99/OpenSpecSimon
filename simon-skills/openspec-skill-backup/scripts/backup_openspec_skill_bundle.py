@@ -467,6 +467,15 @@ def print_drift_report(source_root: Path, repo: Path, planned_bundle_version: st
     print(f"current_bundle_version={current_version}")
     print(f"next_bundle_version={planned_bundle_version}")
     print(f"action_needed={'apply_backup' if drift_detected else 'none'}")
+    print(
+        "suggested_commit_message="
+        f"chore(skills): backup OpenSpec Simon bundle {planned_bundle_version}"
+    )
+    if drift_detected:
+        print(
+            "decision_question="
+            "Soll ich diesen Snapshot jetzt anwenden, validieren, committen und nach GitHub pushen?"
+        )
 
     for key, title in [
         ("changed", "changed_files"),
