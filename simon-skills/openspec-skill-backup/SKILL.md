@@ -2,7 +2,7 @@
 name: openspec-skill-backup
 version: "1.0.2-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.5"
+bundle_version: "2026.06.11.6"
 description: "WHAT: Backs up Simon's Codex OpenSpec skill bundle to the OpenSpecSimon fork. WHEN: Use when OpenSpec skills changed and Simon wants preview, snapshot, commit, or push protection."
 argument-hint: "preview | apply | commit | push | status [optional bundle version]"
 disable-model-invocation: false

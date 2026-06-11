@@ -1,54 +1,54 @@
 {
   "$schema": "sanctum-openspec-skill-bundle-v1",
   "name": "openspec-simon",
-  "bundle_version": "2026.06.11.5",
+  "bundle_version": "2026.06.11.6",
   "canonical_source": "codex",
   "canonical_root": "/home/simon/.codex/skills",
   "destination_repo": "/home/simon/projects/OpenSpecSimon",
   "destination_path": "/home/simon/projects/OpenSpecSimon/simon-skills",
   "created_for": "OpenSpecSimon fork backup and drift detection",
-  "updated_at": "2026-06-11T18:14:08",
+  "updated_at": "2026-06-11T18:38:16",
   "self_referential": true,
   "skills": {
     "openspec-apply-change": {
       "version": "1.2.4-sanctum",
       "path": "openspec-apply-change/SKILL.md",
-      "sha256": "de9c30c10e0596b9bb82beebd6b2756bda5318b86ff4f01a55dd0bd27feee03f"
+      "sha256": "39fcdbcba6de95ccbcb80954cce4c9a5782ef36350e0816330e3577996014341"
     },
     "openspec-archive-change": {
       "version": "1.1.3-sanctum",
       "path": "openspec-archive-change/SKILL.md",
-      "sha256": "393d721e6ef0f3165918d2fb1a806ab2440860eaff39f427b4db4cbffad0668d"
+      "sha256": "5f7c6cd49a61a9da90a86998e69a3f3c3d29c5e3f2423027352ab269b96e54fd"
     },
     "openspec-explore": {
       "version": "1.1.8-sanctum",
       "path": "openspec-explore/SKILL.md",
-      "sha256": "44ea3f8cbab7834d58b006d80c3bb20b4bb71809a0ab8c6f0a29a9cba0b64bab"
+      "sha256": "5b51d5a217dcd2baae3e2abac11b8aa0ca3668299e19649625a575b68ddf3eac"
     },
     "openspec-map": {
       "version": "1.1.9-sanctum",
       "path": "openspec-map/SKILL.md",
-      "sha256": "4d8ae5b2675f8b2795f7e991c53a9afa01ad533631bf73e26a25624ecbd79bae"
+      "sha256": "4371f78e1178e2a3f4cdb81704c864148c4a748cabe420eb6949b85931c9517c"
     },
     "openspec-propose": {
       "version": "1.3.14-sanctum",
       "path": "openspec-propose/SKILL.md",
-      "sha256": "e96ea4b2bcd024a2343ecb01046d113f1b5d1cfea4ecb15028986d9dc3e72f26"
+      "sha256": "fa69e33da873a5bb8cbf9c7b6cb299fe363e12483da0979828499d6066f7a880"
     },
     "openspec-review": {
       "version": "1.0.13-sanctum",
       "path": "openspec-review/SKILL.md",
-      "sha256": "6d5b22630822d2ee9323105e6a8ab3593b798096fea55db917c6a19d0400f11c"
+      "sha256": "86589a8d288a34477338c68665c08a0eacf64131b3476615220a78901aa478e3"
     },
     "openspec-verify-change": {
       "version": "1.1.12-sanctum",
       "path": "openspec-verify-change/SKILL.md",
-      "sha256": "a16e19ef1772a2fcbb1ad8628dd03da6db4d3847df239b330136644bbbe4abf2"
+      "sha256": "700c9bc5b4e51ec79cbeb2f6946d32b40c513bb223039afb1167e10e4ed0726e"
     },
     "openspec-skill-backup": {
       "version": "1.0.2-sanctum",
       "path": "openspec-skill-backup/SKILL.md",
-      "sha256": "ede9dbe2b1f08bc8e4dd6f250768772efa92b86a66cb94042fe7404c41206dc9"
+      "sha256": "ca6d85f647331dd5e6cf554e4cdc4911c382be39c1d55a3159988d6123a6e66b"
     }
   },
   "shared_dependencies": {
