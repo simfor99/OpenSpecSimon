@@ -63,12 +63,15 @@ CLAIM_CLASSES = {
     "bounded_stage_run",
     "dataflow_handoff",
     "llm_output_contract",
+    "prompt_fidelity",
+    "prompt_request_parity",
     "trace_generation",
     "trace_visibility",
     "current_run",
     "historical_match",
     "resume_from_existing",
     "runtime_config",
+    "docs_contract",
 }
 LEDGER_FINAL_STATUSES = {
     "updated",
@@ -99,6 +102,19 @@ TASK_REQUIRED_HINTS = [
     r"Minimal implementation target",
     r"Passing verification",
     r"Ledger/gate evidence",
+]
+TESTSCHRIFT_HINTS = [
+    ("claim_class", r"\bclaim_class\b"),
+    ("public_interface", r"\bpublic_interface\b"),
+    ("test_surface", r"\btest_surface\b"),
+    ("expected_red or no_test_with_reason", r"\b(expected_red|no_test_with_reason)\b"),
+    ("minimal_green", r"\bminimal_green\b"),
+    ("fresh_evidence", r"\bfresh_evidence\b"),
+    ("not_proven", r"\bnot_proven\b"),
+]
+TESTSCHRIFT_REQUIRED_PATTERNS = [
+    r"\btestschrift_status\s*:\s*required\b",
+    r"\btestschrift_status\s*=\s*required\b",
 ]
 HIGH_RISK_BUILDER_PATTERNS = [
     r"\bbrowser\b",
@@ -163,6 +179,11 @@ def ensure_list(value: Any) -> bool:
 def high_risk_builder_context(change_dir: Path) -> bool:
     markdown = "\n".join(read_text(path) for path in change_dir.glob("*.md") if path.is_file())
     return any(re.search(pattern, markdown, flags=re.I) for pattern in HIGH_RISK_BUILDER_PATTERNS)
+
+
+def testschrift_required_context(change_dir: Path) -> bool:
+    markdown = "\n".join(read_text(path) for path in change_dir.rglob("*.md") if path.is_file())
+    return any(re.search(pattern, markdown, flags=re.I) for pattern in TESTSCHRIFT_REQUIRED_PATTERNS)
 
 
 def lint_quality_gates(change_dir: Path, mode: str, findings: list[Finding]) -> None:
@@ -518,7 +539,9 @@ def lint_builder_plan(change_dir: Path, mode: str, findings: list[Finding]) -> N
         return
     text = read_text(path)
     high_risk = high_risk_builder_context(change_dir)
+    testschrift_required = testschrift_required_context(change_dir)
     strict_builder_mode = high_risk and mode in {"apply", "verify", "archive"}
+    strict_testschrift_mode = testschrift_required and mode in {"apply", "verify", "archive"}
     section_titles = set(re.findall(r"^##\s+(.+?)\s*$", text, flags=re.M))
     for section in BUILDER_REQUIRED_SECTIONS:
         if section not in section_titles:
@@ -542,11 +565,11 @@ def lint_builder_plan(change_dir: Path, mode: str, findings: list[Finding]) -> N
     if tdd_section_present and not task_blocks:
         add(
             findings,
-            severity="ERROR" if strict_builder_mode else "WARNING",
+            severity="ERROR" if strict_builder_mode or strict_testschrift_mode else "WARNING",
             artifact="builder-plan.md",
             code="builder.no_task_blocks",
             message="Builder Plan has TDD / evidence tasks section but no task blocks.",
-            blocking=strict_builder_mode,
+            blocking=strict_builder_mode or strict_testschrift_mode,
         )
 
     for raw in task_blocks:
@@ -561,6 +584,37 @@ def lint_builder_plan(change_dir: Path, mode: str, findings: list[Finding]) -> N
                 message=f"Task {title!r} may miss task-contract hints: {', '.join(missing_hints)}.",
                 blocking=strict_builder_mode,
             )
+        if high_risk or testschrift_required:
+            missing_testschrift_hints = [
+                label for label, pattern in TESTSCHRIFT_HINTS if not re.search(pattern, raw, flags=re.I)
+            ]
+            if missing_testschrift_hints:
+                code = (
+                    "builder.required_testschrift_hints_missing"
+                    if testschrift_required
+                    else "builder.testschrift_hints_missing"
+                )
+                add(
+                    findings,
+                    severity="ERROR" if strict_testschrift_mode else "WARNING",
+                    artifact="builder-plan.md",
+                    code=code,
+                    message=(
+                        f"Task {title!r} may miss Intent-Driven Testschrift hints: "
+                        f"{', '.join(missing_testschrift_hints)}."
+                    ),
+                    blocking=strict_testschrift_mode,
+                )
+            for claim_class in re.findall(r"\bclaim_class\s*:\s*([A-Za-z0-9_]+)", raw):
+                if claim_class not in CLAIM_CLASSES:
+                    add(
+                        findings,
+                        severity="ERROR" if strict_testschrift_mode else "WARNING",
+                        artifact="builder-plan.md",
+                        code="builder.unknown_testschrift_claim_class",
+                        message=f"Task {title!r} contains unknown claim_class {claim_class!r}.",
+                        blocking=strict_testschrift_mode,
+                    )
 
     vague = re.findall(r"\b(TBD|TODO|handle edge cases|unqualified similar)\b", task_source)
     if vague:

@@ -2,7 +2,7 @@
 name: openspec-explore
 version: "1.1.8-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: Enter explore mode - a thinking partner for exploring ideas, investigating problems, and clarifying requirements. Use when the user wants to think through something before or during a change.
 argument-hint: "[idea, problem, OpenSpec change name, or empty for open exploration]"
 disable-model-invocation: false
@@ -106,6 +106,24 @@ Depending on what the user brings, you might:
   suggested next step. Explore does not need to materialize `quality-gates.md`
   unless the user explicitly asks for artifacts.
 
+**Surface Intent-Driven Testschrift candidates**
+- Before handing a shaped idea to `$openspec-propose`, identify which future
+  claims need an executable test/evidence loop rather than only a task
+  checkbox. Use
+  `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`
+  when the discussion involves user-visible paths, browser proof, API routes,
+  product-entry workflows, runtime/dataflow handoffs, prompts, structured LLM
+  output, persistence, traces, migrations, schemas or other evidence-sensitive
+  claims.
+- Carry a compact handoff signal:
+  `testschrift_status: none | candidates | recommended | required`, with
+  `test_surface_candidates` for each material claim: claim, likely public
+  interface, likely test surface, why lower evidence would be too weak, and
+  whether browser evidence is mandatory.
+- Do not create a separate test-plan artifact in Explore. The Testschrift
+  lives later inside `builder-plan.md`; Explore only prevents proposal from
+  losing the original intent/evidence shape.
+
 **Visualize**
 ```
 ┌─────────────────────────────────────────┐
@@ -175,6 +193,10 @@ Depending on what the user brings, you might:
   tasks: `builder_plan_status: not_required | recommended | required`, with the
   reason. This does not create the plan in Explore; it tells Map/Propose that a
   concrete task-by-task execution layer may be needed.
+- Add a Testschrift signal when important outcomes need vertical proof loops:
+  `testschrift_status: none | candidates | recommended | required`, plus
+  candidate claim classes and likely public interfaces. Browser evidence should
+  be marked mandatory when acceptance depends on what a user can do or see.
 - Add a quality-gate signal when acceptance, evidence, review or archive
   constraints need to become explicit:
   `quality_gates.status: none | candidates | clarify_first | map_first`.

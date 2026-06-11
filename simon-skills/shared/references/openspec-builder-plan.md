@@ -148,6 +148,9 @@ For each material claim, name:
 - why lower-level evidence would be too weak and why broader evidence is not
   required;
 - expected RED result or evidence-before-change gap;
+- RED/evidence-before-change record that must be captured before the minimal
+  GREEN step: command and output summary, durable missing-artifact path,
+  screenshot/trace/query result, or reviewer note with timestamp/source;
 - minimal GREEN target;
 - exact command, browser path, query or deterministic checker;
 - fresh evidence path, run ID, screenshot, trace, report or accepted deferral;
@@ -228,6 +231,9 @@ Before Apply uses the Builder Plan, review it for:
 - every required Intent-Driven Testschrift row has claim class, public
   interface, test surface, RED/no-test rationale, minimal GREEN, fresh
   evidence and `not_proven` boundaries;
+- required RED/evidence-before-change records are not reconstructed after the
+  target was already changed; if the row missed RED, it is marked as
+  `no_test_with_reason`, `deferred_with_accepted_decision` or `blocked`;
 - no `TBD`, `TODO`, vague "handle edge cases", or "similar to previous task";
 - type names, field names, enum values and file paths are consistent;
 - each snippet is either contract-grounded or clearly `implementation_sketch`;

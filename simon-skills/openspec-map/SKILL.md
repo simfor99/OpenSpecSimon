@@ -2,7 +2,7 @@
 name: openspec-map
 version: "1.1.9-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: |
   WHAT: Creates deterministic pre-proposal source maps for complex OpenSpec changes.
   WHEN: Use when preparing openspec-propose for multi-component, multi-wave, migration, schema, contract, cleanup, or source-heavy work.
@@ -354,6 +354,12 @@ Read
 `/home/simon/.codex/skills/shared/references/openspec-builder-plan.md` when the
 change is broad, implementation-sensitive, or Explore/chat signals
 `builder_plan_status: recommended` or `required`.
+Also read
+`/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`
+when Explore/chat signals `testschrift_status: recommended` or `required`, or
+when mapped surfaces include user-visible paths, browser proof, API routes,
+product-entry workflows, runtime/dataflow handoffs, prompts, structured LLM
+output, persistence, traces, migrations or schemas.
 
 Classify the map's Builder Plan status:
 
@@ -373,6 +379,11 @@ When recommended or required, include a `Builder Plan Seed` section in the map:
   styles that a builder should follow;
 - candidate create/modify/delete target files and target test files;
 - candidate red/green/evidence loops with exact commands when known;
+- Intent-Driven Testschrift seed rows for material claims: candidate
+  `claim_class`, public interface, test surface, RED/evidence-before-change
+  expectation, minimal GREEN target, fresh evidence path and `not_proven`
+  boundaries. Do not create a second task graph outside OpenSpec; these seed
+  rows are input for `builder-plan.md`.
 - OpenSpec tasks or future outcomes that need a concrete builder task;
 - contract-risk warnings where a concrete plan might invent field names, JSON
   shapes, prompt examples, enum values, fallback behavior or hidden

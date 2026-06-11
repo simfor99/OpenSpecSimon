@@ -100,6 +100,11 @@ status: planned | red_confirmed | green_confirmed | passed | no_test_with_reason
   a failing validator, an absent trace, a failed same-target read, or an
   evidence-before-change gap. It must be concrete enough to distinguish "not
   implemented" from "not checked".
+- RED or evidence-before-change must be recorded before the minimal GREEN step:
+  command plus output summary, durable evidence path, missing-artifact proof or
+  reviewer note with timestamp/source. If Apply missed this before changing the
+  target, the row cannot be silently marked `passed`; record the miss as
+  `no_test_with_reason`, `deferred_with_accepted_decision` or `blocked`.
 - GREEN must be the minimal code, prompt, runtime, docs or evidence change that
   closes the current claim. Do not pre-build later rows unless a higher
   contract explicitly requires shared foundation work.

@@ -2,7 +2,7 @@
 name: openspec-verify-change
 version: "1.1.12-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: Verify implementation matches change artifacts. Use when the user wants to validate that implementation is complete, correct, and coherent before archiving.
 license: MIT
 compatibility: Requires openspec CLI.
@@ -105,6 +105,14 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
    Prefer `builder-plan.md`; treat `implementation-plan.md` as a legacy alias.
    The Builder Plan is an execution layer below OpenSpec contracts, not a new
    source of truth.
+   If the Builder Plan, proposal, design, tasks, map, goal, quality gates,
+   review or Simon's request says an Intent-Driven Testschrift is recommended
+   or required, also read
+   `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`.
+   Verify that required Testschrift rows exist and that each material claim has
+   claim class, public interface, test surface, RED/no-test rationale, minimal
+   GREEN, fresh evidence and `not_proven` boundaries. Missing or wrong-surface
+   rows are CRITICAL when they control completion, review or archive readiness.
 
    If `proposal.md`, `design.md`, `tasks.md`, `goal.md`, an OpenSpec Map, CTO
    Review, Reading Contract or Simon's original request says a Builder Plan is
@@ -204,6 +212,11 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
      coverage exists and every row has a final status plus evidence
    - **Builder Plan**: Track whether required task-level TDD/evidence execution
      exists, is complete, and stays below OpenSpec contracts
+   - **Intent-Driven Testschrift**: Track whether required vertical
+     test/evidence rows prove the intended claims through the smallest
+     sufficient public interface, with RED/no-test rationale, minimal GREEN,
+     fresh evidence, browser proof for user-visible claims and `not_proven`
+     boundaries
    - **Quality Gates**: Track whether every defined acceptance/evidence/review/
      archive gate is handled and has required evidence or an accepted deferral
    - **Foundation Coverage**: Track whether concrete source-foundation items
@@ -354,6 +367,21 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
    - If `tasks.md` checkboxes are complete but required Builder Plan tasks are
      incomplete, evidence-free, or contradicted by implementation, add
      CRITICAL: "Tasks complete but Builder Plan incomplete."
+   - If an Intent-Driven Testschrift is required, verify each row:
+     - claim class and human intent are named;
+     - public interface and test surface are the smallest sufficient proof;
+     - RED result or `no_test_with_reason` is recorded before the minimal
+       GREEN step, or the missed RED is explicitly marked as deferred/blocked;
+     - minimal GREEN and exact command/evidence action are recorded;
+     - fresh evidence exists or an accepted deferral records owner, risk and
+       follow-up;
+     - `not_proven` prevents partial evidence from being promoted;
+     - browser/user-visible claims have durable screenshot, trace, video,
+       report or accepted deferral plus linked non-browser evidence when
+       required.
+   - If the Testschrift replaces deterministic prompt, LLM-output, persistence
+     or evidence-claim contracts with generic test language, add CRITICAL:
+     "Testschrift bypasses deterministic contract: <detail>."
    - If a shadow workbench is present or proposed, verify active-loader
      exclusion, cutover criteria, cleanup/promotion plan and tests/checks that
      prevent accidental production loading. Missing evidence is CRITICAL when
@@ -693,6 +721,11 @@ commands have been checked.
   must make implementation reproducible, but it remains below OpenSpec
   contracts. Concrete-but-wrong plan details are CRITICAL when they can guide a
   builder into contract drift.
+- **Intent-Driven Testschrift**: If artifacts require it, verify vertical
+  proof rows directly. Missing claim class, wrong test surface, missing
+  browser evidence for user-visible claims, missing RED/no-test rationale,
+  missing fresh evidence or missing `not_proven` boundaries block archive
+  readiness unless an accepted deferral records owner, risk and follow-up.
 - **Quality Gates**: If `quality-gates.md` exists or artifacts require it,
   verify every defined gate directly. All gates must be handled; severity
   changes issue priority and blocking, not whether the gate can be ignored.

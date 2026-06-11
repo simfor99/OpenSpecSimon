@@ -2,7 +2,7 @@
 name: openspec-archive-change
 version: "1.1.3-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: "WHAT: Archives a completed OpenSpec change after readiness checks. WHEN: Use when the user wants to finalize and archive a change after implementation is complete."
 license: MIT
 compatibility: Requires openspec CLI.
@@ -109,6 +109,16 @@ Archive a completed change in the experimental workflow.
      Builder Plan tasks, missing red-test/no-test/pass evidence, contract drift
      findings, or unresolved shadow-workbench cutover/cleanup block normal
      archive.
+     If an Intent-Driven Testschrift is present or required by any artifact,
+     also read
+     `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`.
+     Normal archive requires every required Testschrift row to be `passed`,
+     `no_test_with_reason`, or `deferred_with_accepted_decision` with accepted
+     owner/risk/follow-up. Missing rows, wrong test surfaces, missing browser
+     evidence for user-visible claims, missing fresh evidence, missing
+     `not_proven` boundaries, over-promoted partial evidence, or generic tests
+     that bypass deterministic prompt/LLM/persistence contracts block normal
+     archive.
 
    - Quality Gates:
      ```text
@@ -204,6 +214,7 @@ Archive a completed change in the experimental workflow.
    - Red review status when applicable
    - Goal Brief, Implementation Ledger and Builder Plan gate status when
      applicable
+   - Intent-Driven Testschrift status when applicable
    - Quality Gates status when applicable
    - Foundation Coverage status when applicable
    - LLM Output Contract Testing status when applicable
@@ -241,6 +252,10 @@ All artifacts complete. All tasks complete.
   DECISION findings, incomplete required Goal Evidence, incomplete
   Implementation Ledger rows, incomplete required Builder Plan tasks, or
   unresolved shadow-workbench cutover/cleanup.
+- Do block normal archive on incomplete required Intent-Driven Testschrift
+  rows, missing RED/no-test rationale, missing fresh evidence, wrong test
+  surface, missing browser proof for user-visible claims, or Testschrift rows
+  that bypass deterministic prompt/LLM-output/persistence/evidence contracts.
 - Do block normal archive when `quality-gates.md` is required but missing, or
   when any defined quality gate is not `passed`,
   `not_applicable_with_reason`, or `deferred_with_accepted_decision`. Proceed

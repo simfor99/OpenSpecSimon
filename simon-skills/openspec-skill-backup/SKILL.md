@@ -1,8 +1,8 @@
 ---
 name: openspec-skill-backup
-version: "1.0.0-sanctum"
+version: "1.0.1-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: "WHAT: Backs up Simon's Codex OpenSpec skill bundle to the OpenSpecSimon fork. WHEN: Use when OpenSpec skills changed and Simon wants preview, snapshot, commit, or push protection."
 argument-hint: "preview | apply | commit | push | status [optional bundle version]"
 disable-model-invocation: false
@@ -40,8 +40,11 @@ Also use it after changing any of:
    python3 ~/.codex/skills/openspec-skill-backup/scripts/backup_openspec_skill_bundle.py preview
    ```
 
-   Report the planned `bundle_version`, included skills, destination repo and
-   changed file count. Do not stage or commit yet.
+   Report `remote_status`, `source_vs_snapshot`, `action_needed`, current
+   bundle version, next bundle version and concrete changed/missing/stale files.
+   If `action_needed=none`, explain that local source, local fork snapshot and
+   remote branch are already aligned enough for backup purposes. Do not stage or
+   commit during preview.
 
 2. **Apply the snapshot when Simon wants the backup prepared**
 
@@ -49,9 +52,11 @@ Also use it after changing any of:
    python3 ~/.codex/skills/openspec-skill-backup/scripts/backup_openspec_skill_bundle.py apply
    ```
 
-   This updates `bundle_version` in the source skill frontmatter, recalculates
-   checksums, writes `~/.codex/skills/shared/openspec-simon-bundle.json`, and
-   refreshes `/home/simon/projects/OpenSpecSimon/simon-skills/`.
+   Only apply when preview says `action_needed=apply_backup` or Simon explicitly
+   wants a new snapshot anyway. This updates `bundle_version` in the source skill
+   frontmatter, recalculates checksums, writes
+   `~/.codex/skills/shared/openspec-simon-bundle.json`, and refreshes
+   `/home/simon/projects/OpenSpecSimon/simon-skills/`.
 
 3. **Validate after apply**
 
@@ -59,7 +64,8 @@ Also use it after changing any of:
    python3 ~/.codex/skills/openspec-skill-backup/scripts/backup_openspec_skill_bundle.py status
    ```
 
-   Also run a secret scan against the destination if available:
+   Confirm manifest validation and re-check `backup_status`. Also run a secret
+   scan against the destination if available:
 
    ```bash
    gitleaks protect --staged --no-banner
@@ -96,5 +102,6 @@ Also use it after changing any of:
 - Include only the OpenSpec-specific shared files listed by the script.
 - Exclude `__pycache__`, `.skill-forger-state`, transient caches and backups.
 - Increment `bundle_version` on every applied snapshot.
+- Preview must distinguish "next possible version" from "backup required".
 - Keep individual `version:` fields per skill; do not bump them unless the
   skill itself changed semantically.

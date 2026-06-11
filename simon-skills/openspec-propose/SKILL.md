@@ -2,7 +2,7 @@
 name: openspec-propose
 version: "1.3.14-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: Propose a new change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation.
 argument-hint: "[change-name or description] [optional context paths, CTO review, map, or ledger]"
 disable-model-invocation: false
@@ -154,6 +154,10 @@ validator runs, and the final handoff.
    - target behavior or contract surface;
    - likely target paths, tests, traces or evidence when known;
    - acceptance/evidence criteria;
+   - Intent-Driven Testschrift candidate when a slice needs a vertical
+     proof loop: claim class, public interface, test surface, RED/no-test
+     expectation, minimal GREEN target, fresh evidence and `not_proven`
+     boundary;
    - whether the slice can be implemented in parallel after dependencies pass.
 
    Order slices by dependency: foundation, data/contracts, core behavior,
@@ -172,6 +176,10 @@ validator runs, and the final handoff.
      acceptance;
    - broad slices that need exact file targets, red/green commands or
      step-level evidence should be carried into `builder-plan.md`;
+   - user-visible, browser, API, product-entry, LLM-output, prompt, trace,
+     persistence, schema, migration or runtime-handoff slices should carry
+     Testschrift candidates into `builder-plan.md` using
+     `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`;
    - slice-specific acceptance, evidence or archive constraints should be
      linked to `quality-gates.md` when Quality Gates are materialized.
 
@@ -773,6 +781,11 @@ change as Apply-ready.
    `/home/simon/.codex/skills/shared/references/openspec-builder-plan.md`
    when the change is broad, implementation-sensitive, or the Explore/Map/chat
    context says `builder_plan_status: recommended` or `required`.
+   Read
+   `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`
+   when Explore/Map/chat says `testschrift_status: recommended` or `required`,
+   or when important claims require browser, API, product-entry, runtime,
+   prompt/LLM-output, trace, persistence, schema, migration or handoff proof.
 
    Classify Builder Plan status before finalizing artifacts:
 
@@ -796,6 +809,10 @@ change as Apply-ready.
    pipeline changes when `tasks.md` would otherwise be abstract. Default to
    `recommended_create_now` when OpenSpec contracts are clear but the work has
    enough moving parts that a task-by-task TDD/evidence guide reduces drift.
+   If `testschrift_status: required`, Builder Plan status is normally
+   `required_create_now` unless a blocking source/decision gap requires
+   `required_before_apply`. If `testschrift_status: recommended`, default to
+   `recommended_create_now` when enough source/test-surface detail exists.
 
    The Builder Plan is below OpenSpec contracts. It may include concrete
    commands, file targets and code sketches, but it must cite its source
@@ -990,6 +1007,10 @@ change as Apply-ready.
    - exact create/modify/delete/inspect file targets when known;
    - test files and exact commands;
    - expected failing result or explicit `no_test` rationale;
+   - Intent-Driven Testschrift rows for required material claims: claim class,
+     contract source, public interface, test surface, surface-choice rationale,
+     RED/no-test expectation, minimal GREEN, command/evidence action, fresh
+     evidence and `not_proven` boundaries;
    - minimal implementation target;
    - passing verification command;
    - ledger row or evidence gate;
@@ -1265,6 +1286,8 @@ After completing all artifacts, summarize:
   CTO Review, CTO backchannel, CEO Decision Gate, Builder Plan and Goal Brief
   statuses.
 - Quality Gate status and `quality-gates.md` path when created or required.
+- Intent-Driven Testschrift status and whether rows were materialized in
+  `builder-plan.md`, required before Apply, or not required with reason.
 - Meta-Contract Linter status when local meta-artifacts exist:
   `not_applicable`, `ran_clean`, or `ran_with_findings`.
 - Work Slice coverage status and where slice ids were preserved.

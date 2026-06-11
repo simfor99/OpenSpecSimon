@@ -2,7 +2,7 @@
 name: openspec-review
 version: "1.0.13-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: Use when Simon wants a paranoid Team-Red review of an OpenSpec change or a CTO Review foundation memo; auto-detects CTO Review files by `_cto-review_` in the filename and challenges assumptions, evidence, decisions, specs, tests, implementation sense, and handoff claims before OpenSpec relies on them.
 argument-hint: "[change name, OpenSpec path, CTO Review filename/path, or empty]"
 disable-model-invocation: false
@@ -138,6 +138,10 @@ Read these references as needed, one level deep:
   when the target has or requires a task-level Builder Plan, concrete
   TDD/evidence execution guide, implementation plan, shadow workbench, or
   any map/proposal/goal/task claim that `builder-plan.md` is required.
+- `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`
+  when the target has or requires Intent-Driven Testschrift rows, browser/user
+  visible proof, API/product-entry/runtime proof, prompt/LLM-output proof,
+  persistence proof or any claim that tests must prove the original intent.
 - `/home/simon/.codex/skills/shared/references/openspec-foundation-coverage-matrix.md`
   when the target has a `## Source foundation` block, Foundation Brief,
   OpenSpec Map, CTO Review, Goal Brief, target-contract artifact or
@@ -645,6 +649,32 @@ task evidence, checkboxes, report language or safe artifact wording. Classify
 as `DECISION` when they change implementation scope, prompt/runtime behavior,
 archive readiness, public contract, shadow-workbench cutover, or Simon-owned
 quality/evidence standard.
+
+For any target with an Intent-Driven Testschrift requirement, add a Testschrift
+Auditor lens:
+
+- Does each material claim name claim class, human intent, contract source,
+  public interface, test surface, RED/no-test rationale, minimal GREEN, fresh
+  evidence and `not_proven` boundaries?
+- Is the chosen test surface the smallest sufficient public interface, or is it
+  too low-level to prove the claim / too broad and expensive without closing
+  more truth?
+- For user-visible claims, does the evidence include real browser proof with a
+  durable success artifact, not only backend route success, fixture replay,
+  direct stage import, console output or a passing command?
+- For prompt, LLM-output, persistence, trace and evidence-claim rows, does the
+  Testschrift reference the deterministic shared contract instead of replacing
+  it with generic TDD language?
+- Could every listed evidence artifact be true while the original human intent
+  is still false? If yes, classify the gap as a finding.
+- Did Apply execute rows in dependency order, or did it bulk-write tests/logic
+  and only run commands at the end?
+
+Classify Testschrift corrections as `FIX` when they repair rows, evidence,
+surface choice, `not_proven` boundaries or report wording inside the accepted
+contract. Classify as `DECISION` when they change accepted evidence standard,
+release/archive readiness, product entry scope, prompt/runtime behavior or
+Simon-owned quality bar.
 
 For OpenSpec change targets that touch or claim a user-visible form, product
 frontdoor, authenticated/session path, browser workflow, visual path, or

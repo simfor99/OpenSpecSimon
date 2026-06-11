@@ -2,7 +2,7 @@
 name: openspec-apply-change
 version: "1.2.4-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.2"
+bundle_version: "2026.06.11.3"
 description: "WHAT: Executes and builds tasks from an OpenSpec change. WHEN: Use when the user wants to start implementing, continue implementation, or work through tasks."
 license: MIT
 compatibility: Requires openspec CLI.
@@ -633,6 +633,31 @@ consumer check.
    prove that a gate is fachlich correct or that implementation evidence is
    sufficient; Verify and OpenSpec Review still own that.
 
+4.78. **Intent-Driven Testschrift execution preflight**
+
+   If `builder-plan.md`, Explore/Map/Propose/Goal Brief, Test Review, Red
+   Review, Quality Gates or Simon's request says an Intent-Driven Testschrift
+   is recommended or required, read and enforce:
+
+   ```text
+   /home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md
+   ```
+
+   Treat Testschrift rows as dependency-ordered execution/evidence loops below
+   OpenSpec contracts. Do not create a separate JSONL task graph or second task
+   truth. If a row references `prompt_fidelity`, `prompt_request_parity`,
+   `llm_output_contract`, `persistence_write` or another deterministic shared
+   contract, use that contract as the higher-authority proof standard.
+
+   Before productive edits, classify Testschrift status as:
+   `not_applicable`, `present`, `missing_required`, `blocked`,
+   `in_progress`, or `complete`.
+
+   Pause before editing when a required Testschrift is missing, when a row lacks
+   claim class, public interface, test surface, RED/no-test rationale, minimal
+   GREEN, fresh evidence target or `not_proven` boundary, or when the selected
+   test surface would not prove the claim.
+
 5. **Show current progress**
 
    Display:
@@ -660,6 +685,8 @@ consumer check.
      `blocked`, `in_progress`, or `complete`
    - Builder Plan status: `not_applicable`, `present`, `legacy_alias_present`,
      `missing_required`, `blocked`, or `not_required`
+   - Intent-Driven Testschrift status: `not_applicable`, `present`,
+     `missing_required`, `blocked`, `in_progress`, or `complete`
    - Meta-Contract Linter status: `not_applicable`, `ran_clean`, or
      `ran_with_findings`
    - Work Slice status: `not_applicable`, `present`,
@@ -673,6 +700,12 @@ consumer check.
      order
    - Read the matching Builder Plan task when present; if none matches, use
      OpenSpec task context and state that execution is task-only
+   - When a matching Intent-Driven Testschrift row exists, execute that row in
+     dependency order before marking the OpenSpec task complete: confirm RED or
+     the evidence-before-change gap, record that pre-change proof with command
+     output summary, durable path or timestamped reviewer note, make the
+     minimal GREEN change, run the exact command/evidence action, save fresh
+     evidence and preserve `not_proven` boundaries
    - Write or run the failing test first when the task is testable; otherwise
      record a concrete `no_test` rationale tied to the evidence gate
    - Verify the expected failure when a red test exists
@@ -693,6 +726,14 @@ consumer check.
    - Implementation reveals a design issue → suggest updating artifacts
    - A matching Builder Plan task is required but missing, too vague, or
      conflicts with higher-authority OpenSpec contracts
+   - A required Intent-Driven Testschrift row is missing, too vague, out of
+     dependency order, evidence-free, or uses a test surface that cannot close
+     the stated claim
+   - A RED/evidence-before-change record would be reconstructed only after the
+     target was already changed, unless the artifacts explicitly allow
+     `no_test_with_reason`, `deferred_with_accepted_decision` or `blocked`
+   - A user-visible claim lacks browser evidence, durable screenshot/trace/
+     report artifact, or linked non-browser evidence required by the claim
    - A broad or multi-surface change has abstract tasks and no traceable work
      slices, Builder Plan or accepted artifact update
    - A task would be marked complete while its work-slice acceptance,

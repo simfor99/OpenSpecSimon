@@ -163,6 +163,18 @@ def current_bundle_versions(source_root: Path, repo: Path) -> list[str]:
     return versions
 
 
+def latest_bundle_version(source_root: Path, repo: Path) -> str | None:
+    versions = current_bundle_versions(source_root, repo)
+    parsed: list[tuple[str, list[int]]] = []
+    for version in versions:
+        parts = version.split(".")
+        if all(part.isdigit() for part in parts):
+            parsed.append((version, [int(part) for part in parts]))
+    if not parsed:
+        return versions[-1] if versions else None
+    return max(parsed, key=lambda item: item[1])[0]
+
+
 def next_bundle_version(source_root: Path, repo: Path) -> str:
     today = datetime.now().strftime("%Y.%m.%d")
     max_suffix = 0
@@ -200,6 +212,24 @@ def copytree_clean(src: Path, dest: Path) -> None:
         return {name for name in names if name in IGNORE_DIRS or name.endswith(".pyc")}
 
     shutil.copytree(src, dest, ignore=ignore)
+
+
+def is_ignored_file(path: Path) -> bool:
+    return (
+        any(part in IGNORE_DIRS for part in path.parts)
+        or path.name.endswith(".pyc")
+        or path.name == ".DS_Store"
+    )
+
+
+def iter_files(root: Path) -> list[Path]:
+    if not root.exists():
+        return []
+    return sorted(
+        path.relative_to(root)
+        for path in root.rglob("*")
+        if path.is_file() and not is_ignored_file(path.relative_to(root))
+    )
 
 
 def build_readme(bundle_version: str) -> str:
@@ -318,6 +348,75 @@ def status_summary(repo: Path) -> str:
     return run_git(repo, ["status", "--short", "--branch", "--", str(DEST_SUBDIR)])
 
 
+def remote_status(repo: Path) -> tuple[str, str]:
+    branch = run_git(repo, ["status", "--short", "--branch"]).splitlines()
+    branch_line = branch[0] if branch else "unknown"
+    dirty = bool(run_git(repo, ["status", "--porcelain"]))
+    if dirty:
+        return "working_tree_dirty", branch_line
+    if "ahead" in branch_line and "behind" in branch_line:
+        return "diverged", branch_line
+    if "ahead" in branch_line:
+        return "local_ahead_remote", branch_line
+    if "behind" in branch_line:
+        return "local_behind_remote", branch_line
+    return "in_sync", branch_line
+
+
+def expected_snapshot_files(source_root: Path) -> dict[str, Path]:
+    expected: dict[str, Path] = {}
+    for skill_name in SKILL_NAMES:
+        skill_root = source_root / skill_name
+        for rel in iter_files(skill_root):
+            expected[f"{skill_name}/{rel.as_posix()}"] = skill_root / rel
+    for rel in SHARED_FILES:
+        expected[f"shared/{rel}"] = source_root / "shared" / rel
+    return expected
+
+
+def actual_snapshot_files(repo: Path) -> set[str]:
+    dest_root = repo / DEST_SUBDIR
+    actual: set[str] = set()
+    for skill_name in SKILL_NAMES:
+        skill_root = dest_root / skill_name
+        for rel in iter_files(skill_root):
+            actual.add(f"{skill_name}/{rel.as_posix()}")
+    shared_root = dest_root / "shared"
+    for rel in iter_files(shared_root):
+        label = f"shared/{rel.as_posix()}"
+        if label == "shared/openspec-simon-bundle.json":
+            continue
+        actual.add(label)
+    return actual
+
+
+def compare_source_to_snapshot(source_root: Path, repo: Path) -> dict[str, list[str]]:
+    expected = expected_snapshot_files(source_root)
+    actual = actual_snapshot_files(repo)
+    dest_root = repo / DEST_SUBDIR
+
+    missing: list[str] = []
+    changed: list[str] = []
+    for label, source_path in expected.items():
+        dest_path = dest_root / label
+        if not dest_path.exists():
+            missing.append(label)
+            continue
+        if sha256_file(source_path) != sha256_file(dest_path):
+            changed.append(label)
+
+    stale = sorted(actual - set(expected))
+    return {
+        "changed": sorted(changed),
+        "missing": sorted(missing),
+        "stale": stale,
+    }
+
+
+def has_drift(drift: dict[str, list[str]]) -> bool:
+    return any(drift[key] for key in ("changed", "missing", "stale"))
+
+
 def validate_manifest(repo: Path) -> tuple[bool, list[str]]:
     manifest_path = repo / DEST_SUBDIR / "shared" / "openspec-simon-bundle.json"
     if not manifest_path.exists():
@@ -356,6 +455,34 @@ def print_plan(source_root: Path, repo: Path, bundle_version: str) -> None:
     print(f"shared_files={len(SHARED_FILES)}")
 
 
+def print_drift_report(source_root: Path, repo: Path, planned_bundle_version: str) -> bool:
+    drift = compare_source_to_snapshot(source_root, repo)
+    drift_detected = has_drift(drift)
+    remote_state, branch_line = remote_status(repo)
+    current_version = latest_bundle_version(source_root, repo) or "unknown"
+
+    print(f"remote_status={remote_state}")
+    print(f"remote_branch={branch_line}")
+    print(f"source_vs_snapshot={'drift_detected' if drift_detected else 'in_sync'}")
+    print(f"current_bundle_version={current_version}")
+    print(f"next_bundle_version={planned_bundle_version}")
+    print(f"action_needed={'apply_backup' if drift_detected else 'none'}")
+
+    for key, title in [
+        ("changed", "changed_files"),
+        ("missing", "missing_in_snapshot"),
+        ("stale", "stale_in_snapshot"),
+    ]:
+        values = drift[key]
+        print(f"{title}={len(values)}")
+        for value in values[:40]:
+            print(f"  - {value}")
+        if len(values) > 40:
+            print(f"  ... {len(values) - 40} more")
+
+    return drift_detected
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=["preview", "apply", "status"])
@@ -375,6 +502,8 @@ def main(argv: list[str]) -> int:
         bundle_version = args.bundle_version or next_bundle_version(source_root, repo)
         if args.command == "preview":
             print_plan(source_root, repo, bundle_version)
+            print("\nbackup_status:")
+            print_drift_report(source_root, repo, bundle_version)
             print("\nrepo_status:")
             print(status_summary(repo) or "clean for simon-skills")
             return 0
@@ -393,6 +522,8 @@ def main(argv: list[str]) -> int:
             print("validation=" + ("ok" if ok else "failed"))
             for error in errors:
                 print(f"  - {error}")
+            print("\nbackup_status:")
+            print_drift_report(source_root, repo, bundle_version)
             print("\nrepo_status:")
             print(status_summary(repo) or "clean for simon-skills")
             return 0 if ok else 1
