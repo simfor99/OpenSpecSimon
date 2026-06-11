@@ -11,7 +11,7 @@ Canonical local source at snapshot time:
 Bundle version:
 
 ```text
-2026.06.11.4
+2026.06.11.5
 ```
 
 Included skills:

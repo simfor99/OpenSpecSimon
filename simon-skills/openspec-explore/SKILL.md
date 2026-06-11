@@ -2,7 +2,7 @@
 name: openspec-explore
 version: "1.1.8-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.4"
+bundle_version: "2026.06.11.5"
 description: Enter explore mode - a thinking partner for exploring ideas, investigating problems, and clarifying requirements. Use when the user wants to think through something before or during a change.
 argument-hint: "[idea, problem, OpenSpec change name, or empty for open exploration]"
 disable-model-invocation: false

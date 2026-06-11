@@ -2,7 +2,7 @@
 
 # Report und Vault
 
-> **Status:** Erstfassung
+> **Status:** Aktiv
 > **Erstellt:** 2026-06-02
 > **Verlinkt mit:** [report-contract.md](../references/report-contract.md), [vault-writeback.md](../references/vault-writeback.md), [report-template.md](../templates/report-template.md)
 

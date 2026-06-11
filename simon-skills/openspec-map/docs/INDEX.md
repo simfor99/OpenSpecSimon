@@ -16,7 +16,9 @@ leicht ein Ratespiel.
 Der Skill löst genau diesen Moment. Er macht aus der Erkenntnis kein Proposal,
 sondern eine belastbare Karte: Welche Komponenten gehören zum Scope? Welche
 Quellen sind aktiv, welche nur Archiv oder Referenz? Welche Zielpfade,
-Verträge, Tests und Cleanup-Pfade müssen im späteren Proposal überleben? Diese
+Verträge, Tests, Builder-Plan-Seeds, Testschrift-Zeilen,
+Quality-Gate-Kandidaten und Cleanup-Pfade müssen im späteren Proposal
+überleben? Diese
 Karte schützt `/openspec-propose` davor, generische Tasks zu erzeugen, nur weil
 der Chat viel wusste, aber keine dauerhafte, quellengebundene Struktur hinter-
 lassen hat.
@@ -32,7 +34,10 @@ oder der nächste Agent `$openspec-propose` mit diesem Briefing als primärer
 Quelle starten.
 
 Die operative Fassung besteht aus einem knappen Skill-Vertrag, vier Referenzen,
-zwei Templates und einem kleinen Validator:
+zwei Templates und einem kleinen Validator. Der aktuelle Vertrag kann außerdem
+Implementation-Ledger-Bedarf, Builder-Plan-Seeds, Intent-Driven-Testschrift-
+Seeds, Quality-Gate-Kandidaten, Prompt-/LLM-Output-Contract-Pflichten und
+External-Side-Effect-Reality-Gates als Übergabepflichten sichtbar machen:
 
 - Skill-Vertrag: [`../SKILL.md`](../SKILL.md)
 - Output-Schema: [`../references/output-schema.md`](../references/output-schema.md)
@@ -60,7 +65,9 @@ die Map dessen Entscheidungen, Stop-Regeln und Evidence Gates als benannte
 Quellen, nicht als lose Notizen. `/openspec-propose` bleibt der Skill, der aus
 dieser Vorbereitung echte OpenSpec-Artefakte baut und danach den CTO-Review-
 Rückkanal aktualisiert. Für breite Umsetzung kann die Map außerdem ein
-`goal.md` über `$goal-brief` empfehlen.
+`goal.md` über `$goal-brief` empfehlen und konkrete Test-/Evidence-Oberflächen
+für `builder-plan.md`, `quality-gates.md` oder `implementation-ledger.md`
+vorbereiten.
 
 Dadurch entsteht keine neue Bürokratie. Kleine Änderungen können weiterhin
 direkt von Explore nach Propose gehen. Große Änderungen bekommen eine
@@ -77,11 +84,12 @@ auf Pfaden, Tests, Verträgen und Cleanup-Evidence ruht.
 
 ## Aktueller Status
 
-Der Skill ist als erster review-fähiger Schnitt erstellt. Die Struktur folgt
-dem Skill-Forger-Standard: `SKILL.md` bleibt kurz, Details liegen in
-`references/` und wiederverwendbare Formen in `templates/`. Der erste harte
-Test ist noch ausstehend: Der Skill sollte auf einem echten komplexen Scope
-eine Map erzeugen, die tief genug ist, damit `$openspec-propose` konkrete
-Tasks mit Pfaden, Tests, Schemas und Cleanup erzeugen kann.
+Der Skill ist die aktive Quellen- und Contract-Brücke zwischen Explore/CTO
+Review und Propose. Die Struktur folgt dem Skill-Forger-Standard: `SKILL.md`
+bleibt knapp, Details liegen in `references/` und wiederverwendbare Formen in
+`templates/`. Für echte komplexe Scopes bleibt der Maßstab konkret: Eine gute
+Map muss genug Pfad-, Test-, Gate-, Ledger-, Builder-Plan- und Testschrift-
+Information liefern, damit `$openspec-propose` daraus prüfbare OpenSpec-
+Artefakte erzeugen kann, ohne aus Chat-Erinnerung zu raten.
 
 > **[Index]** | [Warum](./01-warum-und-zielbild.md) | [Ablauf](./02-arbeitsfluss-und-handoff.md) | [Vertrag](./03-output-contract-und-validierung.md)

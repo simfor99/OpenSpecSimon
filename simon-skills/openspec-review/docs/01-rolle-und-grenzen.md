@@ -1,8 +1,8 @@
-> [Zurueck zum Index](./INDEX.md) | **Rolle und Grenzen** | [Review-Ablauf](02-review-ablauf.md) | [Discovery und Skripte](03-discovery-und-skripte.md) | [Report und Vault](04-report-und-vault.md)
+> [Zurück zum Index](./INDEX.md) | **Rolle und Grenzen** | [Review-Ablauf](02-review-ablauf.md) | [Discovery und Skripte](03-discovery-und-skripte.md) | [Report und Vault](04-report-und-vault.md)
 
 # Rolle und Grenzen
 
-> **Status:** Erstfassung
+> **Status:** Aktiv
 > **Erstellt:** 2026-06-02
 > **Verlinkt mit:** [SKILL.md](../SKILL.md), [verify-boundary.md](../references/verify-boundary.md)
 
@@ -16,9 +16,9 @@ Ein formaler Verify ist notwendig, aber er ist nicht dasselbe wie Vertrauen. `$o
 
 ## Was der Skill übernimmt
 
-Der Skill übernimmt den adversarial Zweitblick auf OpenSpec-Changes. Er darf aktive Changes, archivierte Changes und zusammenhängende Change-Gruppen prüfen. Er darf Evidence sortieren, Annahmen markieren, Testrealität hinterfragen und kleine sichere `FIX`-Findings reparieren. Er darf außerdem einen Report schreiben, der Simon in wenigen Minuten zeigt, ob ein Change archivfähig, blockiert oder entscheidungsbedürftig ist.
+Der Skill übernimmt den adversarial Zweitblick auf OpenSpec-Changes. Er darf aktive Changes, archivierte Changes und zusammenhängende Change-Gruppen prüfen. Er darf Evidence sortieren, Annahmen markieren, Testrealität hinterfragen, lokale Meta-Artefakte mit dem Meta-Contract-Linter vorscannen und kleine sichere `FIX`-Findings reparieren. Er darf außerdem einen Report schreiben, der Simon in wenigen Minuten zeigt, ob ein Change archivfähig, blockiert oder entscheidungsbedürftig ist.
 
-Das macht ihn besonders wertvoll in der Kette nach `$openspec-verify-change`. Dort liegt bereits ein formales Ergebnis vor, und der Review kann sich auf die Fragen konzentrieren, die ein formaler Prüfer absichtlich nicht abschließend beantwortet: Sinnhaftigkeit, Proportionalität, Blind Spots, Scope-Drift und Evidence-Verwechslungen.
+Das macht ihn besonders wertvoll in der Kette nach `$openspec-verify-change`. Dort liegt bereits ein formales Ergebnis vor, und der Review kann sich auf die Fragen konzentrieren, die ein formaler Prüfer absichtlich nicht abschließend beantwortet: Sinnhaftigkeit, Proportionalität, Blind Spots, Scope-Drift und Evidence-Verwechslungen. Bei breiten oder riskanten Specs kann derselbe Skill auch früher als pre-Apply Review laufen; dann prüft er Execution-Readiness und nicht Archiv- oder Completion-Freigabe.
 
 ## Was der Skill nicht übernimmt
 

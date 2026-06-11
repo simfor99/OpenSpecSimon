@@ -1,9 +1,9 @@
 # OpenSpec Review — Skill-Hub
 
 > **Skill:** `openspec-review`
-> **Status:** Erstfassung
+> **Status:** Aktiv
 > **Erstellt:** 2026-06-02
-> **Letztes Update:** 2026-06-02
+> **Letztes Update:** 2026-06-11
 
 ---
 
@@ -11,13 +11,14 @@
 
 OpenSpec hat bereits einen formalen Prüfschritt: `$openspec-verify-change` gleicht Aufgaben, Requirements, Goal Evidence und Archivfähigkeit ab. Genau darin liegt aber eine Lücke. Ein grüner Verify kann beweisen, dass der vereinbarte Vertrag formal erfüllt wurde, aber er beweist nicht automatisch, dass der Vertrag klug war, dass die Annahmen stimmten oder dass die Evidence wirklich die behauptete Realität trägt. Vor `openspec-review` blieb diese zweite Frage oft im Kopf hängen: “Ja, es ist grün, aber war es auch sinnvoll?”
 
-Der Skill löst dieses Problem als misstrauischer Zweitblick. Er nimmt den Verify nicht weg, sondern stellt sich dahinter und fragt andere Dinge: Wurde eine Entscheidung still als Implementierungsdetail behandelt? Wurde ein Testlauf mit echter Runtime-Wahrheit verwechselt? Hat ein Report nur behauptet, was eigentlich eine Trace-, API-, Browser- oder Source-Evidence gebraucht hätte? Dadurch wird der Review nicht zum weiteren Checkbox-Zähler, sondern zum Schutz gegen Selbsttäuschung.
+Der Skill löst dieses Problem als misstrauischer Zweitblick. Er nimmt den Verify nicht weg, sondern stellt sich dahinter und fragt andere Dinge: Wurde eine Entscheidung still als Implementierungsdetail behandelt? Wurde ein Testlauf mit echter Runtime-Wahrheit verwechselt? Hat ein Report nur behauptet, was eigentlich eine Trace-, API-, Browser- oder Source-Evidence gebraucht hätte? Seit der Testschrift-Erweiterung schaut der Skill zusätzlich auf `builder-plan.md`, `quality-gates.md`, `implementation-ledger.md`, Prompt-/LLM-Output-Verträge und die Intent-Driven Testschrift, ohne diese deterministischen Verträge durch ein Bauchurteil zu ersetzen.
 
-Das ermöglicht einen klareren Übergang zwischen Build, Verify, Review, Entscheidung und Archiv. Simon bekommt nicht nur “fertig” oder “nicht fertig”, sondern ein belastbares Bild: Welche Issues darf Codex direkt reparieren, welche gehören als echte Entscheidung auf den Tisch, welche Learnings sind wiederverwendbar genug für die Vault und was ist der nächste konkrete Schritt.
+Das ermöglicht einen klareren Übergang zwischen Proposal, Build, Verify, Review, CEO-Entscheidung, Dokumentation, Archiv und bei Skillkettenänderungen Backup. Simon bekommt nicht nur “fertig” oder “nicht fertig”, sondern ein belastbares Bild: Welche Issues darf Codex direkt reparieren, welche gehören als echte Entscheidung auf den Tisch, welche Learnings sind wiederverwendbar genug für die Vault und was ist der nächste konkrete Schritt.
 
 | Vorher | Nachher |
 |--------|---------|
 | Verify war die letzte harte Station vor dem Archiv. | Verify bleibt formal, `openspec-review` ergänzt den adversarial Zweitblick. |
+| Breite oder riskante Specs konnten erst nach Apply skeptisch geprüft werden. | Pre-Apply Review kann Execution-Readiness prüfen, ohne Archive- oder Completion-Freigabe zu behaupten. |
 | Unsichere Punkte wurden leicht zu Bauchgefühl oder Chat-Kontext. | Findings werden als `FIX` oder `DECISION` mit Evidence dokumentiert. |
 | Learnings aus Reviews konnten verschwinden. | Wiederverwendbare Muster werden für Vault-Writeback vorbereitet. |
 
@@ -49,7 +50,7 @@ Erst dann beginnt der Team-Red-Teil. Die Auditoren prüfen Annahmen, Implementie
 
 Der Skill verbindet sich mit `$openspec-verify-change`, weil er dessen Ergebnis nicht dupliziert, sondern herausfordert. Verify fragt: “Ist der OpenSpec-Vertrag formal erfüllt?” OpenSpec Review fragt: “Ist das, was wir gerade erfüllen, als Grundlage wirklich vertrauenswürdig?” Ohne diese Trennung würde der Review entweder zu weich werden oder Verify-Arbeit wiederholen.
 
-Der Skill verbindet sich außerdem mit `$openspec-archive-change`, weil er als letzte skeptische Station vor dem Archiv laufen kann. Ein `APPROVED` oder `APPROVED_WITH_NOTES` macht die Archiventscheidung leichter, während `BLOCKED` und `PAUSED_FOR_DECISION` verhindern, dass offene Risiken in die Historie wegsortiert werden. Das Archiv wird dadurch nicht nur sauberer, sondern erklärbarer.
+Der Skill verbindet sich außerdem mit `$openspec-archive-change`, weil er als letzte skeptische Station vor dem Archiv laufen kann. Ein `APPROVED` oder `APPROVED_WITH_NOTES` macht die Archiventscheidung leichter, während `BLOCKED` und `PAUSED_FOR_DECISION` verhindern, dass offene Risiken in die Historie wegsortiert werden. Wenn ein Goal Brief CEO Review, Documentation Refresh oder OpenSpec Skill Backup verlangt, darf ein gutes Review-Verdict diese späteren Gates nicht überspringen.
 
 Die Vault-Anbindung macht den Skill langfristig wertvoller. Ein einzelnes Finding bleibt im Change-Report, aber ein wiederkehrendes Muster wie “CODE_PASS wurde als RUNTIME_VALIDATED gelesen” gehört in die Vault. So wird aus einem lokalen Fehler ein wiederverwendbarer Review-Schutz für spätere Arbeit.
 
@@ -67,6 +68,17 @@ Die Vault-Anbindung macht den Skill langfristig wertvoller. Ein einzelnes Findin
 - (+) Der Review ergänzt Verify mit echter Skepsis.
 - (-) Der Skill braucht mehr Kontext als ein reiner Statuscheck.
 - (~) Frühere Läufe sind möglich, müssen aber als `early-paranoia` und nicht als Archivfreigabe gelesen werden.
+
+### Meta-Contract-Linter als Rauchmelder
+
+**Kontext:** Die neuen lokalen OpenSpec-Meta-Artefakte brauchen eine schnelle Strukturprüfung, aber eine grüne Strukturprüfung darf nicht als fachliche Wahrheit verkauft werden.
+
+**Entscheidung:** `openspec-review` nutzt `openspec_meta_lint.py` als zusätzlichen Pre-Scan für `quality-gates.md`, `implementation-ledger.md` und `builder-plan.md`. Der Linter ist ein Rauchmelder: hilfreich, aber kein Ersatz für das Review-Urteil.
+
+**Konsequenzen:**
+- (+) Fehlende oder schwach geformte Meta-Artefakte fallen früher auf.
+- (-) Ein grüner Linter beweist keine vollständige Evidence.
+- (~) Deterministische Prompt-Request-Parity- und LLM-Output-Contract-Tests bleiben höherrangige Verträge.
 
 ### FIX/DECISION als Aktionsgrenze
 
@@ -112,6 +124,7 @@ Die Vault-Anbindung macht den Skill langfristig wertvoller. Ein einzelnes Findin
 | [review-protocol.md](../references/review-protocol.md) | Detaillierter Ablauf und Review-Lenses. |
 | [fix-decision-classification.md](../references/fix-decision-classification.md) | Regelwerk für direkte Fixes versus Simon-Entscheidungen. |
 | [report-template.md](../templates/report-template.md) | Vorlage für `00-OPENSPEC-RED-REVIEW.md`. |
+| [openspec_meta_lint.py](../../shared/scripts/openspec_meta_lint.py) | Gemeinsamer Smoke Detector für `quality-gates.md`, `implementation-ledger.md` und `builder-plan.md`; kein Ersatz für das Review-Urteil. |
 
 ---
 
@@ -125,4 +138,5 @@ Der beste Einstieg ist dieses `INDEX.md`, danach [Rolle und Grenzen](./01-rolle-
 
 | Datum | Was |
 |-------|-----|
+| 2026-06-11 | Hub auf Testschrift, Meta-Contract-Linter, Pre-Apply Review und Backup-Gates aktualisiert. |
 | 2026-06-02 | Initiale Dokumentation des neuen `openspec-review`-Skills erstellt. |

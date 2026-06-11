@@ -113,8 +113,7 @@ TESTSCHRIFT_HINTS = [
     ("not_proven", r"\bnot_proven\b"),
 ]
 TESTSCHRIFT_REQUIRED_PATTERNS = [
-    r"\btestschrift_status\s*:\s*required\b",
-    r"\btestschrift_status\s*=\s*required\b",
+    r"(?m)^\s*(?:[-*]\s*)?`?testschrift_status`?\s*[:=]\s*[`'\"]?required[`'\"]?\b",
 ]
 HIGH_RISK_BUILDER_PATTERNS = [
     r"\bbrowser\b",
@@ -136,6 +135,15 @@ HIGH_RISK_BUILDER_PATTERNS = [
     r"\bmigration\b",
     r"\bschema\b",
 ]
+GENERATED_CONTEXT_FILENAMES = {
+    "verification.md",
+    "verification-report.md",
+}
+GENERATED_CONTEXT_FILE_PATTERNS = [
+    r"^\d{2}-OPENSPEC-(?:RED-REVIEW|VERIFY)(?:\b|[_\-.])",
+    r"^\d{2}-OPENSPEC-POST-VERIFY-RED-REVIEW(?:\b|[_\-.])",
+    r"^\d{2}-(?:RED-TEAM-REVIEW|BLUE-TEAM-RESPONSE)(?:\b|[_\-.])",
+]
 
 
 @dataclass
@@ -154,6 +162,12 @@ def read_text(path: Path) -> str:
 def strip_markdown_code(text: str) -> str:
     text = re.sub(r"```.*?```", "", text, flags=re.S)
     return re.sub(r"`[^`]*`", "", text)
+
+
+def is_generated_context_sidecar(path: Path) -> bool:
+    if path.name in GENERATED_CONTEXT_FILENAMES:
+        return True
+    return any(re.search(pattern, path.name) for pattern in GENERATED_CONTEXT_FILE_PATTERNS)
 
 
 def add(
@@ -177,12 +191,20 @@ def ensure_list(value: Any) -> bool:
 
 
 def high_risk_builder_context(change_dir: Path) -> bool:
-    markdown = "\n".join(read_text(path) for path in change_dir.glob("*.md") if path.is_file())
+    markdown = "\n".join(
+        read_text(path)
+        for path in change_dir.glob("*.md")
+        if path.is_file() and not is_generated_context_sidecar(path)
+    )
     return any(re.search(pattern, markdown, flags=re.I) for pattern in HIGH_RISK_BUILDER_PATTERNS)
 
 
 def testschrift_required_context(change_dir: Path) -> bool:
-    markdown = "\n".join(read_text(path) for path in change_dir.rglob("*.md") if path.is_file())
+    markdown = "\n".join(
+        read_text(path)
+        for path in change_dir.rglob("*.md")
+        if path.is_file() and not is_generated_context_sidecar(path)
+    )
     return any(re.search(pattern, markdown, flags=re.I) for pattern in TESTSCHRIFT_REQUIRED_PATTERNS)
 
 
@@ -605,7 +627,11 @@ def lint_builder_plan(change_dir: Path, mode: str, findings: list[Finding]) -> N
                     ),
                     blocking=strict_testschrift_mode,
                 )
-            for claim_class in re.findall(r"\bclaim_class\s*:\s*([A-Za-z0-9_]+)", raw):
+            for claim_class in re.findall(
+                r"(?m)^\s*(?:[-*]\s*)?`?claim_class`?\s*:\s*[`'\"]?([A-Za-z0-9_]+)[`'\"]?\b",
+                raw,
+                flags=re.I,
+            ):
                 if claim_class not in CLAIM_CLASSES:
                     add(
                         findings,

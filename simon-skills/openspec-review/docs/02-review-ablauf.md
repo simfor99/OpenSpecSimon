@@ -2,7 +2,7 @@
 
 # Review-Ablauf
 
-> **Status:** Erstfassung
+> **Status:** Aktiv
 > **Erstellt:** 2026-06-02
 > **Verlinkt mit:** [review-protocol.md](../references/review-protocol.md), [auditor-contracts.md](../references/auditor-contracts.md)
 
@@ -33,11 +33,16 @@ Der Ablauf endet nicht beim Report. Der Skill validiert den Report gegen seinen 
 ## Standardkette
 
 ```text
+openspec-propose
+-> optional pre-Apply openspec-review bei breiten/riskanten Specs
+-> goal-brief bei langer oder evidence-sensitiver Ausführung
 openspec-apply-change
 -> openspec-verify-change
 -> openspec-review
 -> Simon-Entscheidung bei DECISION-Findings
+-> ceo-review / documentation, wenn der Goal Brief oder die Abschlussfrage es verlangt
 -> openspec-archive-change
+-> openspec-skill-backup preview, wenn OpenSpec-Skills oder Shared-Contracts geändert wurden
 ```
 
-Diese Kette ist wichtig, weil jede Station eine andere Verantwortung hat. Apply baut, Verify prüft den Vertrag, Review prüft die Vertrauenswürdigkeit, Simon entscheidet echte Trade-offs und Archive konserviert den finalen Zustand.
+Diese Kette ist wichtig, weil jede Station eine andere Verantwortung hat. Propose schreibt den Vertrag, Apply baut, Verify prüft formal, Review prüft die Vertrauenswürdigkeit, Simon entscheidet echte Trade-offs, CEO Review macht Abschluss-Claims entscheidbar, Documentation Refresh schreibt neue Wahrheit zurück, Archive konserviert den finalen Change-Zustand und Backup sichert nur die Skillkette selbst.

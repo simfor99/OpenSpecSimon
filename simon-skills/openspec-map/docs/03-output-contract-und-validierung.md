@@ -34,6 +34,14 @@ nur `ready_for_propose` sein, wenn diese Dateien wirklich existieren und als
 Pflichtquelle für `$openspec-propose` und `$openspec-apply-change` gelistet
 sind.
 
+Der aktuelle Vertrag führt zusätzlich vorbereitende Meta-Felder für breite oder
+evidence-sensitive Änderungen. Die Map kann Implementation-Ledger-Status,
+Builder-Plan-Status, Intent-Driven-Testschrift-Seeds, Quality-Gate-Kandidaten,
+External-Side-Effect-Reality-Gates und LLM-Output-Contract-Pflichten nennen.
+Diese Felder beweisen noch keine Umsetzung. Sie sorgen dafür, dass
+`$openspec-propose` die richtigen OpenSpec-Artefakte erzeugt und Apply/Verify
+später nicht aus losen Notizen testen müssen.
+
 Der Vertrag unterscheidet zwei Rückkanäle: `map_backchannel_status` beschreibt,
 ob die Map selbst neue CTO-relevante Befunde zurückgeschrieben hat.
 `cto_review_backchannel_required` beschreibt, ob `$openspec-propose` nach
@@ -80,6 +88,12 @@ unter `prompt_contract_files`. Er prüft nicht semantisch, ob der Prompt
 vollständig korrekt kopiert wurde; diese Fidelity-Prüfung bleibt Aufgabe von
 Map-Ersteller, `$openspec-propose`, `$openspec-apply-change` und
 `$openspec-review`.
+
+Für Ledger-, Builder-Plan-, Testschrift- und Quality-Gate-Status ist der
+Validator bewusst vorsichtig. Er kann Strukturhinweise prüfen, aber nicht
+entscheiden, ob ein Gate fachlich vollständig ist oder ob eine Testschrift die
+richtige öffentliche Oberfläche trifft. Diese Verantwortung bleibt bei Map,
+Propose, Apply, Verify und Review.
 
 Die fachliche Prüfung bleibt deshalb menschlich und agentisch. Eine gute Map
 muss beim Lesen beantworten: Warum gehört diese Komponente in den Scope?

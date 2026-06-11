@@ -1,8 +1,8 @@
-> [Zurueck zum Index](./INDEX.md) | [Rolle und Grenzen](01-rolle-und-grenzen.md) | [Review-Ablauf](02-review-ablauf.md) | **Discovery und Skripte** | [Report und Vault](04-report-und-vault.md)
+> [Zurück zum Index](./INDEX.md) | [Rolle und Grenzen](01-rolle-und-grenzen.md) | [Review-Ablauf](02-review-ablauf.md) | **Discovery und Skripte** | [Report und Vault](04-report-und-vault.md)
 
 # Discovery und Skripte
 
-> **Status:** Erstfassung
+> **Status:** Aktiv
 > **Erstellt:** 2026-06-02
 > **Verlinkt mit:** [target-discovery.md](../references/target-discovery.md), [artifact-inventory.md](../references/artifact-inventory.md)
 

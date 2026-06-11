@@ -91,6 +91,13 @@ Contract-Dateien und die Fidelity-Pflicht: Propose muss sie verlinken, Apply
 muss sie umsetzen, Review muss vollständige Übernahme und fehlende
 Halluzination prüfen.
 
+Wenn der Scope evidence-sensitiv ist, benennt der Handoff außerdem die neuen
+OpenSpec-Meta-Oberflächen: ob `implementation-ledger.md`, `builder-plan.md`,
+Intent-Driven-Testschrift-Zeilen oder `quality-gates.md` empfohlen, erforderlich
+oder bereits vorhanden sind. Die Map schreibt diese Artefakte nicht als zweiten
+Taskgraphen aus, sondern liefert Seeds, damit `$openspec-propose` sie später im
+OpenSpec-Change materialisieren kann.
+
 Für bereits existierende OpenSpec-Changes ist die Map auch vor
 `$openspec-apply-change` sinnvoll. Ein Proposal kann formal fertig sein und
 trotzdem noch keine belastbare Implementation Map besitzen. Signale dafür sind
