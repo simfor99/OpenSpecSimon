@@ -5,13 +5,13 @@ This directory preserves Simon's Codex-native OpenSpec skill chain.
 Canonical local source at snapshot time:
 
 ```text
-/home/simon/.codex/skills
+~/.codex/skills
 ```
 
 Bundle version:
 
 ```text
-2026.06.11.1
+2026.06.11.2
 ```
 
 Included skills:
@@ -23,6 +23,7 @@ Included skills:
 - `openspec-propose`
 - `openspec-review`
 - `openspec-verify-change`
+- `openspec-skill-backup`
 
 The `shared/` directory contains the OpenSpec-specific references, templates
 and validators required by the bundle. The checksum manifest lives at:

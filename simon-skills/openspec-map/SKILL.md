@@ -2,7 +2,7 @@
 name: openspec-map
 version: "1.1.9-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.1"
+bundle_version: "2026.06.11.2"
 description: |
   WHAT: Creates deterministic pre-proposal source maps for complex OpenSpec changes.
   WHEN: Use when preparing openspec-propose for multi-component, multi-wave, migration, schema, contract, cleanup, or source-heavy work.

@@ -2,7 +2,7 @@
 name: openspec-propose
 version: "1.3.14-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.1"
+bundle_version: "2026.06.11.2"
 description: Propose a new change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation.
 argument-hint: "[change-name or description] [optional context paths, CTO review, map, or ledger]"
 disable-model-invocation: false

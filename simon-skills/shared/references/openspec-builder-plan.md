@@ -33,6 +33,8 @@ Create or require a Builder Plan when any of these are true:
 - A map, Goal Brief, CTO Review, Test Review, or Simon says implementation
   needs a concrete plan, source map, execution map, TDD plan, or task-by-task
   guide.
+- Explore, Map, Propose, Goal Brief, Test Review, Red Review or Simon says an
+  Intent-Driven Testschrift is recommended or required.
 - A Foundation Coverage Matrix has items whose implementation could otherwise
   be satisfied by vague tasks, broad folder rows, or prose-only references.
 
@@ -90,6 +92,10 @@ Each executable task should include:
 - test file and exact command;
 - expected failing result before implementation, or an explicit `no_test`
   rationale when a red test is not practical;
+- Intent-Driven Testschrift fields when the change is broad, user-visible,
+  external-state, prompt/LLM-output, trace, API-route, schema, migration,
+  runtime-handoff or otherwise evidence-sensitive. Use
+  `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`.
 - minimal implementation target;
 - passing verification command;
 - ledger row or evidence gate that proves the work is done.
@@ -126,6 +132,38 @@ Each executable task should include:
 
 Prefer small tasks that can be verified independently. Do not group unrelated
 runtime, prompt, docs, and cleanup work into one untestable task.
+
+## Intent-driven Testschrift
+
+The `## TDD / evidence tasks` section is the canonical place for the
+Intent-Driven Testschrift. It should describe vertical evidence loops, not a
+bulk list of tests to run after implementation.
+
+For each material claim, name:
+
+- `claim_class` and the human intent being proven;
+- the higher-authority `contract_source`;
+- the public interface under test;
+- the chosen `test_surface` and why it is the smallest sufficient proof;
+- why lower-level evidence would be too weak and why broader evidence is not
+  required;
+- expected RED result or evidence-before-change gap;
+- minimal GREEN target;
+- exact command, browser path, query or deterministic checker;
+- fresh evidence path, run ID, screenshot, trace, report or accepted deferral;
+- `not_proven` boundaries so partial evidence cannot be promoted.
+
+Browser evidence is required for user-visible claims: real product entry
+paths, forms, authenticated/session flows, navigation, visual report/review
+states and browser-visible workflows. Browser evidence must include a durable
+success artifact and linked non-browser evidence when the claim also depends
+on API, trace, handoff, provider output or persistence.
+
+Do not replace deterministic special contracts with generic TDD language. For
+`prompt_fidelity`, `prompt_request_parity`, `llm_output_contract`,
+`persistence_write`, `evidence_claim_integrity` or similar claim classes, the
+Testschrift must reference the existing deterministic gate and state exactly
+what that gate proves and does not prove.
 
 ## Contract-fidelity rules
 
@@ -187,6 +225,9 @@ truth.
 Before Apply uses the Builder Plan, review it for:
 
 - every important OpenSpec outcome has a task and evidence gate;
+- every required Intent-Driven Testschrift row has claim class, public
+  interface, test surface, RED/no-test rationale, minimal GREEN, fresh
+  evidence and `not_proven` boundaries;
 - no `TBD`, `TODO`, vague "handle edge cases", or "similar to previous task";
 - type names, field names, enum values and file paths are consistent;
 - each snippet is either contract-grounded or clearly `implementation_sketch`;
@@ -208,12 +249,16 @@ Before Apply uses the Builder Plan, review it for:
   `llm-output-contract-inventory.md` row or equivalent explicit row fields; for
   Verify/Review/Archive claims about actual Stage output, fixture-only evidence
   is insufficient.
+- no browser/user-visible claim can pass with only backend/API/fixture evidence
+  when the accepted claim is what a user can do or see.
 
 ## Downstream gates
 
-`$openspec-verify-change` must treat a required Builder Plan as a completion
-artifact. Missing required plans, incomplete task evidence, untraceable concrete
-contract details, or unresolved shadow-workbench cutover/cleanup are archive
+`$openspec-verify-change` must treat a required Builder Plan and required
+Intent-Driven Testschrift rows as completion artifacts. Missing required plans,
+incomplete task evidence, untraceable concrete contract details, wrong test
+surface, missing RED/no-test rationale, missing fresh evidence, over-promoted
+partial evidence, or unresolved shadow-workbench cutover/cleanup are archive
 blockers.
 
 `$openspec-review` must review the Builder Plan adversarially. The key question
