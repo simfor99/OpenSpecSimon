@@ -1,8 +1,8 @@
 ---
 name: openspec-propose
-version: "1.3.14-sanctum"
+version: "1.3.15-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.12.1"
+bundle_version: "2026.06.12.2"
 description: Propose a new change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation.
 argument-hint: "[change-name or description] [optional context paths, CTO review, map, or ledger]"
 disable-model-invocation: false
@@ -10,7 +10,7 @@ license: MIT
 compatibility: Requires openspec CLI.
 metadata:
   author: openspec
-  version: "1.3.14-sanctum"
+  version: "1.3.15-sanctum"
   generatedBy: "1.3.1"
 ---
 
@@ -394,7 +394,7 @@ foundation exists, omit the section. If a concrete foundation exists but its
 path or role is unclear, resolve that before finalizing proposal artifacts or
 carry the blocker visibly.
 
-A Foundation Brief (shared template
+An OpenSpec-Zielbild (technical alias: Foundation Brief; Base Template
 `/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md`,
 frontmatter `binding_status: pre_spec_zielbild`) is always a
 `primary_foundation` with `role: "target_contract"`. Derive `must_check` from
@@ -865,8 +865,8 @@ change as Apply-ready.
    nicht grün, DONT_BUILD_YET, assumed_default
    ```
 
-   `assumed_default` markers from a Foundation Brief are basket-2 assumptions:
-   they were presented to Simon with a one-line rationale during brief
+   `assumed_default` markers from an OpenSpec-Zielbild are basket-2 assumptions:
+   they were presented to Simon with a one-line rationale during Zielbild
    creation. Treat them as accepted defaults unless they control architecture,
    governance, product logic, scope, cost, risk or promotion — in that case
    raise them like any other unresolved decision.
@@ -1262,10 +1262,11 @@ change as Apply-ready.
    Evidence Lab consumes the Source Map." Do not leave stale pending language
    such as "OpenSpec ableiten" unqualified after the OpenSpec exists.
 
-8.5. **Foundation Brief Rückkanal**
+8.5. **OpenSpec-Zielbild Rückkanal**
 
-   If a Foundation Brief (frontmatter `binding_status: pre_spec_zielbild`) was
-   used as `primary_foundation`, update the brief immediately after the
+   If an OpenSpec-Zielbild / Foundation Brief (frontmatter
+   `binding_status: pre_spec_zielbild`) was used as `primary_foundation`,
+   update the brief immediately after the
    OpenSpec artifacts exist:
 
    - set its frontmatter `resulting_openspec_change` to the change name;

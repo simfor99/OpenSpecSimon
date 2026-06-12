@@ -1,8 +1,8 @@
 ---
 name: openspec-map
-version: "1.1.9-sanctum"
+version: "1.1.10-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.12.1"
+bundle_version: "2026.06.12.2"
 description: |
   WHAT: Creates deterministic pre-proposal source maps for complex OpenSpec changes.
   WHEN: Use when preparing openspec-propose for multi-component, multi-wave, migration, schema, contract, cleanup, or source-heavy work.
@@ -13,7 +13,7 @@ license: MIT
 compatibility: Requires repository filesystem access; OpenSpec CLI recommended.
 metadata:
   author: openspec
-  version: "1.1.9-sanctum"
+  version: "1.1.10-sanctum"
   generatedBy: "skill-forger"
 ---
 
@@ -132,9 +132,10 @@ ownership, replay, trace, validation, or handoff boundaries are in scope.
 If the scope cannot be inferred, ask one concise question. Prefer reasonable
 defaults when the source set is discoverable from paths or prior artifacts.
 
-### 1.6. Foundation Brief Gate
+### 1.6. OpenSpec-Zielbild Gate
 
-A Foundation Brief is a pre-spec Zielbild artifact per
+An OpenSpec-Zielbild (technical alias: Foundation Brief) is a pre-spec target
+contract artifact per
 `/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md`
 (frontmatter `provenance_class: target_contract`,
 `binding_status: pre_spec_zielbild`, status line "Zielbild, nicht aktuelle
@@ -142,28 +143,38 @@ Runtime-Wahrheit").
 
 When the mapped scope creates a new GTM runtime stage folder or structurally
 re-cuts an existing stage/substage layout (the Section-95 sense of new or
-re-cut Runtime Stage folders), a Foundation Brief is **required input**. For
+re-cut Runtime Stage folders), an OpenSpec-Zielbild is **required input**. For
 all other scopes it stays recommended input, never a gate.
 
-- If a Foundation Brief exists, treat it as a primary `target_contract`
+Template resolution:
+
+- The Base Template is always
+  `/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md`.
+- Project Extensions apply only when their domain is semantically in scope.
+  If an extension applies, it must be declared in `extends:` and its mandatory
+  sources/sections must be followed.
+- Do not use Lite/Full template terminology; activate only the relevant
+  modules/sections from the Base Template and applicable Project Extensions.
+
+- If an OpenSpec-Zielbild exists, treat it as a primary `target_contract`
   source — not as a new source type: extract prompt contracts per step 4.4,
   quality-gate candidates per 4.35, Builder Plan seed per 4.3, ledger
   candidates per 4.2, and carry its open decision markers (`clarify_first`,
   `map_first`, `cto_first`, `BD-*`, `assumed_default`) into
-  `propose_readiness` and the map's open questions. Never reclassify brief
+  `propose_readiness` and the map's open questions. Never reclassify Zielbild
   content as `current_runtime_evidence`; verify against real runtime files.
-- If the gate applies and no Foundation Brief exists, do not just block.
+- If the gate applies and no OpenSpec-Zielbild exists, do not just block.
   Start the guided creation flow from
   `/home/simon/.codex/skills/shared/references/openspec-foundation-grilling.md`:
   read-only research, assumptions package first, dependency-ordered blocking
-  questions, soft-stop; then write the brief using the shared template (daily
-  workspace artifact by default), validate it, and continue mapping with the
-  brief as source.
-- If Simon explicitly declines the brief for a stage re-cut, set
+  questions, soft-stop; then write the OpenSpec-Zielbild using the Base
+  Template plus applicable Project Extensions (daily workspace artifact by
+  default), validate it, and continue mapping with the Zielbild as source.
+- If Simon explicitly declines the Zielbild for a stage re-cut, set
   `propose_readiness.status: not_ready_for_propose` with reason
   `foundation_brief_missing`, unless Simon explicitly accepts proceeding
   without it; record that acceptance as a decision in the map.
-- Validate any brief created or used here:
+- Validate any Zielbild created or used here:
   `python3 /home/simon/.codex/skills/shared/scripts/validate_foundation_brief.py <brief-path>`.
 - Required briefs must additionally pass the Final-Lücken-Pass from the
   grilling reference (two independent external reviews via `codex exec` and
@@ -613,10 +624,10 @@ Quality gate:
 
 Merge component reports into one briefing.
 
-For maps derived from a Foundation Brief, each material component should make
+For maps derived from an OpenSpec-Zielbild, each material component should make
 the comparison shape explicit:
 
-- target from Foundation Brief or accepted decision;
+- target from OpenSpec-Zielbild or accepted decision;
 - current runtime/prompt/architecture/storage evidence;
 - drift or unresolved gap;
 - proposal task or gate that must carry the difference forward.
@@ -828,9 +839,9 @@ as real paths.
   before hand-authored sidecars whenever the shared template's prompt block
   shape is present.
 - `/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md`:
-  pre-spec Zielbild contract consumed by the Foundation Brief Gate (1.6).
+  OpenSpec-Zielbild Base Template consumed by the OpenSpec-Zielbild Gate (1.6).
 - `/home/simon/.codex/skills/shared/references/openspec-foundation-grilling.md`:
-  three-basket assumption/question protocol for guided Foundation Brief
+  three-basket assumption/question protocol for guided OpenSpec-Zielbild
   creation.
 - [validate_map_briefing.py](scripts/validate_map_briefing.py): structural
   sanity check for generated map briefings.

@@ -63,7 +63,13 @@
     .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: 400; font-style: normal; font-size: 1.2em; line-height: 1; vertical-align: -0.18em; font-feature-settings: 'liga'; }
     .shell { max-width: 1480px; margin: 0 auto; padding: 32px 20px 64px; }
     .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0 28px; color: var(--muted); font-size: 0.86rem; }
+    .topbar-primary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; }
     .source-pill { display: inline-flex; align-items: center; flex-wrap: wrap; max-width: 100%; gap: 8px; border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent); border-radius: 999px; padding: 8px 12px; background: color-mix(in oklab, var(--surface) 72%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18); }
+    .company-switcher { display: inline-flex; align-items: center; gap: 8px; min-width: 0; border: 1px solid color-mix(in oklab, var(--primary) 30%, var(--border)); border-radius: 999px; padding: 4px; background: color-mix(in oklab, var(--surface) 84%, transparent); box-shadow: var(--shadow-sm); }
+    .company-switcher[hidden] { display: none; }
+    .company-switcher-label { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px 5px 10px; color: var(--muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+    .company-switcher .segmented { max-width: min(58vw, 620px); overflow: auto; border: 0; padding: 0; background: transparent; box-shadow: none; }
+    .company-switcher .segmented button { padding: 7px 11px; font-size: 0.8rem; white-space: nowrap; }
     code { overflow-wrap: anywhere; }
     .hero { padding: clamp(24px, 3.8vw, 44px) 0 32px; border-bottom: 1px solid var(--border); }
     .kicker { margin: 0 0 14px; color: var(--primary-strong); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
@@ -323,6 +329,9 @@
       .scoregrid { grid-template-columns: 1fr; }
       .controls { margin-inline: -14px; padding-inline: 14px; }
       .topbar { align-items: flex-start; flex-direction: column; }
+      .topbar-primary { width: 100%; flex-direction: column; align-items: stretch; }
+      .company-switcher { width: 100%; align-items: flex-start; border-radius: 14px; flex-direction: column; }
+      .company-switcher .segmented { width: 100%; max-width: 100%; }
       .segmented { width: 100%; overflow: auto; }
       .segmented button { white-space: nowrap; }
       pre { max-height: 300px; font-size: 0.77rem; }
@@ -356,7 +365,13 @@
   <script id="review-data" type="application/json">__PROMPT_AB_REVIEW_DATA_JSON__</script>
   <div class="shell">
     <div class="topbar">
-      <span class="source-pill"><span class="material-symbols-outlined">fact_check</span> Review-Oberfläche · Markdown/JSON bleiben kanonisch</span>
+      <div class="topbar-primary">
+        <div class="company-switcher" id="headerCaseSwitcher" hidden>
+          <span class="company-switcher-label"><span class="material-symbols-outlined">domain</span> Unternehmen</span>
+          <div class="segmented" id="headerCaseButtons" role="group" aria-label="Unternehmen wechseln"></div>
+        </div>
+        <span class="source-pill"><span class="material-symbols-outlined">fact_check</span> Review-Oberfläche · Markdown/JSON bleiben kanonisch</span>
+      </div>
       <span class="source-pill"><span class="material-symbols-outlined">dataset</span> Evidence: <code id="evidenceClass"></code></span>
     </div>
 
@@ -533,6 +548,18 @@
           items: normalized.notProven,
         };
       }
+      normalized.cases = Array.isArray(normalized.cases) ? normalized.cases.map((item, index) => {
+        const caseId = item?.id || item?.caseId || item?.companyName || item?.company || ('case_' + (index + 1));
+        return {
+          ...item,
+          id: String(caseId),
+          companyName: item?.companyName || item?.company || String(caseId),
+          results: Array.isArray(item?.results) ? item.results : [],
+        };
+      }) : [];
+      if (normalized.variants && !Array.isArray(normalized.variants) && typeof normalized.variants === 'object') {
+        normalized.variants = Object.entries(normalized.variants).map(([id, label]) => ({ id, label }));
+      }
       normalized.leftVariantId = normalized.leftVariantId || normalized.variants?.[0]?.id || normalized.cases?.[0]?.results?.[0]?.variantId;
       normalized.defaultCaseId = normalized.defaultCaseId || normalized.cases?.[0]?.id;
       normalized.defaultRightVariant = normalized.defaultRightVariant || normalized.cases?.[0]?.results?.find((item) => item.variantId !== normalized.leftVariantId)?.variantId;
@@ -554,6 +581,21 @@
     const markerCount = (result) => ((result?.responseText || '').match(/\[(?:page|web|\d+)[:\]]/g) || []).length;
     const byCase = () => data.cases.find((item) => item.id === state.caseId) || data.cases[0];
     const result = (variantId) => byCase().results.find((item) => item.variantId === variantId);
+    const caseLabel = (item) => item?.companyName || item?.company || item?.id || 'Case';
+    function rightVariantsForCase(caseItem) {
+      return (caseItem?.results || []).filter((item) => item.variantId !== (data.leftVariantId || 'A_009_prompt'));
+    }
+    function defaultRightVariantForCase(caseItem) {
+      return rightVariantsForCase(caseItem)[0]?.variantId || caseItem?.results?.[0]?.variantId || data.defaultRightVariant;
+    }
+    function selectCase(caseId) {
+      state.caseId = caseId;
+      const selected = byCase();
+      if (!rightVariantsForCase(selected).some((item) => item.variantId === state.rightVariant)) {
+        state.rightVariant = defaultRightVariantForCase(selected);
+      }
+      render();
+    }
     const outputText = (item) => item?.parsedOk && item?.parsedOutput ? JSON.stringify(item.parsedOutput, null, 2) : ((item?.responseText || '') + '\n\n--- parse error ---\n' + (item?.parseError || 'unknown'));
     const isRecord = (value) => value && typeof value === 'object' && !Array.isArray(value);
     const isContainer = (value) => Array.isArray(value) || isRecord(value);
@@ -1126,10 +1168,18 @@
       el('sourceLinks').innerHTML = (data.sourceLinks || []).map((item) => '<a class="jump" href="' + escapeHtml(item.href) + '"><span class="material-symbols-outlined">' + escapeHtml(item.icon || 'article') + '</span>' + escapeHtml(item.label) + '</a>').join('');
     }
     function renderButtons() {
-      el('caseButtons').innerHTML = data.cases.map((item) => '<button type="button" aria-pressed="' + (item.id === state.caseId) + '" data-case="' + escapeHtml(item.id) + '">' + escapeHtml(item.companyName || item.id) + '</button>').join('');
-      const variants = byCase().results.filter((item) => item.variantId !== (data.leftVariantId || 'A_009_prompt'));
+      const renderCaseButtons = (targetId) => {
+        const node = el(targetId);
+        if (!node) return;
+        node.innerHTML = data.cases.map((item) => '<button type="button" aria-pressed="' + (item.id === state.caseId) + '" data-case="' + escapeHtml(item.id) + '">' + escapeHtml(caseLabel(item)) + '</button>').join('');
+        node.querySelectorAll('button').forEach((button) => button.addEventListener('click', () => selectCase(button.dataset.case)));
+      };
+      const headerSwitcher = el('headerCaseSwitcher');
+      if (headerSwitcher) headerSwitcher.hidden = data.cases.length < 2;
+      renderCaseButtons('headerCaseButtons');
+      renderCaseButtons('caseButtons');
+      const variants = rightVariantsForCase(byCase());
       el('rightVariantButtons').innerHTML = variants.map((item) => '<button type="button" aria-pressed="' + (item.variantId === state.rightVariant) + '" data-variant="' + escapeHtml(item.variantId) + '">' + escapeHtml(item.variantShortLabel || item.variantId.replace(/_provider_fit_compact|_provider_fit/g, '')) + '</button>').join('');
-      el('caseButtons').querySelectorAll('button').forEach((button) => button.addEventListener('click', () => { state.caseId = button.dataset.case; render(); }));
       el('rightVariantButtons').querySelectorAll('button').forEach((button) => button.addEventListener('click', () => { state.rightVariant = button.dataset.variant; render(); }));
     }
     function renderCompare() {

@@ -1,59 +1,59 @@
 {
   "$schema": "sanctum-openspec-skill-bundle-v1",
   "name": "openspec-simon",
-  "bundle_version": "2026.06.12.1",
+  "bundle_version": "2026.06.12.2",
   "canonical_source": "codex",
   "canonical_root": "/home/simon/.codex/skills",
   "destination_repo": "/home/simon/projects/OpenSpecSimon",
   "destination_path": "/home/simon/projects/OpenSpecSimon/simon-skills",
   "created_for": "OpenSpecSimon fork backup and drift detection",
-  "updated_at": "2026-06-12T06:39:48",
+  "updated_at": "2026-06-12T11:12:01",
   "self_referential": true,
   "skills": {
     "openspec-apply-change": {
       "version": "1.2.4-sanctum",
       "path": "openspec-apply-change/SKILL.md",
-      "sha256": "f8ab9d806126f61d7aa91cd6e77a8b35447ee15ba74325c388f723fd60d4f4a4"
+      "sha256": "c944fc295ba1b1b68cf24d4e6d42b0a7512f3b758ac207cf29c5519cf8d9b3bc"
     },
     "openspec-archive-change": {
       "version": "1.1.3-sanctum",
       "path": "openspec-archive-change/SKILL.md",
-      "sha256": "e7dfd54903cc13e50e7daf31d707ec92c8d0d61e0fc3eb444e004fcfbaa7a9c8"
+      "sha256": "ee24668969c6077c21ca61844d6f33aab3096e04a5716330ba6941e8f45d35a2"
     },
     "openspec-explore": {
-      "version": "1.1.8-sanctum",
+      "version": "1.1.9-sanctum",
       "path": "openspec-explore/SKILL.md",
-      "sha256": "9ed744a04b103dc6141499977ac34e3d775bb627fc11ee8b44f6fe83b0053c32"
+      "sha256": "a42eda62a45c1b73b44009b7a4c168b890ac418a8f69a885043c93afbc80f444"
     },
     "openspec-map": {
-      "version": "1.1.9-sanctum",
+      "version": "1.1.10-sanctum",
       "path": "openspec-map/SKILL.md",
-      "sha256": "4347a03d97e7dd9a083aed011f22481c70da8cd05a5aa1ee27f4e5244b935cd8"
+      "sha256": "f839a635b4c08c1906e969c36e2096270b6330c227f4b418273ae93610df296e"
     },
     "openspec-prompt-optimizer": {
       "version": "1.0.0-sanctum",
       "path": "openspec-prompt-optimizer/SKILL.md",
-      "sha256": "fe24c8be67a84f1d7d950284a738c516eebe54c4c63a2d70c252a64bf3a8d108"
+      "sha256": "3e0a11e9812af73b5b0592708864484cdedc8ca9a5cbd73fb332131b66757bd4"
     },
     "openspec-propose": {
-      "version": "1.3.14-sanctum",
+      "version": "1.3.15-sanctum",
       "path": "openspec-propose/SKILL.md",
-      "sha256": "774cbab90a1952a1d41415e0cd8e5a65fe6c6314c532fd28a4601887a4253b7c"
+      "sha256": "60a661c7068790ce710fadee7d98df19e521296fc502cdd7e7f567f71946c50e"
     },
     "openspec-review": {
       "version": "1.0.13-sanctum",
       "path": "openspec-review/SKILL.md",
-      "sha256": "d44b0d4779ac8984167e57792b83ec28b70c5d1ec3de9cb3a4ef1395fae601eb"
+      "sha256": "d153587848996bef8f0ed35de4bdf0cfda551f162f3feab04a9fa86624ae355e"
     },
     "openspec-verify-change": {
       "version": "1.1.12-sanctum",
       "path": "openspec-verify-change/SKILL.md",
-      "sha256": "85f5098b8e04a56e5c750e374dc68471db3a11118fa69647a891c2f355417da7"
+      "sha256": "f3698ac2846534e08b734800259fa0bdeb5e862062d50bc9fae7aa23a1e0e53c"
     },
     "openspec-skill-backup": {
       "version": "1.0.3-sanctum",
       "path": "openspec-skill-backup/SKILL.md",
-      "sha256": "080e7a9d8e608203301346178637748aee35443b6e06d3a4b4a81e67c42bc104"
+      "sha256": "1f30713001e560c84be1eadb260efce416f7dbfaf283d80398f1e8fe32a30051"
     }
   },
   "shared_dependencies": {
@@ -77,7 +77,7 @@
     "templates/llm-output-contract-inventory-template.md": "61e38d080dd5e18b7d27b519a3ef94aa388e8181b8e83cc2342811f745133ce5",
     "templates/openspec-prompt-improver/README.md": "5669015f1987250d65895da32a38805f810a0b43af92dac9b7e2a09429d6832b",
     "templates/openspec-prompt-improver/assets/data.template.json": "84b7b0fc483c97d9fd884b322bd43059ca466d31addc3d7363774209ce1e1604",
-    "templates/openspec-prompt-improver/index.template.html": "f47486540270c1053a7e05491880a9aabc640efb8b1dbb79a4416f911466bd5a",
-    "templates/openspec-foundation-brief-template.md": "be72876abf43422a155cfbe60838b64d41e9fa0308136abeb92e3b84d38ceb41"
+    "templates/openspec-prompt-improver/index.template.html": "6f10507418220039579db41ee7b2654f84725a1ebd480d68986b6248da910e56",
+    "templates/openspec-foundation-brief-template.md": "6c89bf6393dbde23f8e9b7a92d28bdf73fca4ab0d9ccf22868e4c9a642efb68d"
   }
 }

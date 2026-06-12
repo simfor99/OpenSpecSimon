@@ -2,7 +2,7 @@
 name: openspec-prompt-optimizer
 version: "1.0.0-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.12.1"
+bundle_version: "2026.06.12.2"
 description: "WHAT: Orchestrates HITL optimization of fenced Pre-Spec/Foundation-Brief prompt contracts with real provider evidence, A/B rounds, chained fixtures, deterministic write-back, and resume state. WHEN: use for pre-spec prompt optimization, Foundation Brief prompt A/B, prompt-contract write-back, or Stage target prompts before openspec-map/propose."
 argument-hint: "[foundation-brief-path] [--campaign docs/todo/.../07_experiments/... optional]"
 disable-model-invocation: false

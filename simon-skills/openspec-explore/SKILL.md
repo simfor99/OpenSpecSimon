@@ -1,16 +1,18 @@
 ---
 name: openspec-explore
-version: "1.1.8-sanctum"
+version: "1.1.9-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.12.1"
-description: Enter explore mode - a thinking partner for exploring ideas, investigating problems, and clarifying requirements. Use when the user wants to think through something before or during a change.
+bundle_version: "2026.06.12.2"
+description: |
+  WHAT: Analyze and explore OpenSpec ideas, risks, assumptions, Zielbild needs, and proposal readiness as a thinking partner.
+  WHEN: Use when the user wants to think through something before or during a change.
 argument-hint: "[idea, problem, OpenSpec change name, or empty for open exploration]"
 disable-model-invocation: false
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:
   author: openspec
-  version: "1.1.8-sanctum"
+  version: "1.1.9-sanctum"
   generatedBy: "1.3.1"
 ---
 
@@ -254,13 +256,39 @@ Depending on what the user brings, you might:
   chat memory. I can run `$openspec-map` first so `$openspec-propose` gets a
   grounded source map."
 
-**Offer a Foundation Brief when chat memory would underspecify the target contract**
-- Offer (never auto-create) a Foundation Brief when the shaped idea spans
+**Resolve OpenSpec-Zielbild need before Map/Propose**
+- Before routing a shaped idea to `$openspec-map` or `$openspec-propose`, decide
+  whether the pre-spec document is needed. The user-facing name is
+  **OpenSpec-Zielbild**; "Foundation Brief" is the historical/template alias.
+- Use this compact routing vocabulary in chat or handoff:
+
+  ```yaml
+  zielbild_template_resolution:
+    pre_spec_document: "OpenSpec-Zielbild"
+    status: not_required | chat_handoff | recommended | required
+    base_template:
+      path: "/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md"
+      applies: always_when_written
+    project_extensions:
+      - path: "<repo extension path>"
+        applies: true|false
+        reason: "<semantic reason>"
+    active_modules:
+      - "<scope/prior_art/decisions/prompt/runtime/handoff/etc.>"
+    next_skill: openspec-map | openspec-propose
+  ```
+- Do not use "Lite" or "Full" as template names. There is one Base Template
+  for every OpenSpec-Zielbild; Project Extensions apply only when their domain
+  is semantically in scope. Sections/modules are activated by relevance, not by
+  a separate Lite/Full template.
+
+**Offer an OpenSpec-Zielbild when chat memory would underspecify the target contract**
+- Offer (never auto-create) an OpenSpec-Zielbild when the shaped idea spans
   prompt truth plus runtime truth, a new or re-cut stage/substage layout,
   critical handoffs/traces, Must-Survive-Facts, or when a later builder would
   plausibly derive wrong defaults from chat alone. The test is semantic, not
   keyword-based.
-- Use the shared template
+- Use the Base Template
   `/home/simon/.codex/skills/shared/templates/openspec-foundation-brief-template.md`
   and run the assumption/question triage from
   `/home/simon/.codex/skills/shared/references/openspec-foundation-grilling.md`
@@ -268,28 +296,28 @@ Depending on what the user brings, you might:
   (`assumed_default` items with one-line rationale, veto-able), then
   dependency-ordered blocking questions with recommended answers, soft-stop
   after roughly seven questions. Every basket persists with markers in the
-  brief, not only in chat.
-- If the project defines a domain-specific extension of the foundation-brief
-  template (declared in project instructions such as `AGENTS.md`/`CLAUDE.md`
-  or in the project's architecture entrypoints), it is binding: read it,
-  follow its mandatory sources and sections, and declare it in the brief's
-  `extends:` frontmatter. The generic template stays the safety contract; the
-  extension adds the domain substance. The check is semantic per project, not
-  a hardcoded path list.
-- The brief is a pre-spec Zielbild (`provenance_class: target_contract`,
+  Zielbild, not only in chat.
+- If the project defines a domain-specific Project Extension (declared in
+  project instructions such as `AGENTS.md`/`CLAUDE.md` or in the project's
+  architecture entrypoints), resolve whether it applies. If it applies, it is
+  binding: read it, follow its mandatory sources and sections, and declare it
+  in the Zielbild's `extends:` frontmatter. The Base Template stays the safety
+  contract; the Project Extension adds domain substance. The check is semantic
+  per project, not a hardcoded path list.
+- The Zielbild is a pre-spec artifact (`provenance_class: target_contract`,
   `binding_status: pre_spec_zielbild`), not current runtime truth and not a
   fourth stage truth. Its mandatory status line is "Zielbild, nicht aktuelle
   Runtime-Wahrheit", and it is demoted to provenance once `$openspec-propose`
   has created the change artifacts.
-- The brief carries the existing handoff signals; it does not replace them.
+- The Zielbild carries the existing handoff signals; it does not replace them.
   Clarification Ledger states, `quality_gates.status` and `builder_plan_status`
-  stay first-class and are embedded in the brief's Map/Propose handoff section.
+  stay first-class and are embedded in the Zielbild's Map/Propose handoff section.
 - Validate before handoff:
   `python3 /home/simon/.codex/skills/shared/scripts/validate_foundation_brief.py <brief-path>`.
-- Route the brief to `$openspec-map` for source grounding; do not hand it to
+- Route the Zielbild to `$openspec-map` for source grounding; do not hand it to
   `$openspec-propose` as if it were a source map.
 - For new or structurally re-cut GTM runtime stages, `$openspec-map` requires
-  a Foundation Brief before propose; offering it here saves the later
+  an OpenSpec-Zielbild before propose; offering it here saves the later
   guided-creation detour.
 
 **Offer an architecture entrypoint when the project lacks one**

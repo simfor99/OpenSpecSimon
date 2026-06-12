@@ -1,7 +1,9 @@
-# Vorlage: OpenSpec Foundation Brief
+# Vorlage: OpenSpec-Zielbild
 
 > Datei: `~/.codex/skills/shared/templates/openspec-foundation-brief-template.md`
-> Status: aktiver Shared-Vertrag der OpenSpec-Skillfamilie
+> Status: aktiver Base-Template-Vertrag der OpenSpec-Skillfamilie
+> Kanonischer Nutzername: OpenSpec-Zielbild
+> Technischer/historischer Alias: Foundation Brief
 > Konsumenten: `$openspec-explore` (bietet an), `$openspec-map` (verlangt bei Stage-Neuschnitt, konsumiert), `$openspec-propose` (liest als `primary_foundation` mit `role: target_contract`)
 > Referenzbeispiel: `docs/todo/2026_06_04/03_artifacts/009_stage00-produktwelt-zielbild__artifact__________2026_06_04__18-52.md` (Sanctum-OS)
 > Klärungsprotokoll vor dem Schreiben: [`../references/openspec-foundation-grilling.md`](../references/openspec-foundation-grilling.md)
@@ -10,20 +12,24 @@
 
 ## Was dieses Artefakt ist
 
-Ein Foundation Brief ist ein menschenlesbarer Pre-Spec-Zielvertrag: Er
+Ein OpenSpec-Zielbild ist ein menschenlesbarer Pre-Spec-Zielvertrag: Es
 beschreibt für ein komplexes OpenSpec-Vorhaben das **Soll** (Zielbild) so
 konkret, dass `$openspec-map` und `$openspec-propose` später nicht raten
 müssen, welche Prompt-, Runtime- und Architektur-Wahrheit gemeint ist.
+
+Der Dateiname und ältere Skill-Texte verwenden teilweise noch den technischen
+Alias "Foundation Brief". Der Nutzerbegriff für neue Gespräche und Handoffs
+ist **OpenSpec-Zielbild**.
 
 Abgrenzung zu verwandten Artefakten:
 
 | Artefakt | Frage | Wahrheitsklasse |
 |---|---|---|
 | Stage-Datenfluss-Brief (`documentation`-Skill) | Was **ist** belegt? | `current_runtime_evidence` |
-| **Foundation Brief (diese Vorlage)** | Was **wollen wir bauen**? | `target_contract` / `proposed_shape` |
+| **OpenSpec-Zielbild (diese Vorlage)** | Was **wollen wir bauen**? | `target_contract` / `proposed_shape` |
 | OpenSpec-Artefakte (`proposal/design/specs/tasks`) | Was wird **verbindlich umgesetzt**? | Bauwahrheit nach Propose |
 
-## Wann ein Foundation Brief entsteht
+## Wann ein OpenSpec-Zielbild entsteht
 
 Der Test ist semantisch, keine Keyword-Liste:
 
@@ -41,8 +47,34 @@ Der Test ist semantisch, keine Keyword-Liste:
 Vor dem Schreiben gilt das Drei-Körbe-Klärungsprotokoll aus
 [`openspec-foundation-grilling.md`](../references/openspec-foundation-grilling.md):
 Annahmen-Paket zuerst, dann Grill-Fragen in Abhängigkeitsreihenfolge, alles
-markiert im Brief persistiert. Ein Foundation Brief wird nie still
+markiert im Brief persistiert. Ein OpenSpec-Zielbild wird nie still
 auto-generiert.
+
+## Template-Auflösung
+
+Jedes OpenSpec-Zielbild verwendet dieses Dokument als **Base Template**. Wenn
+ein Projekt fachliche Erweiterungen definiert, gelten diese zusätzlich als
+**Project Extensions**, aber nur wenn ihr Fachgebiet semantisch in Scope ist.
+
+Kanonischer Handoff-Block:
+
+```yaml
+zielbild_template_resolution:
+  pre_spec_document: "OpenSpec-Zielbild"
+  base_template:
+    path: "~/.codex/skills/shared/templates/openspec-foundation-brief-template.md"
+    applies: always
+  project_extensions:
+    - path: "<repo extension path>"
+      applies: true|false
+      reason: "<semantic reason>"
+  active_modules:
+    - "<semantic modules actually used>"
+```
+
+Keine `Lite`-/`Full`-Template-Sprache verwenden. Es gibt ein Base Template;
+Project Extensions ergänzen es. Welche Sektionen aktiv werden, entscheidet der
+Scope.
 
 ## Lebenszyklus und Bindungsregel (Vierte-Wahrheit-Schutz)
 
@@ -93,7 +125,7 @@ Kein neues Vokabular erfinden: `provenance_class` und die Klassen-Tabelle
 unten sind das bestehende Set; `binding_status` folgt der GTM-Prompt-Konvention
 (`proposed` für Prompt-Contracts im Brief).
 
-Optionales Feld `extends:`: Liste fachlicher Erweiterungs-Vorlagen (Vertrag
+Optionales Feld `extends:`: Liste fachlicher Project Extensions (Vertrag
 und Referenzbeispiel unter `## Projekt-Erweiterungen`), die der Brief-Autor
 vor dem Schreiben gelesen haben muss. Kein Validator-Zwang — der Wert macht
 die genutzte Erweiterung nur maschinenlesbar sichtbar.
