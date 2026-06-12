@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="de" data-theme="light" data-system-expanded="false" data-user-expanded="false" data-output-expanded="true" data-header-collapsed="false" data-system-collapsed="false" data-user-collapsed="false" data-output-collapsed="false" data-interpretation-collapsed="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt A/B Review</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+    :root {
+      color-scheme: light;
+      --bg: #FFF5EE;
+      --bg-2: #FFF1DE;
+      --paper: #FFFCF7;
+      --surface: #FFFFFF;
+      --surface-alt: #FBF3EA;
+      --ink: #2A2F3A;
+      --muted: #525866;
+      --primary: #D16F3E;
+      --primary-strong: #B85A2E;
+      --accent: #B8892B;
+      --border: #E3D7CB;
+      --ok: #2F855A;
+      --warn: #B8892B;
+      --bad: #B85A2E;
+      --shadow: 0 14px 32px rgba(45,55,72,0.12), 0 4px 8px rgba(45,55,72,0.06);
+      --shadow-sm: 0 6px 16px rgba(45,55,72,0.08), 0 2px 4px rgba(45,55,72,0.04);
+      --radius: 16px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0B0D1A;
+      --bg-2: #111326;
+      --paper: #0A0C17;
+      --surface: #0E1020;
+      --surface-alt: #17182B;
+      --ink: #EEE7F7;
+      --muted: #AAA0BD;
+      --primary: #D6C5FF;
+      --primary-strong: #BFCCFF;
+      --accent: #F6D39F;
+      --border: rgba(218,197,255,0.16);
+      --ok: #22C55E;
+      --warn: #FBBF24;
+      --bad: #F87171;
+      --shadow: 0 14px 32px rgba(0,0,0,0.60), 0 0 0 1px rgba(241,245,249,0.08);
+      --shadow-sm: 0 6px 16px rgba(0,0,0,0.50), 0 0 0 1px rgba(241,245,249,0.06);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(ellipse at 8% 4%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 34rem),
+        radial-gradient(ellipse at 92% 20%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 36rem),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 54%, var(--bg) 100%);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: var(--primary-strong); text-underline-offset: 3px; }
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: 400; font-style: normal; font-size: 1.2em; line-height: 1; vertical-align: -0.18em; font-feature-settings: 'liga'; }
+    .shell { max-width: 1480px; margin: 0 auto; padding: 32px 20px 64px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0 28px; color: var(--muted); font-size: 0.86rem; }
+    .source-pill { display: inline-flex; align-items: center; flex-wrap: wrap; max-width: 100%; gap: 8px; border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent); border-radius: 999px; padding: 8px 12px; background: color-mix(in oklab, var(--surface) 72%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18); }
+    code { overflow-wrap: anywhere; }
+    .hero { padding: clamp(24px, 3.8vw, 44px) 0 32px; border-bottom: 1px solid var(--border); }
+    .kicker { margin: 0 0 14px; color: var(--primary-strong); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
+    h1 { max-width: 980px; margin: 0; font-size: clamp(1.95rem, 3.8vw, 3.7rem); line-height: 1.04; letter-spacing: 0; font-weight: 800; }
+    h1 em { color: var(--primary); font-style: normal; }
+    .lede { max-width: 880px; margin: 16px 0 0; font-size: clamp(0.98rem, 1.5vw, 1.12rem); color: var(--muted); }
+    .decision-band { display: grid; gap: 14px; align-items: stretch; }
+    .review-briefing { display: grid; grid-template-columns: repeat(2, minmax(300px, 1fr)); gap: 14px; margin-top: 14px; align-items: stretch; }
+    .decision, .claim-box, .brief-card, .radar-card, .score, .prompt-panel, .output-panel, .matrix-wrap, .qual-main, .qual-card { border: 1px solid var(--border); border-radius: var(--radius); background: color-mix(in oklab, var(--surface) 86%, transparent); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .decision, .claim-box { padding: 22px; border-color: color-mix(in oklab, var(--primary) 24%, var(--border)); }
+    .decision strong { color: var(--primary-strong); }
+    .claim-box { background: linear-gradient(135deg, #744947, #8E6259); color: #F4E8DE; border-color: rgba(255,245,238,0.18); }
+    html[data-theme="dark"] .claim-box { background: linear-gradient(180deg, #131F3D 0%, #0F172A 100%); color: var(--ink); border-color: rgba(241,245,249,0.14); }
+    .label { display: block; margin-bottom: 8px; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 800; color: var(--muted); }
+    .claim-box .label { color: rgba(244,232,222,0.72); }
+    html[data-theme="dark"] .claim-box .label { color: var(--muted); }
+    .brief-card { padding: 0; }
+    .brief-card { grid-column: 1 / -1; }
+    .brief-card > .label { padding: 16px 18px 0; }
+    .brief-list { display: grid; gap: 10px; margin-top: 12px; }
+    .brief-row { display: grid; grid-template-columns: minmax(80px, 0.75fr) minmax(0, 1.25fr); gap: 10px; align-items: baseline; color: var(--muted); font-size: 0.84rem; }
+    .brief-row b { color: var(--ink); font-weight: 800; overflow-wrap: anywhere; }
+    .runtime-variant-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 16px 18px 18px; }
+    .runtime-variant-card { --variant-accent: var(--primary); border: 1px solid var(--border); border-top: 4px solid var(--variant-accent); border-radius: 14px; background: color-mix(in oklab, var(--paper) 82%, var(--surface)); overflow: hidden; }
+    .runtime-variant-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); }
+    .runtime-variant-title { display: flex; min-width: 0; gap: 10px; align-items: flex-start; }
+    .runtime-variant-badge { width: 38px; height: 38px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; color: white; background: var(--variant-accent); font-weight: 900; box-shadow: var(--shadow-sm); }
+    .runtime-variant-title h3 { margin: 2px 0 0; font-size: 1.02rem; line-height: 1.18; overflow-wrap: anywhere; }
+    .runtime-variant-title .label { margin: 0; }
+    .runtime-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 12px 14px; }
+    .runtime-metric { min-width: 0; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); padding: 9px 10px; }
+    .runtime-metric span { display: block; color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .runtime-metric b { display: block; margin-top: 3px; color: var(--ink); font-size: 0.88rem; overflow-wrap: anywhere; }
+    .runtime-chips { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 14px 13px; }
+    .radar-card { padding: 16px; }
+    .radar-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+    .radar-head strong { display: block; font-size: 0.98rem; line-height: 1.25; }
+    .radar-head span { display: block; margin-top: 3px; color: var(--muted); font-size: 0.76rem; }
+    .radar-body { display: grid; grid-template-columns: minmax(180px, 240px) minmax(0, 1fr); gap: 14px; align-items: center; }
+    .radar-svg { width: 100%; aspect-ratio: 1 / 1; min-width: 0; overflow: visible; }
+    .radar-grid-line { fill: none; stroke: color-mix(in oklab, var(--border) 78%, transparent); stroke-width: 1; }
+    .radar-axis-line { stroke: color-mix(in oklab, var(--border) 86%, transparent); stroke-width: 1; }
+    .radar-axis-label { fill: var(--muted); font-size: 9px; font-weight: 800; }
+    .radar-hover { cursor: help; }
+    .radar-tooltip { position: fixed; z-index: 80; max-width: 320px; pointer-events: none; border: 1px solid var(--border); border-radius: 12px; background: color-mix(in oklab, var(--surface) 96%, var(--bg)); color: var(--ink); box-shadow: var(--shadow); padding: 10px 12px; font-size: 0.82rem; line-height: 1.45; }
+    .radar-tooltip[hidden] { display: none; }
+    .radar-tooltip strong { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 900; }
+    .radar-tooltip span { color: var(--muted); }
+    html[data-theme="dark"] .radar-tooltip { background: color-mix(in oklab, var(--surface) 94%, #000); border-color: color-mix(in oklab, var(--primary) 28%, var(--border)); }
+    .radar-poly-left { fill: rgba(209, 111, 62, 0.10); stroke: #D16F3E; stroke-width: 2.4; stroke-linejoin: round; }
+    .radar-poly-right { fill: rgba(96, 165, 250, 0.13); stroke: #60A5FA; stroke-width: 2.6; stroke-linejoin: round; }
+    html[data-theme="dark"] .radar-poly-left { fill: rgba(209, 111, 62, 0.13); stroke: #F4A578; }
+    html[data-theme="dark"] .radar-poly-right { fill: rgba(96, 165, 250, 0.16); stroke: #93BBFD; }
+    .radar-legend { display: grid; gap: 8px; font-size: 0.8rem; color: var(--muted); }
+    .radar-legend-row { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+    .radar-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--dot); }
+    .radar-score { color: var(--ink); font-weight: 800; font-variant-numeric: tabular-nums; }
+    .radar-empty { color: var(--muted); font-size: 0.84rem; }
+    .review-briefing:empty, .radar-card[hidden], .brief-card[hidden] { display: none; }
+    .scoregrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 28px 0; }
+    .score { padding: 18px; min-height: 128px; }
+    .score .num { display: block; font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--primary-strong); }
+    .score p { margin: 10px 0 0; color: var(--muted); font-size: 0.92rem; }
+    .controls { position: sticky; top: 0; z-index: 5; margin: 24px -20px 0; padding: 14px 20px; background: color-mix(in oklab, var(--bg) 88%, var(--surface)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); backdrop-filter: blur(14px); }
+    .control-inner { max-width: 1480px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; }
+    .control-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .segmented { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: 999px; background: color-mix(in oklab, var(--surface) 82%, transparent); }
+    button { font: inherit; cursor: pointer; border: 0; }
+    .segmented button { border-radius: 999px; padding: 9px 13px; color: var(--muted); background: transparent; font-weight: 700; transition: background 180ms var(--ease), color 180ms var(--ease); }
+    .segmented button[aria-pressed="true"] { background: var(--primary); color: white; }
+    html[data-theme="dark"] .segmented button[aria-pressed="true"] { color: #070B18; }
+    .jump, .theme-toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid color-mix(in oklab, var(--primary) 28%, var(--border)); border-radius: 8px; padding: 9px 12px; background: var(--surface); color: var(--ink); text-decoration: none; font-weight: 700; }
+    .nav-pill { display: inline-flex; overflow: hidden; align-items: stretch; border: 1px solid color-mix(in oklab, var(--primary) 28%, var(--border)); border-radius: 999px; background: var(--surface); color: var(--muted); transition: background 160ms var(--ease), color 160ms var(--ease), border-color 160ms var(--ease); }
+    .nav-pill.is-active { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, var(--surface)); color: var(--ink); box-shadow: var(--shadow-sm); }
+    .mini-nav .jump { border: 0; border-radius: 0; background: transparent; color: inherit; padding: 7px 10px; font-size: 0.8rem; }
+    .nav-collapse { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; border-left: 1px solid color-mix(in oklab, var(--primary) 22%, var(--border)); background: transparent; color: inherit; }
+    .nav-collapse:hover { background: color-mix(in oklab, var(--primary) 10%, transparent); color: var(--ink); }
+    .nav-collapse .material-symbols-outlined { font-size: 1rem; }
+    .theme-toggle.icon-only { width: 38px; height: 38px; justify-content: center; padding: 0; border-radius: 10px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    section { padding: 36px 0; }
+    .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 18px; }
+    h2 { margin: 0; font-size: clamp(1.55rem, 2.6vw, 2.25rem); line-height: 1.15; letter-spacing: 0; }
+    .section-note { max-width: 560px; margin: 0; color: var(--muted); }
+    .compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .system-grid, .user-grid, .output-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .panel-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); background: color-mix(in oklab, var(--surface-alt) 76%, var(--surface)); }
+    .panel-head h3 { margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+    .panel-actions { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+    .panel-maximize { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid color-mix(in oklab, var(--primary) 22%, var(--border)); border-radius: 6px; background: color-mix(in oklab, var(--surface) 74%, transparent); color: var(--muted); transition: color 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease); }
+    .panel-maximize:hover, .panel-maximize[aria-pressed="true"] { color: var(--primary-strong); border-color: var(--primary); background: color-mix(in oklab, var(--primary) 10%, var(--surface)); }
+    html[data-theme="dark"] .panel-maximize[aria-pressed="true"] { color: #BAE6FD; }
+    .panel-maximize .material-symbols-outlined { font-size: 1rem; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 9px; font-size: 0.74rem; font-weight: 800; letter-spacing: 0; white-space: nowrap; }
+    .chip.ok { background: rgba(47,133,90,0.12); color: var(--ok); }
+    .chip.bad { background: rgba(184,90,46,0.13); color: var(--bad); }
+    .chip.warn { background: rgba(184,137,43,0.14); color: var(--warn); }
+    html[data-theme="dark"] .chip.ok { background: rgba(34,197,94,0.14); }
+    html[data-theme="dark"] .chip.bad { background: rgba(248,113,113,0.14); }
+    html[data-theme="dark"] .chip.warn { background: rgba(251,191,36,0.14); }
+    pre { margin: 0; padding: 16px; max-height: 390px; overflow: auto; white-space: pre-wrap; word-break: break-word; font-size: 0.82rem; line-height: 1.5; color: var(--ink); background: var(--paper); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .system-grid pre { min-height: 180px; max-height: 260px; }
+    .user-grid pre { min-height: min(720px, 72vh); max-height: 78vh; font-size: 0.86rem; }
+    .output-grid pre { min-height: min(760px, 76vh); max-height: 82vh; font-size: 0.86rem; }
+    .json-review { border-top: 1px solid var(--border); background: color-mix(in oklab, var(--paper) 72%, var(--surface)); }
+    .json-review-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .json-review-head strong { font-size: 0.86rem; }
+    .json-tree-controls { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .json-tree-control { min-width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid color-mix(in oklab, var(--primary) 22%, var(--border)); border-radius: 6px; background: color-mix(in oklab, var(--surface) 74%, transparent); color: var(--muted); transition: color 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease); }
+    .json-tree-control:hover { color: var(--primary-strong); border-color: var(--primary); background: color-mix(in oklab, var(--primary) 10%, var(--surface)); }
+    .json-tree-control .material-symbols-outlined { font-size: 1rem; }
+    .json-tree-depth-chip { min-width: 58px; justify-content: center; }
+    .json-tree { padding: 12px 14px 16px; overflow: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.78rem; line-height: 1.55; }
+    .json-summary { display: grid; grid-template-columns: minmax(280px, 1.45fr) repeat(3, minmax(110px, 0.75fr)); gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--border); background: color-mix(in oklab, var(--surface-alt) 52%, var(--surface)); }
+    .json-summary-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; background: color-mix(in oklab, var(--surface) 84%, transparent); min-width: 0; }
+    .json-summary-card:first-child { grid-column: 1 / -1; }
+    .json-summary-card b { display: block; color: var(--ink); overflow-wrap: anywhere; }
+    .json-summary-card:first-child b { overflow-wrap: normal; word-break: normal; }
+    .json-summary-card span { display: block; margin-top: 3px; color: var(--muted); font-size: 0.72rem; }
+    .json-role-legend { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: color-mix(in oklab, var(--paper) 72%, var(--surface)); }
+    .json-role-chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; border: 1px solid var(--border); padding: 5px 9px; color: var(--muted); font-size: 0.72rem; font-weight: 800; }
+    .json-role-chip::before { content: ''; width: 0.72rem; height: 0.72rem; border-radius: 999px; background: var(--role-color, var(--border)); }
+    .json-tree details { margin: 1px 0; }
+    .json-tree summary { cursor: pointer; border-radius: 7px; padding: 3px 6px; list-style: none; border-left: 3px solid transparent; }
+    .json-tree summary:hover { background: color-mix(in oklab, var(--primary) 10%, transparent); }
+    .json-tree summary::-webkit-details-marker { display: none; }
+    .json-tree summary::before { content: '▸'; display: inline-block; width: 1rem; color: var(--muted); }
+    .json-tree details[open] > summary::before { content: '▾'; }
+    .json-tree .children { margin-left: 1.2rem; border-left: 1px solid color-mix(in oklab, var(--border) 72%, transparent); padding-left: 0.55rem; }
+    .json-key { color: var(--primary-strong); font-weight: 700; }
+    .json-meta { margin-left: 0.45rem; color: var(--muted); font-size: 0.72rem; }
+    .json-row { padding: 3px 6px; overflow-wrap: anywhere; border-left: 3px solid transparent; border-radius: 7px; }
+    .json-string { color: var(--ok); }
+    .json-number { color: var(--primary-strong); }
+    .json-boolean { color: var(--accent); }
+    .json-null { color: var(--bad); }
+    .json-url { color: var(--primary-strong); text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+    .json-role-source { color: var(--accent); }
+    .json-role-warning { color: var(--bad); }
+    .json-field-name { --role-bg: rgba(96, 165, 250, 0.12); --role-border: rgba(96, 165, 250, 0.42); --role-color: #60A5FA; }
+    .json-field-description { --role-bg: rgba(16, 185, 129, 0.12); --role-border: rgba(16, 185, 129, 0.42); --role-color: #10B981; }
+    .json-field-sources { --role-bg: rgba(245, 158, 11, 0.20); --role-border: rgba(245, 158, 11, 0.44); --role-color: #F59E0B; }
+    .json-field-warnings { --role-bg: rgba(248, 113, 113, 0.22); --role-border: rgba(248, 113, 113, 0.48); --role-color: #F87171; }
+    .json-field-related { --role-bg: rgba(168, 85, 247, 0.11); --role-border: rgba(168, 85, 247, 0.40); --role-color: #A855F7; }
+    .json-field-aliases { --role-bg: rgba(45, 212, 191, 0.11); --role-border: rgba(45, 212, 191, 0.38); --role-color: #2DD4BF; }
+    html[data-theme="dark"] .json-field-name { --role-bg: rgba(127,150,255,0.15); --role-border: rgba(164,183,255,0.44); --role-color: #BFCCFF; }
+    html[data-theme="dark"] .json-field-description { --role-bg: rgba(106,176,148,0.16); --role-border: rgba(145,212,184,0.44); --role-color: #C4EADC; }
+    html[data-theme="dark"] .json-field-sources { --role-bg: rgba(219,165,88,0.16); --role-border: rgba(244,196,120,0.46); --role-color: #F6D39F; }
+    html[data-theme="dark"] .json-field-warnings { --role-bg: rgba(214,113,125,0.16); --role-border: rgba(244,152,163,0.44); --role-color: #FFC6CE; }
+    html[data-theme="dark"] .json-field-related { --role-bg: rgba(171,119,224,0.17); --role-border: rgba(207,164,247,0.48); --role-color: #E4CAFF; }
+    html[data-theme="dark"] .json-field-aliases { --role-bg: rgba(95,197,191,0.15); --role-border: rgba(136,230,224,0.42); --role-color: #C6F1EE; }
+    .json-row[class*="json-field-"],
+    details[class*="json-field-"] > summary { background: var(--role-bg); border-left-color: var(--role-border); }
+    .json-row[class*="json-field-"] .json-key,
+    details[class*="json-field-"] > summary .json-key { color: color-mix(in oklab, var(--role-color) 72%, var(--ink)); }
+    html[data-theme="dark"] .json-string { color: #EEE7F7; }
+    html[data-theme="dark"] .json-url { color: #B8D7FF; }
+    .prompt-json-review { border-top: 1px solid var(--border); background: color-mix(in oklab, var(--paper) 72%, var(--surface)); }
+    .prompt-json-review:empty { display: none; }
+    .prompt-panel[data-readable="true"] > pre { display: none; }
+    .prompt-readable { display: grid; gap: 10px; padding: 12px 14px 16px; }
+    .prompt-segment { border-left: 3px solid var(--role-border, color-mix(in oklab, var(--primary) 30%, var(--border))); border-radius: 9px; background: var(--role-bg, color-mix(in oklab, var(--primary) 8%, var(--surface))); padding: 10px 12px; }
+    .prompt-segment[class*="json-field-"] { background: var(--role-bg); border-left-color: var(--role-border); }
+    .prompt-segment h4 { margin: 0 0 6px; color: color-mix(in oklab, var(--role-color, var(--primary-strong)) 72%, var(--ink)); font-size: 0.8rem; }
+    .prompt-segment h4:empty { display: none; }
+    .prompt-segment p { margin: 0; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.82rem; line-height: 1.48; }
+    .prompt-json-code { margin: 0; max-height: none; min-height: 0; padding: 0; overflow: visible; background: transparent; color: var(--ink); font-size: 0.8rem; line-height: 1.5; }
+    .prompt-json-code .json-key { color: color-mix(in oklab, var(--role-color, var(--primary-strong)) 72%, var(--ink)); }
+    .trace-proof { border-top: 1px solid var(--border); padding: 12px 16px 14px; background: color-mix(in oklab, var(--surface-alt) 64%, var(--surface)); color: var(--muted); font-size: 0.76rem; }
+    .trace-proof details { margin-top: 8px; }
+    .trace-proof summary { cursor: pointer; font-weight: 800; color: var(--ink); }
+    .trace-proof code { display: block; margin-top: 5px; overflow-wrap: anywhere; color: var(--ink); }
+    html[data-output-view-mode="tree_only"] .output-panel[data-parsed-ok="true"] > pre { display: none; }
+    html[data-output-view-mode="tree_only"] .mini-metrics { display: none; }
+    html[data-output-view-mode="tree_only"] .json-review { border-top: 0; }
+    html[data-output-view-mode="tree_only"] .json-tree { max-height: none; overflow: visible; font-size: 0.86rem; }
+    .prompt-stack { display: grid; gap: 16px; }
+    .mini-metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .metric { padding: 10px; border-radius: 12px; background: color-mix(in oklab, var(--bg) 68%, var(--surface)); min-height: 72px; }
+    .metric b { display: block; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+    .metric span { display: block; margin-top: 4px; color: var(--muted); font-size: 0.72rem; }
+    .qual-layout { display: grid; gap: 20px; align-items: start; }
+    .qual-main { padding: 24px; }
+    .qual-main h3, .qual-card h3 { margin: 0; font-size: 1.08rem; line-height: 1.38; }
+    .qual-lede { margin: 14px 0 22px; max-width: 1080px; color: var(--muted); font-size: 1rem; }
+    .evidence-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .evidence-note { border: 1px solid var(--border); border-radius: 12px; padding: 18px; background: color-mix(in oklab, var(--paper) 78%, var(--surface)); min-height: 0; }
+    .evidence-note strong { display: block; margin-bottom: 8px; color: var(--primary-strong); }
+    .evidence-note p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+    .qual-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    .qual-card[data-qual-card="content"] { grid-column: 1 / -1; }
+    .qual-card { padding: 20px; }
+    .qual-card p { margin: 10px 0 0; color: var(--muted); font-size: 0.94rem; }
+    .content-list { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .content-list li,
+    .qual-card[data-qual-card="risk"] p,
+    .qual-card[data-qual-card="next"] p,
+    .decision p,
+    .iteration-item { display: block; border-left: 4px solid var(--role-border, color-mix(in oklab, var(--primary) 38%, var(--border))); border-radius: 9px; background: var(--role-bg, color-mix(in oklab, var(--primary) 8%, var(--surface))); color: var(--ink); padding: 10px 12px; font-size: 0.94rem; line-height: 1.55; }
+    .content-list li::before { display: none; }
+    .verdict-strip { margin-top: 20px; border-left: 4px solid var(--primary); padding: 14px 16px; border-radius: 0 10px 10px 0; background: color-mix(in oklab, var(--bg) 58%, var(--surface)); color: var(--ink); }
+    .iteration-path { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .iteration-item { border: 1px solid var(--border); }
+    .iteration-item strong { display: block; color: var(--primary-strong); }
+    .iteration-item-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+    .iteration-version { display: inline-flex; align-items: center; border-radius: 999px; background: color-mix(in oklab, var(--surface) 82%, transparent); color: var(--primary-strong); padding: 2px 8px; font-size: 0.72rem; font-weight: 900; white-space: nowrap; }
+    .iteration-meta { margin-top: 6px; color: var(--muted); font-size: 0.82rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; background: var(--surface-alt); }
+    td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+    .matrix-wrap { overflow: auto; }
+    .footer-note { padding: 24px 0 0; color: var(--muted); font-size: 0.92rem; border-top: 1px solid var(--border); }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    html[data-system-expanded="true"] .system-grid pre,
+    html[data-user-expanded="true"] .user-grid pre,
+    html[data-output-expanded="true"] .output-grid pre { min-height: 0; max-height: none; overflow: visible; }
+    html[data-system-expanded="true"] .system-grid,
+    html[data-user-expanded="true"] .user-grid,
+    html[data-output-expanded="true"] .output-grid { align-items: start; }
+    html[data-header-collapsed="true"] .hero .lede,
+    html[data-header-collapsed="true"] .hero .review-briefing,
+    html[data-system-collapsed="true"] .system-grid pre,
+    html[data-system-collapsed="true"] .system-grid .prompt-json-review,
+    html[data-user-collapsed="true"] .user-grid pre,
+    html[data-user-collapsed="true"] .user-grid .prompt-json-review,
+    html[data-output-collapsed="true"] .output-grid pre,
+    html[data-output-collapsed="true"] .output-grid .mini-metrics,
+    html[data-output-collapsed="true"] .output-grid .json-review,
+    html[data-output-collapsed="true"] .output-grid .trace-proof,
+    html[data-interpretation-collapsed="true"] #interpretation .qual-layout { display: none !important; }
+    html[data-header-collapsed="true"] .hero::after,
+    html[data-interpretation-collapsed="true"] #interpretation::after { display: block; padding: 14px 16px; color: var(--muted); font-size: 0.86rem; border: 1px solid var(--border); border-radius: 12px; background: color-mix(in oklab, var(--surface) 82%, transparent); }
+    html[data-header-collapsed="true"] .hero::after { content: 'Header eingeklappt.'; margin-top: 18px; }
+    html[data-interpretation-collapsed="true"] #interpretation::after { content: 'Interpretation eingeklappt.'; }
+    html[data-system-collapsed="true"] .system-grid .prompt-panel::after,
+    html[data-user-collapsed="true"] .user-grid .prompt-panel::after,
+    html[data-output-collapsed="true"] .output-grid .output-panel::after { display: block; padding: 14px 16px; color: var(--muted); font-size: 0.86rem; border-top: 1px solid var(--border); }
+    html[data-system-collapsed="true"] .system-grid .prompt-panel::after { content: 'System Prompt eingeklappt.'; }
+    html[data-user-collapsed="true"] .user-grid .prompt-panel::after { content: 'User Prompt eingeklappt.'; }
+    html[data-output-collapsed="true"] .output-grid .output-panel::after { content: 'Output eingeklappt.'; }
+    @media (max-width: 920px) {
+      .decision-band, .review-briefing, .compare-grid, .qual-layout, .evidence-pair, .qual-side, .iteration-path { grid-template-columns: 1fr; }
+      .brief-card { grid-column: auto; }
+      .runtime-variant-grid { grid-template-columns: 1fr; }
+      .scoregrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mini-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section-head { display: block; }
+      .section-note { margin-top: 8px; }
+      .system-grid, .user-grid, .output-grid { grid-template-columns: 1fr; }
+      .user-grid pre, .output-grid pre { min-height: 520px; max-height: 72vh; }
+      .json-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .radar-body { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .shell { padding-inline: 14px; }
+      .scoregrid { grid-template-columns: 1fr; }
+      .controls { margin-inline: -14px; padding-inline: 14px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .segmented { width: 100%; overflow: auto; }
+      .segmented button { white-space: nowrap; }
+      pre { max-height: 300px; font-size: 0.77rem; }
+      .control-group { width: 100%; }
+      .jump, .theme-toggle { justify-content: center; width: 100%; }
+      .user-grid pre, .output-grid pre { min-height: 460px; max-height: 70vh; }
+      .json-summary { grid-template-columns: 1fr; }
+      .radar-body { grid-template-columns: 1fr; }
+      .radar-svg { max-width: 260px; justify-self: center; }
+      .matrix-wrap { overflow: visible; }
+      #resultTable, #resultTable thead, #resultTable tbody, #resultTable tr, #resultTable th, #resultTable td { display: block; width: 100%; }
+      #resultTable thead { display: none; }
+      #resultTable tr { padding: 12px 0; border-bottom: 1px solid var(--border); }
+      #resultTable td { display: flex; justify-content: space-between; gap: 14px; padding: 7px 12px; border-bottom: 0; }
+      #resultTable td::before { color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+      #resultTable td:nth-child(1)::before { content: 'Case'; }
+      #resultTable td:nth-child(2)::before { content: 'Variante'; }
+      #resultTable td:nth-child(3)::before { content: 'Parse'; }
+      #resultTable td:nth-child(4)::before { content: 'Schema'; }
+      #resultTable td:nth-child(5)::before { content: 'Related'; }
+      #resultTable td:nth-child(6)::before { content: 'First-party'; }
+      #resultTable td:nth-child(7)::before { content: 'Citation'; }
+      #resultTable td:nth-child(8)::before { content: 'Dauer'; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <script id="review-data" type="application/json">__PROMPT_AB_REVIEW_DATA_JSON__</script>
+  <div class="shell">
+    <div class="topbar">
+      <span class="source-pill"><span class="material-symbols-outlined">fact_check</span> Review-Oberfläche · Markdown/JSON bleiben kanonisch</span>
+      <span class="source-pill"><span class="material-symbols-outlined">dataset</span> Evidence: <code id="evidenceClass"></code></span>
+    </div>
+
+    <header class="hero" id="review-header">
+      <p class="kicker" id="heroKicker"></p>
+      <h1 id="heroTitle"></h1>
+      <p class="lede" id="heroLede"></p>
+      <div class="review-briefing" aria-label="Review-Briefing">
+        <article class="brief-card" id="runtimeBriefing">
+          <span class="label">Laufdaten</span>
+          <div class="brief-list" id="runtimeBriefingRows"></div>
+        </article>
+        <article class="radar-card" id="standardRadarCard">
+          <div class="radar-head"><div><strong>Standard-Review</strong><span id="standardRadarNote"></span></div><span class="chip warn" id="standardRadarProvenance"></span></div>
+          <div class="radar-body" id="standardRadar"></div>
+        </article>
+        <article class="radar-card" id="contextRadarCard">
+          <div class="radar-head"><div><strong>Rundenfokus</strong><span id="contextRadarNote"></span></div><span class="chip warn" id="contextRadarProvenance"></span></div>
+          <div class="radar-body" id="contextRadar"></div>
+        </article>
+      </div>
+    </header>
+
+    <div class="scoregrid" id="scoregrid" aria-label="Executive Scorecard"></div>
+
+    <nav class="controls" aria-label="Review controls">
+      <div class="control-inner">
+        <div class="control-group">
+          <div class="segmented" id="caseButtons"></div>
+          <div class="segmented" id="rightVariantButtons"></div>
+        </div>
+        <div class="control-group mini-nav">
+          <span class="nav-pill" data-nav-target="review-header"><a class="jump" href="#review-header">Header</a><button class="nav-collapse" type="button" data-collapse-group="header" aria-label="Header einklappen" title="Header einklappen"><span class="material-symbols-outlined">expand_less</span></button></span>
+          <span class="nav-pill" data-nav-target="system-prompts"><a class="jump" href="#system-prompts">System</a><button class="nav-collapse" type="button" data-collapse-group="system" aria-label="System-Prompts einklappen" title="System-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></span>
+          <span class="nav-pill" data-nav-target="user-prompts"><a class="jump" href="#user-prompts">User</a><button class="nav-collapse" type="button" data-collapse-group="user" aria-label="User-Prompts einklappen" title="User-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></span>
+          <span class="nav-pill" data-nav-target="outputs"><a class="jump" href="#outputs">Output</a><button class="nav-collapse" type="button" data-collapse-group="output" aria-label="Provider-Outputs einklappen" title="Provider-Outputs einklappen"><span class="material-symbols-outlined">expand_less</span></button></span>
+          <span class="nav-pill" data-nav-target="interpretation"><a class="jump" href="#interpretation">Interpretation</a><button class="nav-collapse" type="button" data-collapse-group="interpretation" aria-label="Interpretation einklappen" title="Interpretation einklappen"><span class="material-symbols-outlined">expand_less</span></button></span>
+          <button class="theme-toggle icon-only" id="themeToggle" type="button" aria-pressed="false"><span class="material-symbols-outlined">dark_mode</span><span class="sr-only">Dunkelmodus</span></button>
+        </div>
+      </div>
+    </nav>
+
+    <section id="prompts">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Prompt-Vergleich</p>
+          <h2>System und User Prompt nebeneinander</h2>
+        </div>
+        <p class="section-note" id="promptSectionNote"></p>
+      </div>
+      <div class="prompt-stack">
+        <div class="compare-grid system-grid" id="system-prompts">
+          <article class="prompt-panel"><div class="panel-head"><h3 id="leftSystemTitle">A System Prompt</h3><div class="panel-actions"><span class="chip bad">A</span><button class="panel-maximize" type="button" data-collapse-group="system" aria-label="System-Prompts einklappen" aria-pressed="false" title="System-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div><pre id="leftSystem"></pre><div class="prompt-json-review" id="leftSystemJsonReview"></div></article>
+          <article class="prompt-panel"><div class="panel-head"><h3 id="rightSystemTitle">B System Prompt</h3><div class="panel-actions"><span class="chip ok" id="rightSystemChip">B</span><button class="panel-maximize" type="button" data-collapse-group="system" aria-label="System-Prompts einklappen" aria-pressed="false" title="System-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div><pre id="rightSystem"></pre><div class="prompt-json-review" id="rightSystemJsonReview"></div></article>
+        </div>
+        <div class="compare-grid user-grid" id="user-prompts">
+          <article class="prompt-panel"><div class="panel-head"><h3 id="leftUserTitle">A User Prompt</h3><div class="panel-actions"><span class="chip bad">A</span><button class="panel-maximize" type="button" data-collapse-group="user" aria-label="User-Prompts einklappen" aria-pressed="false" title="User-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div><pre id="leftUser"></pre><div class="prompt-json-review" id="leftUserJsonReview"></div></article>
+          <article class="prompt-panel"><div class="panel-head"><h3 id="rightUserTitle">B User Prompt</h3><div class="panel-actions"><span class="chip ok" id="rightUserChip">B</span><button class="panel-maximize" type="button" data-collapse-group="user" aria-label="User-Prompts einklappen" aria-pressed="false" title="User-Prompts einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div><pre id="rightUser"></pre><div class="prompt-json-review" id="rightUserJsonReview"></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="outputs">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Output und Evidence</p>
+          <h2>Was der Provider wirklich zurückgegeben hat</h2>
+        </div>
+        <p class="section-note" id="outputSectionNote"></p>
+      </div>
+      <div class="compare-grid output-grid">
+        <article class="output-panel" id="leftOutputPanel">
+          <div class="panel-head"><h3 id="leftOutputTitle">A Output</h3><div class="panel-actions"><span id="leftStatus" class="chip bad">parse failed</span><button class="panel-maximize" type="button" data-collapse-group="output" aria-label="Provider-Outputs einklappen" aria-pressed="false" title="Provider-Outputs einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div>
+          <div class="mini-metrics" id="leftMetrics"></div>
+          <pre id="leftOutput"></pre>
+          <div class="json-review" id="leftJsonReview"></div>
+          <div class="trace-proof" id="leftTraceProof"></div>
+        </article>
+        <article class="output-panel" id="rightOutputPanel">
+          <div class="panel-head"><h3 id="rightOutputTitle">B Output</h3><div class="panel-actions"><span id="rightStatus" class="chip ok">schema ok</span><button class="panel-maximize" type="button" data-collapse-group="output" aria-label="Provider-Outputs einklappen" aria-pressed="false" title="Provider-Outputs einklappen"><span class="material-symbols-outlined">expand_less</span></button></div></div>
+          <div class="mini-metrics" id="rightMetrics"></div>
+          <pre id="rightOutput"></pre>
+          <div class="json-review" id="rightJsonReview"></div>
+          <div class="trace-proof" id="rightTraceProof"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="interpretation">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Interpretation</p>
+          <h2>Warum eine Variante besser ist</h2>
+        </div>
+        <p class="section-note" id="interpretationSectionNote"></p>
+      </div>
+      <div class="qual-layout">
+        <article class="qual-main">
+          <span class="label">Qualitative Bewertung</span>
+          <h3 id="qualTitle"></h3>
+          <p class="qual-lede" id="qualLede"></p>
+          <div class="evidence-pair">
+            <div class="evidence-note"><strong id="qualLeftTitle"></strong><p id="qualLeftText"></p></div>
+            <div class="evidence-note"><strong id="qualRightTitle"></strong><p id="qualRightText"></p></div>
+          </div>
+          <div class="verdict-strip" id="qualVerdict"></div>
+        </article>
+        <aside class="qual-side" aria-label="Konkrete Bewertungsdimensionen">
+          <article class="qual-card" data-qual-card="content"><span class="label">Inhalt, der zählt</span><h3 id="qualContentTitle"></h3><ul class="content-list" id="qualContentList"></ul></article>
+          <article class="qual-card" data-qual-card="risk"><span class="label">Risiko</span><h3 id="qualRiskTitle"></h3><p id="qualRiskText" class="json-field-warnings"></p></article>
+          <article class="qual-card" data-qual-card="next"><span class="label">Nächster sinnvoller Schritt</span><h3 id="qualNextTitle"></h3><p id="qualNextText" class="json-field-name"></p></article>
+        </aside>
+        <article class="qual-card decision" id="recommendationCard">
+          <span class="label" id="recommendationLabel">Empfehlung</span>
+          <h3 id="recommendationTitle"></h3>
+          <p id="recommendationBody" class="json-field-description"></p>
+          <div class="links" id="notProvenBody"></div>
+          <span class="sr-only" id="notProvenLabel">Nicht bewiesen</span>
+        </article>
+        <aside class="qual-card" id="iterationPathCard">
+          <span class="label">Iterationspfad</span>
+          <h3>Was aus Feedback wird</h3>
+          <div class="iteration-path" id="iterationPath"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="section-head"><div><p class="kicker">Evidence Map</p><h2>Alle Provider-Runs</h2></div></div>
+      <div class="matrix-wrap"><table id="resultTable"></table></div>
+    </section>
+
+    <footer class="footer-note">
+      <strong>Source-Klassen:</strong> Diese HTML ist eine Review-Oberfläche. Rohdaten, Markdown und JSON-Artefakte bleiben die kanonische Evidence.
+      <div class="links" id="sourceLinks"></div>
+    </footer>
+  </div>
+  <div class="radar-tooltip" id="radarTooltip" role="tooltip" hidden><strong></strong><span></span></div>
+
+  <script>
+    const themeKey = 'openspec-prompt-improver-theme';
+    const expandKeyPrefix = 'openspec-prompt-improver-expanded-';
+    const collapseKeyPrefix = 'openspec-prompt-improver-collapsed-';
+    const savedTheme = localStorage.getItem(themeKey);
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = savedTheme || (prefersDark ? 'dark' : 'light');
+    const collapsibleGroups = ['header', 'system', 'user', 'output', 'interpretation'];
+    const collapseBaseLabels = {
+      header: 'Header',
+      system: 'System-Prompts',
+      user: 'User-Prompts',
+      output: 'Provider-Outputs',
+      interpretation: 'Interpretation',
+    };
+    collapsibleGroups.forEach((group) => {
+      const defaultExpanded = group === 'output' ? 'true' : 'false';
+      document.documentElement.dataset[group + 'Expanded'] = localStorage.getItem(expandKeyPrefix + group) || defaultExpanded;
+      document.documentElement.dataset[group + 'Collapsed'] = localStorage.getItem(collapseKeyPrefix + group) || 'false';
+    });
+
+    const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    function normalizeData(input) {
+      const normalized = { ...input };
+      if (typeof normalized.recommendation === 'string') {
+        normalized.recommendation = {
+          label: 'Empfehlung',
+          title: normalized.recommendation,
+          body: normalized.decision ? 'Decision state: ' + normalized.decision : '',
+        };
+      }
+      if (Array.isArray(normalized.notProven)) {
+        normalized.notProven = {
+          label: 'Nicht bewiesen',
+          items: normalized.notProven,
+        };
+      }
+      normalized.leftVariantId = normalized.leftVariantId || normalized.variants?.[0]?.id || normalized.cases?.[0]?.results?.[0]?.variantId;
+      normalized.defaultCaseId = normalized.defaultCaseId || normalized.cases?.[0]?.id;
+      normalized.defaultRightVariant = normalized.defaultRightVariant || normalized.cases?.[0]?.results?.find((item) => item.variantId !== normalized.leftVariantId)?.variantId;
+      normalized.heroTitleHtml = normalized.heroTitleHtml || escapeHtml(normalized.title || 'Prompt A/B Review');
+      normalized.kicker = normalized.kicker || 'Prompt Review';
+      normalized.lede = normalized.lede || 'Review-Oberfläche für Prompts, Provider-Rückgaben und qualitative Entscheidung.';
+      return normalized;
+    }
+    const data = normalizeData(JSON.parse(document.getElementById('review-data').textContent));
+    document.documentElement.dataset.outputViewMode = data.outputViewMode || 'full';
+    const state = {
+      caseId: data.defaultCaseId,
+      rightVariant: data.defaultRightVariant || data.variants?.find((v) => v.id !== data.leftVariantId)?.id || data.variants?.[1]?.id,
+    };
+    const el = (id) => document.getElementById(id);
+    const fmt = (value) => typeof value === 'number' ? value.toLocaleString('de-DE') : (value ?? 'n/a');
+    const ms = (value) => typeof value === 'number' ? (value / 1000).toFixed(1) + 's' : 'n/a';
+    const tokenFmt = (usage, key) => usage && typeof usage[key] === 'number' ? usage[key].toLocaleString('de-DE') : 'n/a';
+    const markerCount = (result) => ((result?.responseText || '').match(/\[(?:page|web|\d+)[:\]]/g) || []).length;
+    const byCase = () => data.cases.find((item) => item.id === state.caseId) || data.cases[0];
+    const result = (variantId) => byCase().results.find((item) => item.variantId === variantId);
+    const outputText = (item) => item?.parsedOk && item?.parsedOutput ? JSON.stringify(item.parsedOutput, null, 2) : ((item?.responseText || '') + '\n\n--- parse error ---\n' + (item?.parseError || 'unknown'));
+    const isRecord = (value) => value && typeof value === 'object' && !Array.isArray(value);
+    const isContainer = (value) => Array.isArray(value) || isRecord(value);
+    const scalarClass = (value, key = '') => key.includes('warning') ? 'json-role-warning' : key === 'url' ? 'json-url' : value === null ? 'json-null' : Array.isArray(value) ? '' : typeof value === 'string' ? 'json-string' : typeof value === 'number' ? 'json-number' : typeof value === 'boolean' ? 'json-boolean' : '';
+    const isUrl = (value) => typeof value === 'string' && /^https?:\/\//i.test(value);
+    const scalarPreview = (value) => typeof value === 'string' ? JSON.stringify(value) : value === null ? 'null' : String(value);
+    const containerSummary = (value) => {
+      if (Array.isArray(value)) return value.length + ' ' + (value.length === 1 ? 'item' : 'items');
+      const count = Object.keys(value || {}).length;
+      return count + ' ' + (count === 1 ? 'key' : 'keys');
+    };
+    function displayName(name, value) {
+      if (isRecord(value)) {
+        const primary = value.observed_name || value.title || value.url || value.source_note;
+        if (primary && /^\[\d+\]$/.test(name)) return name + ' ' + String(primary);
+      }
+      return name;
+    }
+    function rootValue(value) {
+      if (isRecord(value)) {
+        const keys = Object.keys(value);
+        if (keys.length === 1 && isContainer(value[keys[0]])) {
+          return { name: keys[0], value: value[keys[0]] };
+        }
+      }
+      return { name: '$', value };
+    }
+    const defaultFieldRolePatterns = {
+      name: ['(^|_)(observed_)?name$', '(^|_)(title|label|headline)$', '(^|_)(id|key)$'],
+      description: ['description', 'summary', 'note', 'rationale', 'explanation', 'body', 'text$'],
+      sources: ['source', 'sources', 'ref', 'refs', 'citation', 'citations', 'url$', 'uri$', 'href$', 'link$'],
+      warnings: ['warning', 'warnings', 'risk', 'risks', 'error', 'errors', 'issue', 'issues', 'failure', 'invalid', 'mismatch'],
+      related: ['related', 'relationship', 'relationships', 'candidate', 'candidates', 'item', 'items', 'offering', 'offerings', 'module', 'modules'],
+      aliases: ['alias', 'aliases', 'alternative', 'alternatives', 'synonym', 'synonyms'],
+    };
+    const roleClassByName = {
+      name: 'json-field-name',
+      description: 'json-field-description',
+      sources: 'json-field-sources',
+      warnings: 'json-field-warnings',
+      related: 'json-field-related',
+      aliases: 'json-field-aliases',
+    };
+    function rolePatterns() {
+      const configured = data.jsonFieldRolePatterns && typeof data.jsonFieldRolePatterns === 'object' ? data.jsonFieldRolePatterns : {};
+      return { ...defaultFieldRolePatterns, ...configured };
+    }
+    function fieldRoleClass(name) {
+      const key = String(name || '').replace(/^\[\d+\]\s*/, '').toLowerCase();
+      for (const [role, patterns] of Object.entries(rolePatterns())) {
+        const list = Array.isArray(patterns) ? patterns : [];
+        if (list.some((pattern) => {
+          try { return new RegExp(pattern, 'i').test(key); }
+          catch { return String(pattern).toLowerCase() === key; }
+        })) {
+          return roleClassByName[role] || '';
+        }
+      }
+      return '';
+    }
+    function walkJson(value, visitor, key = '', depth = 0) {
+      visitor(value, key, depth);
+      if (Array.isArray(value)) value.forEach((item, index) => walkJson(item, visitor, '[' + index + ']', depth + 1));
+      else if (isRecord(value)) Object.entries(value).forEach(([childKey, child]) => walkJson(child, visitor, childKey, depth + 1));
+    }
+    function firstScalarByRole(value, roleName) {
+      let found = null;
+      walkJson(value, (node, key) => {
+        if (found !== null || isContainer(node) || node === null || typeof node === 'undefined') return;
+        if (fieldRoleClass(key) === roleClassByName[roleName]) found = String(node);
+      });
+      return found;
+    }
+    function countArraysByRole(value, roleName) {
+      let count = 0;
+      walkJson(value, (node, key) => {
+        if (Array.isArray(node) && fieldRoleClass(key) === roleClassByName[roleName]) count += node.length;
+      });
+      return count;
+    }
+    function countScalarsByRole(value, roleName) {
+      let count = 0;
+      walkJson(value, (node, key) => {
+        if (!isContainer(node) && node !== null && typeof node !== 'undefined' && fieldRoleClass(key) === roleClassByName[roleName]) count += 1;
+      });
+      return count;
+    }
+    function summarizeParsedOutput(value, metrics = {}) {
+      const root = rootValue(value).value;
+      const primary = firstScalarByRole(root, 'name') || 'n/a';
+      const relatedLike = countArraysByRole(root, 'related');
+      const sourceLike = Number.isFinite(Number(metrics.source_ref_count)) ? metrics.source_ref_count : countScalarsByRole(root, 'sources');
+      const warningLike = countArraysByRole(root, 'warnings') + countScalarsByRole(root, 'warnings');
+      return [
+        ['Primary', primary],
+        ['Related/items', relatedLike],
+        ['Sources/URLs', sourceLike],
+        ['Warnings', warningLike],
+      ];
+    }
+    function jsonSummaryHtml(item) {
+      if (!item?.parsedOk || !isContainer(item?.parsedOutput)) return '';
+      return '<div class="json-summary">' + summarizeParsedOutput(item.parsedOutput, item.metrics || {}).map(([label, value]) => '<div class="json-summary-card"><b>' + escapeHtml(value) + '</b><span>' + escapeHtml(label) + '</span></div>').join('') + '</div>';
+    }
+    function jsonRoleLegendHtml() {
+      return '<div class="json-role-legend">' + [
+        ['json-field-name', 'Namen'],
+        ['json-field-description', 'Beschreibungen'],
+        ['json-field-sources', 'Quellen'],
+        ['json-field-warnings', 'Warnungen'],
+        ['json-field-related', 'Related / Beziehung'],
+        ['json-field-aliases', 'Aliasse'],
+      ].map(([klass, label]) => '<span class="json-role-chip ' + klass + '">' + escapeHtml(label) + '</span>').join('') + '</div>';
+    }
+    function jsonTreeNode(name, value, depth = 0, inheritedRoleClass = '') {
+      const directRoleClass = fieldRoleClass(name);
+      const roleClass = directRoleClass || inheritedRoleClass;
+      if (!isContainer(value)) {
+        const renderedValue = isUrl(value)
+          ? '<a class="json-url" href="' + escapeHtml(value) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(value) + '</a>'
+          : '<span class="' + scalarClass(value, name) + '">' + escapeHtml(scalarPreview(value)) + '</span>';
+        return '<div class="json-row ' + roleClass + '" style="padding-left:' + Math.min(depth, 8) * 0.8 + 'rem"><span class="json-key">' + escapeHtml(name) + '</span>: ' + renderedValue + '</div>';
+      }
+      const entries = Array.isArray(value) ? value.map((item, index) => ['[' + index + ']', item]) : Object.entries(value);
+      const expandAll = data.outputTreeDefaultExpanded === 'all';
+      const defaultDepth = Number.isFinite(Number(data.outputTreeDefaultDepth)) ? Number(data.outputTreeDefaultDepth) : 1;
+      const open = expandAll || depth < defaultDepth ? ' open' : '';
+      const maxItems = Number.isFinite(Number(data.outputTreeMaxInitialArrayItems)) ? Number(data.outputTreeMaxInitialArrayItems) : 25;
+      const largeArrayLimit = Number.isFinite(Number(data.outputTreeLargeArrayLimit)) ? Number(data.outputTreeLargeArrayLimit) : 40;
+      const shouldLimit = !expandAll && entries.length > largeArrayLimit;
+      const visible = shouldLimit ? entries.slice(0, maxItems) : entries;
+      const hiddenNote = entries.length > visible.length ? '<div class="json-row json-meta">… ' + (entries.length - visible.length) + ' weitere Items in der Raw/Code-Ansicht</div>' : '';
+      const label = displayName(name, value);
+      const childInheritedRoleClass = roleClass;
+      return '<details class="' + roleClass + '" data-depth="' + depth + '"' + open + '><summary><span class="json-key">' + escapeHtml(label) + '</span> <span class="json-meta">' + (Array.isArray(value) ? 'array' : 'object') + ' · ' + escapeHtml(containerSummary(value)) + '</span></summary><div class="children">' + visible.map(([key, child]) => jsonTreeNode(String(key), child, depth + 1, childInheritedRoleClass)).join('') + hiddenNote + '</div></details>';
+    }
+    function findJsonEnd(text, start) {
+      const opening = text[start];
+      const closingFor = { '{': '}', '[': ']' };
+      const closing = closingFor[opening];
+      if (!closing) return -1;
+      const stack = [closing];
+      let inString = false;
+      let escaped = false;
+      for (let index = start + 1; index < text.length; index += 1) {
+        const char = text[index];
+        if (inString) {
+          if (escaped) escaped = false;
+          else if (char === '\\') escaped = true;
+          else if (char === '"') inString = false;
+          continue;
+        }
+        if (char === '"') inString = true;
+        else if (char === '{') stack.push('}');
+        else if (char === '[') stack.push(']');
+        else if (char === stack[stack.length - 1]) {
+          stack.pop();
+          if (!stack.length) return index + 1;
+        }
+      }
+      return -1;
+    }
+    function extractJsonBlocks(text) {
+      const source = String(text || '');
+      const blocks = [];
+      let index = 0;
+      while (index < source.length && blocks.length < 12) {
+        const objectStart = source.indexOf('{', index);
+        const arrayStart = source.indexOf('[', index);
+        const candidates = [objectStart, arrayStart].filter((position) => position >= 0);
+        if (!candidates.length) break;
+        const start = Math.min(...candidates);
+        const end = findJsonEnd(source, start);
+        if (end < 0) {
+          index = start + 1;
+          continue;
+        }
+        const raw = source.slice(start, end);
+        try {
+          const parsed = JSON.parse(raw);
+          if (isContainer(parsed)) blocks.push(parsed);
+        } catch {
+          // Prompt prose often contains brace-like examples that are not JSON.
+        }
+        index = Math.max(end, start + 1);
+      }
+      return blocks;
+    }
+    function extractPromptSegments(text) {
+      const source = String(text || '');
+      const segments = [];
+      let cursor = 0;
+      while (cursor < source.length && segments.length < 40) {
+        const objectStart = source.indexOf('{', cursor);
+        const arrayStart = source.indexOf('[', cursor);
+        const candidates = [objectStart, arrayStart].filter((position) => position >= 0);
+        if (!candidates.length) break;
+        const start = Math.min(...candidates);
+        const end = findJsonEnd(source, start);
+        if (end < 0) {
+          cursor = start + 1;
+          continue;
+        }
+        const raw = source.slice(start, end);
+        try {
+          const parsed = JSON.parse(raw);
+          if (isContainer(parsed)) {
+            if (start > cursor) segments.push({ type: 'text', text: source.slice(cursor, start) });
+            segments.push({ type: 'json', raw, value: parsed });
+            cursor = end;
+            continue;
+          }
+        } catch {
+          // Prompt prose can contain braces that are not actual JSON.
+        }
+        cursor = start + 1;
+      }
+      if (cursor < source.length) segments.push({ type: 'text', text: source.slice(cursor) });
+      return segments.filter((segment) => segment.type === 'json' || String(segment.text || '').trim());
+    }
+    function promptToneClass(index) {
+      return ['json-field-name', 'json-field-description', 'json-field-sources', 'json-field-warnings', 'json-field-related', 'json-field-aliases'][index % 6];
+    }
+    function readableToneClass(index) {
+      return ['json-field-name', 'json-field-description', 'json-field-sources', 'json-field-warnings', 'json-field-related', 'json-field-name'][index % 6];
+    }
+    function iterationVersionLabel(item) {
+      const explicit = item?.version || item?.appliesToVariant || item?.round;
+      if (explicit) return explicit;
+      const variantId = item?.variantId;
+      if (!variantId) return '';
+      const match = String(variantId).match(/\b[A-Z]\d*\b/);
+      return match?.[0] || variantId;
+    }
+    function textSegmentTitle(text, fallback) {
+      const first = String(text || '').trim().split('\n').find((line) => line.trim()) || fallback;
+      const cleaned = first.replace(/[:：]\s*$/, '').trim();
+      return cleaned.length > 80 ? cleaned.slice(0, 77) + '…' : cleaned || fallback;
+    }
+    function textSegmentHeading(text) {
+      const trimmed = String(text || '').trim();
+      const lines = trimmed.split('\n').map((line) => line.trim()).filter(Boolean);
+      const first = lines[0] || '';
+      if (/^[A-Z][A-Za-z0-9 /()_-]{2,60}[:：]$/.test(first)) return first.replace(/[:：]\s*$/, '');
+      if (lines.length > 1 && /^[A-Z][A-Za-z0-9 /()_-]{2,60}$/.test(first) && !/[.!?]$/.test(first)) return first;
+      return null;
+    }
+    function textSegmentBody(text, title) {
+      const trimmed = String(text || '').trim();
+      if (!title) return trimmed;
+      const lines = trimmed.split('\n');
+      const first = (lines[0] || '').trim().replace(/[:：]\s*$/, '');
+      return first === title ? lines.slice(1).join('\n').trim() : trimmed;
+    }
+    function textSegmentStandaloneLabel(text) {
+      const trimmed = String(text || '').trim();
+      const lines = trimmed.split('\n').map((line) => line.trim()).filter(Boolean);
+      if (lines.length !== 1) return null;
+      return /^[A-Z][A-Za-z0-9 /()_-]{2,72}[:：]$/.test(lines[0]) ? lines[0].replace(/[:：]\s*$/, '') : null;
+    }
+    function splitTrailingLabel(text) {
+      const lines = String(text || '').replace(/\s+$/, '').split('\n');
+      const last = (lines[lines.length - 1] || '').trim();
+      if (!/^[A-Z][A-Za-z0-9 /()_-]{2,72}[:：]$/.test(last)) return { text, label: null };
+      return {
+        text: lines.slice(0, -1).join('\n').trim(),
+        label: last.replace(/[:：]\s*$/, ''),
+      };
+    }
+    function normalizePromptSegmentsForDisplay(segments) {
+      const normalized = [];
+      let pendingJsonLabel = null;
+      for (const segment of segments) {
+        if (segment.type === 'text') {
+          const standaloneLabel = textSegmentStandaloneLabel(segment.text);
+          if (standaloneLabel) {
+            pendingJsonLabel = standaloneLabel;
+            continue;
+          }
+          const split = splitTrailingLabel(segment.text);
+          if (split.text) normalized.push({ ...segment, text: split.text });
+          if (split.label) pendingJsonLabel = split.label;
+          continue;
+        }
+        normalized.push({ ...segment, label: pendingJsonLabel });
+        pendingJsonLabel = null;
+      }
+      if (pendingJsonLabel) normalized.push({ type: 'text', text: pendingJsonLabel + ':' });
+      return normalized;
+    }
+    function jsonBlockRoleClass(value, index) {
+      const root = rootValue(value);
+      return fieldRoleClass(root.name) || promptToneClass(index);
+    }
+    function highlightedJson(value) {
+      return escapeHtml(JSON.stringify(value, null, 2)).split('\n').map((line) => {
+        const match = line.match(/^(\s*)&quot;([^&]+)&quot;:/);
+        if (!match) return line;
+        const roleClass = fieldRoleClass(match[2]);
+        if (!roleClass) return line;
+        return line.replace(match[0], match[1] + '<span class="json-key ' + roleClass + '">&quot;' + escapeHtml(match[2]) + '&quot;</span>:');
+      }).join('\n');
+    }
+    function splitPromptParagraphs(text) {
+      const lineParts = String(text || '').split(/\n\s*\n+|\n+/).map((part) => part.trim()).filter(Boolean);
+      const parts = lineParts.length > 1 ? lineParts : lineParts.flatMap((part) => part.split(/(?<=[.!?])\s+(?=[A-Z])/).map((item) => item.trim()).filter(Boolean));
+      return parts.flatMap((part) => part.length > 260 ? part.split(/(?<=[.!?])\s+/).map((item) => item.trim()).filter(Boolean) : [part]);
+    }
+    function paragraphRoleClass(text, index) {
+      const sample = String(text || '').toLowerCase();
+      if (/(do not|don't|never|must not|forbidden|fail|error|risk|warning|stop)/.test(sample)) return 'json-field-warnings';
+      if (/(source|citation|evidence|ground|provenance|trace|reference)/.test(sample)) return 'json-field-sources';
+      if (/(output|return|json|schema|format|structure|contract)/.test(sample)) return 'json-field-related';
+      if (/(role|you are|identity|persona|expert)/.test(sample)) return 'json-field-name';
+      if (/(task|goal|objective|context|description|explain)/.test(sample)) return 'json-field-description';
+      return promptToneClass(index);
+    }
+    function renderSystemPromptReview(node, promptText) {
+      const paragraphs = splitPromptParagraphs(promptText);
+      if (!paragraphs.length) {
+        node.innerHTML = '';
+        return false;
+      }
+      node.innerHTML = '<div class="json-review-head"><strong>System-Prompt Lesefassung</strong><span class="chip ok">' + paragraphs.length + ' Abschnitte</span></div><div class="prompt-readable">' + paragraphs.map((paragraph, index) => {
+        const roleClass = paragraphRoleClass(paragraph, index);
+        const title = textSegmentHeading(paragraph);
+        return '<section class="prompt-segment ' + roleClass + '">' + (title ? '<h4>' + escapeHtml(title) + '</h4>' : '') + '<p>' + escapeHtml(textSegmentBody(paragraph, title)) + '</p></section>';
+      }).join('') + '</div>';
+      return true;
+    }
+    function renderUserPromptReview(node, promptText) {
+      const segments = normalizePromptSegmentsForDisplay(extractPromptSegments(promptText));
+      const jsonCount = segments.filter((segment) => segment.type === 'json').length;
+      if (!jsonCount || segments.length < 2) {
+        node.innerHTML = '';
+        return false;
+      }
+      let textIndex = 0;
+      let jsonIndex = 0;
+      node.innerHTML = '<div class="json-review-head"><strong>User-Prompt Lesefassung</strong><span class="chip ok">' + jsonCount + ' JSON-Blöcke</span></div>' + jsonRoleLegendHtml() + '<div class="prompt-readable">' + segments.map((segment) => {
+        if (segment.type === 'json') {
+          const roleClass = jsonBlockRoleClass(segment.value, jsonIndex);
+          const root = rootValue(segment.value);
+          jsonIndex += 1;
+          const title = segment.label || (root.name === '$' ? 'JSON-Block' : root.name);
+          return '<section class="prompt-segment ' + roleClass + '"><h4>' + escapeHtml(title) + '</h4><pre class="prompt-json-code">' + highlightedJson(segment.value) + '</pre></section>';
+        }
+        const title = textSegmentHeading(segment.text);
+        const roleClass = fieldRoleClass(title) || promptToneClass(textIndex);
+        textIndex += 1;
+        return '<section class="prompt-segment ' + roleClass + '">' + (title ? '<h4>' + escapeHtml(title) + '</h4>' : '') + '<p>' + escapeHtml(textSegmentBody(segment.text, title)) + '</p></section>';
+      }).join('') + '</div>';
+      return true;
+    }
+    function renderJsonReview(node, item) {
+      if (!item?.parsedOk || !isContainer(item?.parsedOutput)) {
+        node.innerHTML = '<div class="json-review-head"><strong>Nicht parsebarer Output</strong><span class="chip warn">nicht verfügbar</span></div><div class="json-tree">Dieses Resultat ist nicht als JSON-Objekt oder Array parsebar. Der echte Provider-Text und der Parse-Fehler bleiben im Rohtext sichtbar.</div>';
+        return;
+      }
+      const root = rootValue(item.parsedOutput);
+      const title = firstScalarByRole(root.value, 'name') || displayName(root.name, root.value);
+      node.innerHTML = '<div class="json-review-head"><strong>' + escapeHtml(title) + '</strong><div class="json-tree-controls"><button class="json-tree-control" type="button" data-json-tree-action="collapse" aria-label="JSON-Baum vollständig einklappen" title="JSON-Baum vollständig einklappen"><span class="material-symbols-outlined">unfold_less</span></button><button class="json-tree-control" type="button" data-json-tree-action="decrease" aria-label="Eine JSON-Ebene einklappen" title="Eine JSON-Ebene einklappen"><span class="material-symbols-outlined">keyboard_arrow_up</span></button><span class="chip ok json-tree-depth-chip" data-json-tree-depth-label>parsed</span><button class="json-tree-control" type="button" data-json-tree-action="increase" aria-label="Eine JSON-Ebene tiefer öffnen" title="Eine JSON-Ebene tiefer öffnen"><span class="material-symbols-outlined">keyboard_arrow_down</span></button><button class="json-tree-control" type="button" data-json-tree-action="expand" aria-label="JSON-Baum vollständig aufklappen" title="JSON-Baum vollständig aufklappen"><span class="material-symbols-outlined">unfold_more</span></button></div></div>' + jsonSummaryHtml(item) + jsonRoleLegendHtml() + '<div class="json-tree">' + jsonTreeNode(root.name, root.value) + '</div>';
+      syncJsonTreeDepth(node);
+    }
+    function jsonTreeDetails(reviewNode) {
+      return Array.from(reviewNode.querySelectorAll('.json-tree details[data-depth]'));
+    }
+    function maxJsonTreeDepth(reviewNode) {
+      return jsonTreeDetails(reviewNode).reduce((max, detail) => Math.max(max, Number(detail.dataset.depth || 0)), 0);
+    }
+    function setJsonTreeDepth(reviewNode, depth) {
+      const maxDepth = maxJsonTreeDepth(reviewNode);
+      const nextDepth = Math.max(0, Math.min(depth, maxDepth + 1));
+      jsonTreeDetails(reviewNode).forEach((detail) => {
+        detail.open = Number(detail.dataset.depth || 0) < nextDepth;
+      });
+      reviewNode.dataset.treeDepth = String(nextDepth);
+      updateJsonTreeDepthLabel(reviewNode);
+    }
+    function inferJsonTreeDepth(reviewNode) {
+      const details = jsonTreeDetails(reviewNode);
+      if (!details.length) return 0;
+      const maxDepth = maxJsonTreeDepth(reviewNode);
+      if (details.every((detail) => detail.open)) return maxDepth + 1;
+      const openDepths = details.filter((detail) => detail.open).map((detail) => Number(detail.dataset.depth || 0));
+      return openDepths.length ? Math.max(...openDepths) + 1 : 0;
+    }
+    function updateJsonTreeDepthLabel(reviewNode) {
+      const label = reviewNode.querySelector('[data-json-tree-depth-label]');
+      if (!label) return;
+      const maxDepth = maxJsonTreeDepth(reviewNode);
+      const depth = Number(reviewNode.dataset.treeDepth || inferJsonTreeDepth(reviewNode));
+      label.textContent = depth > maxDepth ? 'alle Ebenen' : 'Ebene ' + depth;
+    }
+    function syncJsonTreeDepth(reviewNode) {
+      const maxDepth = maxJsonTreeDepth(reviewNode);
+      const initialDepth = data.outputTreeDefaultExpanded === 'all'
+        ? maxDepth + 1
+        : Number.isFinite(Number(data.outputTreeDefaultDepth)) ? Number(data.outputTreeDefaultDepth) : 1;
+      reviewNode.dataset.treeDepth = String(initialDepth);
+      updateJsonTreeDepthLabel(reviewNode);
+    }
+    function setupJsonTreeControls() {
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest('[data-json-tree-action]');
+        if (!button) return;
+        const reviewNode = button.closest('.json-review');
+        if (!reviewNode) return;
+        const currentDepth = Number(reviewNode.dataset.treeDepth || inferJsonTreeDepth(reviewNode));
+        const maxDepth = maxJsonTreeDepth(reviewNode);
+        const action = button.dataset.jsonTreeAction;
+        if (action === 'collapse') setJsonTreeDepth(reviewNode, 0);
+        else if (action === 'decrease') setJsonTreeDepth(reviewNode, currentDepth - 1);
+        else if (action === 'increase') setJsonTreeDepth(reviewNode, currentDepth + 1);
+        else if (action === 'expand') setJsonTreeDepth(reviewNode, maxDepth + 1);
+      });
+    }
+    function renderTraceProof(node, item) {
+      const trace = item?.trace || {};
+      const refs = trace.artifactRefs || {};
+      const hashes = trace.artifactSha256 || {};
+      const keys = ['request', 'renderedPrompt', 'rawResponse', 'responseText', 'parsedOutput', 'metrics'];
+      node.innerHTML = '<strong>Trace-Provenienz</strong><div>Quelle: ' + escapeHtml(trace.provenance || 'artifact_set') + '</div>' + keys.map((key) => {
+        if (!refs[key] && !hashes[key]) return '';
+        return '<details><summary>' + escapeHtml(key) + '</summary><code>' + escapeHtml(refs[key] || '') + '</code><code>sha256: ' + escapeHtml(hashes[key] || 'missing') + '</code></details>';
+      }).join('');
+    }
+
+    function displayVariantLabel(item) {
+      return item?.variantShortLabel || item?.variantId || 'n/a';
+    }
+    function runtimeTokenSummary(item) {
+      const usage = item?.tokenUsage || {};
+      if (typeof usage.total_tokens === 'number' || typeof usage.input_tokens === 'number' || typeof usage.output_tokens === 'number') {
+        return tokenFmt(usage, 'total_tokens') + ' gesamt · ' + tokenFmt(usage, 'input_tokens') + ' in · ' + tokenFmt(usage, 'output_tokens') + ' out';
+      }
+      return 'n/a';
+    }
+    function runtimeVariantCard(item, side) {
+      const accent = side === 'left' ? '#D16F3E' : '#60A5FA';
+      const ok = Boolean(item?.parsedOk && item?.metrics?.schema_ok);
+      const metrics = [
+        ['Provider', item?.providerRoute || 'unbekannt'],
+        ['Modell', item?.model || 'unbekannt'],
+        ['Laufzeit', ms(item?.durationMs)],
+        ['Tokens', runtimeTokenSummary(item)],
+      ];
+      const chips = [
+        typeof item?.metrics?.related_count === 'number' ? item.metrics.related_count + ' Related' : '',
+        typeof item?.metrics?.source_ref_count === 'number' ? item.metrics.source_ref_count + ' Quellen' : '',
+        typeof item?.metrics?.citation_marker_count === 'number' ? item.metrics.citation_marker_count + ' Citation-Marker' : '',
+      ].filter(Boolean);
+      return '<article class="runtime-variant-card" style="--variant-accent:' + accent + '"><div class="runtime-variant-head"><div class="runtime-variant-title"><span class="runtime-variant-badge">' + escapeHtml(displayVariantLabel(item)) + '</span><div><span class="label">Provider-Lauf</span></div></div><span class="chip ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'schema ok' : 'parse failed') + '</span></div><div class="runtime-metrics">' + metrics.map(([label, value]) => '<div class="runtime-metric"><span>' + escapeHtml(label) + '</span><b>' + escapeHtml(value) + '</b></div>').join('') + '</div><div class="runtime-chips">' + chips.map((chip) => '<span class="chip warn">' + escapeHtml(chip) + '</span>').join('') + '</div></article>';
+    }
+    function renderRuntimeBriefing(left, right) {
+      el('runtimeBriefingRows').innerHTML = '<div class="runtime-variant-grid">' + runtimeVariantCard(left, 'left') + runtimeVariantCard(right, 'right') + '</div>';
+      el('runtimeBriefing').hidden = false;
+    }
+    function evaluationForCase(caseId) {
+      const evaluation = data.assistantEvaluation;
+      if (!evaluation || typeof evaluation !== 'object') return null;
+      const caseEvaluation = evaluation.cases?.[caseId] || {};
+      return {
+        ...evaluation,
+        variants: caseEvaluation.variants || evaluation.variants || {},
+      };
+    }
+    function radarScores(evaluation, group, variantId) {
+      const variant = evaluation?.variants?.[variantId] || {};
+      return variant[group] || {};
+    }
+    function axisScore(scores, axis) {
+      const value = scores?.[axis.id];
+      if (typeof value === 'number') return Math.max(0, Math.min(5, value));
+      return null;
+    }
+    function radarPoint(index, total, radius, center = 100) {
+      const angle = -Math.PI / 2 + (Math.PI * 2 * index) / total;
+      return [center + Math.cos(angle) * radius, center + Math.sin(angle) * radius];
+    }
+    function axisHelp(axis) {
+      return axis?.description || ((axis?.label || axis?.id || 'Achse') + ' beschreibt eine Bewertungsdimension dieser Runde. Höhere Werte bedeuten, dass die Variante diese Dimension sichtbar besser erfüllt.');
+    }
+    function axisDisplayLabel(axis) {
+      return axis?.shortLabel || axis?.label || axis?.id || 'Achse';
+    }
+    function axisTooltipText(axis) {
+      const display = axisDisplayLabel(axis);
+      const help = axisHelp(axis);
+      return axis?.label && axis.label !== display ? axis.label + ': ' + help : help;
+    }
+    function radarPolygon(axisList, scores) {
+      return axisList.map((axis, index) => {
+        const value = axisScore(scores, axis) ?? 0;
+        const [x, y] = radarPoint(index, axisList.length, 72 * (value / 5));
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      }).join(' ');
+    }
+    function renderRadar(target, card, axes, evaluation, group, left, right, noteNode, provenanceNode) {
+      if (!evaluation || !Array.isArray(axes) || axes.length < 3) {
+        card.hidden = true;
+        return;
+      }
+      const leftScores = radarScores(evaluation, group, left?.variantId);
+      const rightScores = radarScores(evaluation, group, right?.variantId);
+      const hasScores = axes.some((axis) => axisScore(leftScores, axis) !== null || axisScore(rightScores, axis) !== null);
+      if (!hasScores) {
+        card.hidden = true;
+        return;
+      }
+      const rings = [1, 2, 3, 4, 5].map((level) => {
+        const points = axes.map((_, index) => radarPoint(index, axes.length, 72 * (level / 5)).map((point) => point.toFixed(1)).join(',')).join(' ');
+        return '<polygon class="radar-grid-line" points="' + points + '"></polygon>';
+      }).join('');
+      const axisLines = axes.map((axis, index) => {
+        const [x, y] = radarPoint(index, axes.length, 72);
+        const [lx, ly] = radarPoint(index, axes.length, 88);
+        const title = escapeHtml(axisDisplayLabel(axis));
+        const text = escapeHtml(axisTooltipText(axis));
+        return '<line class="radar-axis-line" x1="100" y1="100" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"></line><circle class="radar-hover" data-tooltip-title="' + title + '" data-tooltip="' + text + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="8" fill="transparent"></circle><text class="radar-axis-label radar-hover" data-tooltip-title="' + title + '" data-tooltip="' + text + '" x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle">' + escapeHtml(axisDisplayLabel(axis)) + '</text>';
+      }).join('');
+      const legend = axes.map((axis) => {
+        const l = axisScore(leftScores, axis);
+        const r = axisScore(rightScores, axis);
+        return '<div class="radar-legend-row radar-hover" tabindex="0" data-tooltip-title="' + escapeHtml(axisDisplayLabel(axis)) + '" data-tooltip="' + escapeHtml(axisTooltipText(axis)) + '"><span class="radar-dot" style="--dot: var(--primary-strong)"></span><span>' + escapeHtml(axisDisplayLabel(axis)) + '</span><span class="radar-score">' + (l === null ? 'n/a' : l.toFixed(1)) + ' / ' + (r === null ? 'n/a' : r.toFixed(1)) + '</span></div>';
+      }).join('');
+      target.innerHTML = '<svg class="radar-svg" viewBox="0 0 200 200" role="img" aria-label="Radar-Vergleich">' + rings + axisLines + '<polygon class="radar-poly-left" points="' + radarPolygon(axes, leftScores) + '"></polygon><polygon class="radar-poly-right" points="' + radarPolygon(axes, rightScores) + '"></polygon></svg><div class="radar-legend"><div class="radar-legend-row"><span class="radar-dot" style="--dot: #D16F3E"></span><span>' + escapeHtml(displayVariantLabel(left)) + '</span><span></span></div><div class="radar-legend-row"><span class="radar-dot" style="--dot: #60A5FA"></span><span>' + escapeHtml(displayVariantLabel(right)) + '</span><span></span></div>' + legend + '</div>';
+      noteNode.textContent = group === 'standard' ? (evaluation.standardNote || 'Standardisierte Codex-Fachbewertung.') : (evaluation.contextNote || 'Rundenbezogene Fokusmetriken.');
+      provenanceNode.textContent = evaluation.provenance || 'assistant_review';
+      card.hidden = false;
+    }
+    function renderBriefing(left, right) {
+      renderRuntimeBriefing(left, right);
+      const evaluation = evaluationForCase(byCase()?.id);
+      renderRadar(el('standardRadar'), el('standardRadarCard'), evaluation?.standardAxes, evaluation, 'standard', left, right, el('standardRadarNote'), el('standardRadarProvenance'));
+      renderRadar(el('contextRadar'), el('contextRadarCard'), evaluation?.contextAxes, evaluation, 'context', left, right, el('contextRadarNote'), el('contextRadarProvenance'));
+    }
+
+    function statusChip(node, item) {
+      const ok = Boolean(item?.parsedOk && item?.metrics?.schema_ok);
+      node.textContent = (ok ? 'schema ok' : 'parse failed') + ' · ' + ms(item?.durationMs);
+      node.className = 'chip ' + (ok ? 'ok' : 'bad');
+    }
+    function metricsHtml(item) {
+      const m = item?.metrics || {};
+      return [
+        ['Parsed', item?.parsedOk ? 'ja' : 'nein'],
+        ['Schema', m.schema_ok ? 'ok' : 'fail'],
+        ['Related', fmt(m.related_count)],
+        ['Source refs', fmt(m.source_ref_count)],
+        ['Dauer', ms(item?.durationMs)],
+      ].map(([label, value]) => '<div class="metric"><b>' + escapeHtml(value) + '</b><span>' + escapeHtml(label) + '</span></div>').join('');
+    }
+    function renderShell() {
+      document.title = data.title || 'Prompt A/B Review';
+      el('evidenceClass').textContent = data.evidenceClass || 'review_surface';
+      el('heroKicker').textContent = data.kicker || 'Prompt Review';
+      el('heroTitle').innerHTML = data.heroTitleHtml || escapeHtml(data.title || 'Prompt A/B Review');
+      el('heroLede').textContent = data.lede || '';
+      el('recommendationLabel').textContent = data.recommendation?.label || 'Empfehlung';
+      el('recommendationTitle').textContent = data.recommendation?.title || 'Entscheidung offen.';
+      el('recommendationBody').textContent = data.recommendation?.body || '';
+      el('notProvenLabel').textContent = data.notProven?.label || 'Nicht bewiesen';
+      el('notProvenBody').textContent = Array.isArray(data.notProven?.items) ? data.notProven.items.join(', ') : (data.notProven?.body || '');
+      el('promptSectionNote').textContent = data.copy?.promptSectionNote || 'Links bleibt A. Rechts kannst du B-Varianten wählen.';
+      el('outputSectionNote').textContent = data.copy?.outputSectionNote || 'Die Ausgabe zeigt reale oder als Fixture markierte Provider-/Runner-Rückgaben.';
+      el('interpretationSectionNote').textContent = data.copy?.interpretationSectionNote || 'Diese Bewertung trennt Inhalt, Output-Vertrag und Entscheidungsrisiko.';
+      el('scoregrid').innerHTML = (data.scorecards || []).map((item) => '<div class="score"><span class="num">' + escapeHtml(item.value) + '</span><p>' + escapeHtml(item.label) + '</p></div>').join('');
+      el('sourceLinks').innerHTML = (data.sourceLinks || []).map((item) => '<a class="jump" href="' + escapeHtml(item.href) + '"><span class="material-symbols-outlined">' + escapeHtml(item.icon || 'article') + '</span>' + escapeHtml(item.label) + '</a>').join('');
+    }
+    function renderButtons() {
+      el('caseButtons').innerHTML = data.cases.map((item) => '<button type="button" aria-pressed="' + (item.id === state.caseId) + '" data-case="' + escapeHtml(item.id) + '">' + escapeHtml(item.companyName || item.id) + '</button>').join('');
+      const variants = byCase().results.filter((item) => item.variantId !== (data.leftVariantId || 'A_009_prompt'));
+      el('rightVariantButtons').innerHTML = variants.map((item) => '<button type="button" aria-pressed="' + (item.variantId === state.rightVariant) + '" data-variant="' + escapeHtml(item.variantId) + '">' + escapeHtml(item.variantShortLabel || item.variantId.replace(/_provider_fit_compact|_provider_fit/g, '')) + '</button>').join('');
+      el('caseButtons').querySelectorAll('button').forEach((button) => button.addEventListener('click', () => { state.caseId = button.dataset.case; render(); }));
+      el('rightVariantButtons').querySelectorAll('button').forEach((button) => button.addEventListener('click', () => { state.rightVariant = button.dataset.variant; render(); }));
+    }
+    function renderCompare() {
+      const left = result(data.leftVariantId || 'A_009_prompt');
+      const right = result(state.rightVariant) || byCase().results.find((item) => item.variantId !== (data.leftVariantId || 'A_009_prompt')) || left;
+      el('leftSystem').textContent = left?.prompt?.system || '';
+      el('leftUser').textContent = left?.prompt?.user || '';
+      el('rightSystem').textContent = right?.prompt?.system || '';
+      el('rightUser').textContent = right?.prompt?.user || '';
+      const leftSystemReadable = renderSystemPromptReview(el('leftSystemJsonReview'), left?.prompt?.system || '');
+      const rightSystemReadable = renderSystemPromptReview(el('rightSystemJsonReview'), right?.prompt?.system || '');
+      const leftUserReadable = renderUserPromptReview(el('leftUserJsonReview'), left?.prompt?.user || '');
+      const rightUserReadable = renderUserPromptReview(el('rightUserJsonReview'), right?.prompt?.user || '');
+      el('leftSystem').closest('.prompt-panel').dataset.readable = String(leftSystemReadable);
+      el('rightSystem').closest('.prompt-panel').dataset.readable = String(rightSystemReadable);
+      el('leftUser').closest('.prompt-panel').dataset.readable = String(leftUserReadable);
+      el('rightUser').closest('.prompt-panel').dataset.readable = String(rightUserReadable);
+      el('rightSystemTitle').textContent = (right?.variantId || 'B') + ' System Prompt';
+      el('rightUserTitle').textContent = (right?.variantId || 'B') + ' User Prompt';
+      el('rightOutputTitle').textContent = (right?.variantId || 'B') + ' Output';
+      el('leftOutput').textContent = outputText(left);
+      el('rightOutput').textContent = outputText(right);
+      el('leftOutputPanel').dataset.parsedOk = String(Boolean(left?.parsedOk && left?.metrics?.schema_ok));
+      el('rightOutputPanel').dataset.parsedOk = String(Boolean(right?.parsedOk && right?.metrics?.schema_ok));
+      renderJsonReview(el('leftJsonReview'), left);
+      renderJsonReview(el('rightJsonReview'), right);
+      renderTraceProof(el('leftTraceProof'), left);
+      renderTraceProof(el('rightTraceProof'), right);
+      renderBriefing(left, right);
+      el('leftMetrics').innerHTML = metricsHtml(left);
+      el('rightMetrics').innerHTML = metricsHtml(right);
+      statusChip(el('leftStatus'), left);
+      statusChip(el('rightStatus'), right);
+      const ok = Boolean(right?.parsedOk && right?.metrics?.schema_ok);
+      el('rightSystemChip').className = 'chip ' + (ok ? 'ok' : 'bad');
+      el('rightUserChip').className = 'chip ' + (ok ? 'ok' : 'bad');
+      el('rightSystemChip').textContent = right?.variantShortLabel || right?.variantId || 'B';
+      el('rightUserChip').textContent = right?.variantShortLabel || right?.variantId || 'B';
+    }
+    function renderInterpretation() {
+      const currentCase = byCase();
+      const left = result(data.leftVariantId || 'A_009_prompt');
+      const right = result(state.rightVariant) || left;
+      const notes = data.interpretationNotes?.[currentCase.id] || {};
+      const rightParsed = right?.parsedOutput?.product_world_context;
+      const rightNames = rightParsed?.related_offerings?.map((item) => item.observed_name).join(', ') || 'nicht parsebar';
+      const rightRefs = right?.parsedOk ? (right.metrics?.first_party_source_ref_count + '/' + right.metrics?.source_ref_count + ' First-Party-Refs') : 'keine validierbaren Source-Refs';
+      el('qualTitle').textContent = (currentCase.companyName || currentCase.id) + ': A gegen ' + (right?.variantId || 'B');
+      el('qualLede').textContent = notes.lede || ('A liefert ' + fmt((left?.responseText || '').length) + ' Zeichen Provider-Text mit ' + markerCount(left) + ' sichtbaren Citation-Markern. Die rechte Variante liefert ' + fmt((right?.responseText || '').length) + ' Zeichen, ' + markerCount(right) + ' sichtbare Citation-Marker und ' + (right?.parsedOk ? 'einen parsebaren Output.' : 'keinen parsebaren Output.'));
+      el('qualLeftTitle').textContent = notes.leftTitle || 'Warum A interessant, aber riskant ist';
+      el('qualLeftText').textContent = notes.a || '';
+      el('qualRightTitle').textContent = notes.rightTitle || ('Warum ' + (right?.variantId || 'B') + (right?.parsedOk ? ' gewinnt' : ' noch nicht reicht'));
+      el('qualRightText').textContent = notes.variants?.[right?.variantId] || '';
+      el('qualVerdict').textContent = notes.verdict || (right?.parsedOk ? 'Urteil: Die rechte Variante ist strukturell besser, muss aber fachlich geprüft bleiben.' : 'Urteil: Die rechte Variante reicht noch nicht für Promotion.');
+      el('qualContentTitle').textContent = notes.contentTitle || 'Inhaltliche Prüfpunkte';
+      el('qualContentList').innerHTML = (notes.content || []).concat(['Aktuell ausgewählte rechte Variante: ' + rightNames + '.', 'Validierbare Quellenlage der rechten Variante: ' + rightRefs + '.']).map((item, index) => '<li class="' + readableToneClass(index) + '">' + escapeHtml(item) + '</li>').join('');
+      el('qualRiskTitle').textContent = notes.riskTitle || 'Risiko';
+      el('qualRiskText').textContent = notes.risk || '';
+      el('qualNextTitle').textContent = notes.nextTitle || 'Nächster sinnvoller Schritt';
+      el('qualNextText').textContent = notes.next || '';
+      const pathItems = Array.isArray(data.iterationPath) ? data.iterationPath : [];
+      el('iterationPathCard').hidden = pathItems.length === 0;
+      el('iterationPath').innerHTML = pathItems.map((item, index) => {
+        const version = iterationVersionLabel(item);
+        return '<div class="iteration-item ' + readableToneClass(index) + '"><div class="iteration-item-head"><strong>' + escapeHtml(item.title || item.text || item.type || 'Feedback') + '</strong>' + (version ? '<span class="iteration-version">' + escapeHtml(version) + '</span>' : '') + '</div><div>' + escapeHtml(item.text || item.body || '') + '</div><div class="iteration-meta">' + escapeHtml([item.type, item.status, item.impact].filter(Boolean).join(' · ')) + '</div></div>';
+      }).join('');
+    }
+    function renderTable() {
+      const rows = data.cases.flatMap((item) => item.results.map((r) => ({ ...r, companyName: item.companyName || item.id })));
+      el('resultTable').innerHTML = '<thead><tr><th>Case</th><th>Variante</th><th>Parse</th><th>Schema</th><th>Related</th><th>First-party refs</th><th>Citation marker</th><th>Dauer</th></tr></thead><tbody>' + rows.map((r) => '<tr><td>' + escapeHtml(r.companyName) + '</td><td>' + (r.artifactBase ? '<a href="' + escapeHtml(r.artifactBase) + '__04_response-text.txt">' + escapeHtml(r.variantId) + '</a>' : escapeHtml(r.variantId)) + '</td><td>' + (r.parsedOk ? '<span class="chip ok">ja</span>' : '<span class="chip bad">nein</span>') + '</td><td>' + (r.metrics?.schema_ok ? '<span class="chip ok">ok</span>' : '<span class="chip bad">fail</span>') + '</td><td class="num">' + fmt(r.metrics?.related_count) + '</td><td class="num">' + fmt(r.metrics?.first_party_source_ref_count) + '</td><td class="num">' + fmt(r.metrics?.citation_marker_count) + '</td><td class="num">' + ms(r.durationMs) + '</td></tr>').join('') + '</tbody>';
+    }
+    function updateThemeButton() {
+      const dark = document.documentElement.dataset.theme === 'dark';
+      const button = el('themeToggle');
+      button.setAttribute('aria-pressed', String(dark));
+      button.innerHTML = '<span class="material-symbols-outlined">' + (dark ? 'light_mode' : 'dark_mode') + '</span><span class="sr-only">' + (dark ? 'Hellmodus' : 'Dunkelmodus') + '</span>';
+    }
+    function updateCollapseButtons(group) {
+      const collapsed = document.documentElement.dataset[group + 'Collapsed'] === 'true';
+      document.querySelectorAll('[data-collapse-group="' + group + '"]').forEach((button) => {
+        const base = collapseBaseLabels[group] || 'Bereich';
+        const label = base + (collapsed ? ' ausklappen' : ' einklappen');
+        button.setAttribute('aria-pressed', String(collapsed));
+        button.setAttribute('aria-label', label);
+        button.setAttribute('title', label);
+        button.innerHTML = '<span class="material-symbols-outlined">' + (collapsed ? 'expand_more' : 'expand_less') + '</span>';
+      });
+    }
+    function setupTheme() {
+      updateThemeButton();
+      el('themeToggle').addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem(themeKey, next);
+        updateThemeButton();
+      });
+    }
+    function setupPanelCollapse() {
+      collapsibleGroups.forEach(updateCollapseButtons);
+      document.querySelectorAll('[data-collapse-group]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const group = button.dataset.collapseGroup;
+          const next = document.documentElement.dataset[group + 'Collapsed'] === 'true' ? 'false' : 'true';
+          document.documentElement.dataset[group + 'Collapsed'] = next;
+          localStorage.setItem(collapseKeyPrefix + group, next);
+          updateCollapseButtons(group);
+        });
+      });
+    }
+    function setupActiveNav() {
+      const targets = Array.from(document.querySelectorAll('[data-nav-target]')).map((node) => ({
+        node,
+        id: node.dataset.navTarget,
+        section: document.getElementById(node.dataset.navTarget),
+      })).filter((item) => item.section);
+      let frame = 0;
+      const update = () => {
+        let active = targets[0]?.id;
+        const offset = 110;
+        targets.forEach((item) => {
+          if (item.section.getBoundingClientRect().top <= offset) active = item.id;
+        });
+        targets.forEach((item) => item.node.classList.toggle('is-active', item.id === active));
+      };
+      const onScroll = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(update);
+      };
+      update();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    }
+    function setupRadarTooltips() {
+      const tooltip = document.getElementById('radarTooltip');
+      if (!tooltip) return;
+      const titleNode = tooltip.querySelector('strong');
+      const textNode = tooltip.querySelector('span');
+      function position(event) {
+        const x = Math.min(event.clientX + 14, window.innerWidth - tooltip.offsetWidth - 12);
+        const y = Math.min(event.clientY + 14, window.innerHeight - tooltip.offsetHeight - 12);
+        tooltip.style.left = Math.max(12, x) + 'px';
+        tooltip.style.top = Math.max(12, y) + 'px';
+      }
+      function show(target, event) {
+        titleNode.textContent = target.dataset.tooltipTitle || '';
+        textNode.textContent = target.dataset.tooltip || '';
+        tooltip.hidden = false;
+        if (event && 'clientX' in event) position(event);
+        else {
+          const rect = target.getBoundingClientRect();
+          tooltip.style.left = Math.min(rect.left + 14, window.innerWidth - 320) + 'px';
+          tooltip.style.top = (rect.bottom + 10) + 'px';
+        }
+      }
+      document.addEventListener('mouseover', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('.radar-hover') : null;
+        if (target) show(target, event);
+      });
+      document.addEventListener('mousemove', (event) => {
+        if (!tooltip.hidden) position(event);
+      });
+      document.addEventListener('mouseout', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('.radar-hover') : null;
+        if (target) tooltip.hidden = true;
+      });
+      document.addEventListener('focusin', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('.radar-hover') : null;
+        if (target) show(target, event);
+      });
+      document.addEventListener('focusout', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('.radar-hover') : null;
+        if (target) tooltip.hidden = true;
+      });
+    }
+    function render() {
+      renderShell();
+      renderButtons();
+      renderCompare();
+      renderInterpretation();
+      renderTable();
+    }
+    setupTheme();
+    setupPanelCollapse();
+    setupActiveNav();
+    setupRadarTooltips();
+    setupJsonTreeControls();
+    render();
+  </script>
+</body>
+</html>

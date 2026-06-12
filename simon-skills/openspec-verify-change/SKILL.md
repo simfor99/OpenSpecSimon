@@ -2,7 +2,7 @@
 name: openspec-verify-change
 version: "1.1.12-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.6"
+bundle_version: "2026.06.12.1"
 description: Verify implementation matches change artifacts. Use when the user wants to validate that implementation is complete, correct, and coherent before archiving.
 license: MIT
 compatibility: Requires openspec CLI.

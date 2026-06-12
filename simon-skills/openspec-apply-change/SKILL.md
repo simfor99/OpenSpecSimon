@@ -2,7 +2,7 @@
 name: openspec-apply-change
 version: "1.2.4-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.6"
+bundle_version: "2026.06.12.1"
 description: "WHAT: Executes and builds tasks from an OpenSpec change. WHEN: Use when the user wants to start implementing, continue implementation, or work through tasks."
 license: MIT
 compatibility: Requires openspec CLI.

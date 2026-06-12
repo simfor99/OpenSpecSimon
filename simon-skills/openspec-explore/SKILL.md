@@ -2,7 +2,7 @@
 name: openspec-explore
 version: "1.1.8-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.6"
+bundle_version: "2026.06.12.1"
 description: Enter explore mode - a thinking partner for exploring ideas, investigating problems, and clarifying requirements. Use when the user wants to think through something before or during a change.
 argument-hint: "[idea, problem, OpenSpec change name, or empty for open exploration]"
 disable-model-invocation: false
@@ -20,9 +20,11 @@ Enter explore mode. Think deeply. Visualize freely. Follow the conversation wher
 
 **This is a stance, not a workflow.** There are no fixed steps, no required sequence, no mandatory outputs. You're a thinking partner helping the user explore.
 
-**Current Sanctum execution chain:** exploration may feed `$openspec-map` for
-complex multi-component source mapping, or `$openspec-propose` directly for
-small concrete changes;
+**Current Sanctum execution chain:** exploration may feed
+`$openspec-prompt-optimizer` when Foundation-/Pre-Spec-Prompt-Verträge need
+real provider evidence before Map/Propose, `$openspec-map` for complex
+multi-component source mapping, or `$openspec-propose` directly for small
+concrete changes;
 `$goal-brief` creates the OpenSpec-local execution control file;
 `$openspec-apply-change` implements tasks; `$openspec-verify-change` verifies
 tasks, specs, design and Goal Evidence before archive; `$ceo-review` checks

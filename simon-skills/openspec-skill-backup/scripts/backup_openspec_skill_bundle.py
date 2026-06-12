@@ -24,6 +24,7 @@ SKILL_NAMES = [
     "openspec-archive-change",
     "openspec-explore",
     "openspec-map",
+    "openspec-prompt-optimizer",
     "openspec-propose",
     "openspec-review",
     "openspec-verify-change",
@@ -46,8 +47,12 @@ SHARED_FILES = [
     "references/openspec-subagent-policy.md",
     "references/openspec-ziel-weg-fitness.md",
     "scripts/openspec_meta_lint.py",
+    "scripts/render_prompt_ab_review_surface.py",
     "scripts/validate_foundation_brief.py",
     "templates/llm-output-contract-inventory-template.md",
+    "templates/openspec-prompt-improver/README.md",
+    "templates/openspec-prompt-improver/assets/data.template.json",
+    "templates/openspec-prompt-improver/index.template.html",
     "templates/openspec-foundation-brief-template.md",
 ]
 

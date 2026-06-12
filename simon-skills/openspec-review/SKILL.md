@@ -2,7 +2,7 @@
 name: openspec-review
 version: "1.0.13-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.6"
+bundle_version: "2026.06.12.1"
 description: Use when Simon wants a paranoid Team-Red review of an OpenSpec change or a CTO Review foundation memo; auto-detects CTO Review files by `_cto-review_` in the filename and challenges assumptions, evidence, decisions, specs, tests, implementation sense, and handoff claims before OpenSpec relies on them.
 argument-hint: "[change name, OpenSpec path, CTO Review filename/path, or empty]"
 disable-model-invocation: false

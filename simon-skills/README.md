@@ -11,7 +11,7 @@ Canonical local source at snapshot time:
 Bundle version:
 
 ```text
-2026.06.11.6
+2026.06.12.1
 ```
 
 Included skills:
@@ -20,6 +20,7 @@ Included skills:
 - `openspec-archive-change`
 - `openspec-explore`
 - `openspec-map`
+- `openspec-prompt-optimizer`
 - `openspec-propose`
 - `openspec-review`
 - `openspec-verify-change`

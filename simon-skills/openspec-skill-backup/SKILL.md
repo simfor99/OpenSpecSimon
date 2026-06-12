@@ -1,8 +1,8 @@
 ---
 name: openspec-skill-backup
-version: "1.0.2-sanctum"
+version: "1.0.3-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.11.6"
+bundle_version: "2026.06.12.1"
 description: "WHAT: Backs up Simon's Codex OpenSpec skill bundle to the OpenSpecSimon fork. WHEN: Use when OpenSpec skills changed and Simon wants preview, snapshot, commit, or push protection."
 argument-hint: "preview | apply | commit | push | status [optional bundle version]"
 disable-model-invocation: false
@@ -111,8 +111,10 @@ Also use it after changing any of:
 ## Rules
 
 - Canonical source is Codex: `~/.codex/skills`.
-- Back up the seven active OpenSpec skills plus this backup skill.
-- Include only the OpenSpec-specific shared files listed by the script.
+- Back up the active OpenSpec skills plus this backup skill, including the
+  `openspec-prompt-optimizer`.
+- Include only the OpenSpec-specific shared files listed by the script,
+  including the `openspec-prompt-improver` review surface and renderer.
 - Exclude `__pycache__`, `.skill-forger-state`, transient caches and backups.
 - Increment `bundle_version` on every applied snapshot.
 - Preview must distinguish "next possible version" from "backup required".
