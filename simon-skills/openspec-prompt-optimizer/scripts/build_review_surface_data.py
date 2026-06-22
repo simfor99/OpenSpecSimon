@@ -6,12 +6,21 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 
 def load_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+EXPECTED_ARTIFACT_LOAD_ERRORS = (
+    FileNotFoundError,
+    PermissionError,
+    UnicodeDecodeError,
+    json.JSONDecodeError,
+)
 
 
 def sha256_file(path: Path) -> str | None:
@@ -106,8 +115,8 @@ def provider_metadata(item: dict[str, object], summary_path: Path | None) -> dic
                 usage = raw.get("usage")
                 if token_usage is None and isinstance(usage, dict):
                     token_usage = usage
-        except Exception:
-            pass
+        except EXPECTED_ARTIFACT_LOAD_ERRORS as exc:
+            print(f"Warning: could not load provider metadata from {raw_path}: {exc}", file=sys.stderr)
 
     request = item.get("request_without_secret") or item.get("requestWithoutSecret")
     if not isinstance(request, dict):
@@ -117,7 +126,8 @@ def provider_metadata(item: dict[str, object], summary_path: Path | None) -> dic
             try:
                 loaded = load_json(request_path)
                 request = loaded if isinstance(loaded, dict) else {}
-            except Exception:
+            except EXPECTED_ARTIFACT_LOAD_ERRORS as exc:
+                print(f"Warning: could not load request metadata from {request_path}: {exc}", file=sys.stderr)
                 request = {}
 
     return {

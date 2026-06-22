@@ -25,7 +25,7 @@ def path_to_file_uri(path: Path) -> str:
     resolved = path.expanduser().resolve()
     if is_wsl():
         distro = os.environ.get("WSL_DISTRO_NAME") or "Ubuntu"
-        quoted = quote(str(resolved), safe="/._-~:")
+        quoted = quote(str(resolved), safe="/._-~")
         return f"file://///wsl.localhost/{quote(distro, safe='')}{quoted}"
     return resolved.as_uri()
 

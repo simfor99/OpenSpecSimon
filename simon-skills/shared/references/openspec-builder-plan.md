@@ -95,7 +95,7 @@ Each executable task should include:
 - Intent-Driven Testschrift fields when the change is broad, user-visible,
   external-state, prompt/LLM-output, trace, API-route, schema, migration,
   runtime-handoff or otherwise evidence-sensitive. Use
-  `/home/simon/.codex/skills/shared/references/openspec-intent-driven-testschrift.md`.
+  `skills/shared/references/openspec-intent-driven-testschrift.md`.
 - minimal implementation target;
 - passing verification command;
 - ledger row or evidence gate that proves the work is done.
@@ -117,7 +117,7 @@ Each executable task should include:
 - for workflow, dataflow, trace, status, persistence, browser or API evidence,
   the claim class being closed, the subject ID, the evidence class and adjacent
   claims that are explicitly not proven. Use
-  `/home/simon/.codex/skills/shared/references/openspec-evidence-claim-integrity.md`.
+  `skills/shared/references/openspec-evidence-claim-integrity.md`.
 - for structured LLM/Search-LLM/Perplexity/agent/provider output, the
   `llm-output-contract-inventory.md` row or equivalent row-level fields, User
   Prompt output contract source, route class, provider/model source,

@@ -2,7 +2,7 @@
 name: openspec-explore
 version: "1.1.9-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.12.2"
+bundle_version: "2026.06.22.1"
 description: |
   WHAT: Analyze and explore OpenSpec ideas, risks, assumptions, Zielbild needs, and proposal readiness as a thinking partner.
   WHEN: Use when the user wants to think through something before or during a change.
