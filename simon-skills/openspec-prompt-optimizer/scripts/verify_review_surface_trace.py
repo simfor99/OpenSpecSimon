@@ -55,6 +55,16 @@ def split_rendered_prompt(text: str) -> dict[str, str]:
     return {"system": system.rstrip(), "user": user.rstrip()}
 
 
+def summary_prompt_parts(item: dict[str, Any]) -> dict[str, str] | None:
+    prompt = item.get("prompt")
+    if isinstance(prompt, dict):
+        system = prompt.get("system")
+        user = prompt.get("user")
+        if isinstance(system, str) and isinstance(user, str):
+            return {"system": system, "user": user}
+    return None
+
+
 def canonical(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
@@ -107,9 +117,15 @@ def verify(results_path: Path, data_path: Path | None) -> dict[str, Any]:
         rendered_prompt = paths["rendered_prompt"].read_text(encoding="utf-8")
         response_text = paths["response_text"].read_text(encoding="utf-8")
         split_prompt = split_rendered_prompt(rendered_prompt)
+        summary_prompt = summary_prompt_parts(item)
 
         if request.get("input") != rendered_prompt:
             add_issue(issues, case_id, variant_id, "request.input", "request input does not match rendered prompt artifact")
+        if summary_prompt:
+            if summary_prompt["system"] != split_prompt["system"]:
+                add_issue(issues, case_id, variant_id, "summary.prompt.system", "summary system prompt differs from rendered prompt artifact")
+            if summary_prompt["user"] != split_prompt["user"]:
+                add_issue(issues, case_id, variant_id, "summary.prompt.user", "summary user prompt differs from rendered prompt artifact")
         raw_request = raw_response.get("request") if isinstance(raw_response, dict) else None
         if isinstance(raw_request, dict) and canonical(raw_request) != canonical(request):
             add_issue(issues, case_id, variant_id, "raw_response.request", "raw response embedded request differs from request artifact")

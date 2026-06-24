@@ -2,8 +2,8 @@
 name: openspec-verify-change
 version: "1.1.12-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: Verify implementation matches change artifacts. Use when the user wants to validate that implementation is complete, correct, and coherent before archiving.
+bundle_version: "2026.06.24.1"
+description: "Use to verify an implementation matches OpenSpec change artifacts before archiving."
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:
@@ -144,6 +144,16 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
    prompt-contracts, tests/evidence packages, non-goals, accepted overrides or
    accepted deferrals.
 
+   If loaded artifacts or implementation evidence mention expandable scope,
+   new workflow, process, stage, pipeline, prompt chain, agent, abstraction,
+   optimization, acceleration, parallelization, automation, reusable machinery,
+   cut candidates, non-goals or deferrals, read
+   `/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`
+   and verify that the implementation preserved the accepted requirement,
+   cuts, non-goals and deferrals. Add an issue when overbuilt implementation,
+   extra automation or unapproved process machinery changes carrying cost,
+   risk, maintainability or archive readiness.
+
    Scan loaded artifacts for LLM, model, agent, provider, prompt, Prompt
    Contract, prompt operation registry, model routing, trace viewer, raw
    response, or effective request claims. If present, read
@@ -204,7 +214,8 @@ Verify that an implementation matches the change artifacts (specs, tasks, design
    - **Coherence**: Track design adherence and pattern consistency
    - **Ziel-Weg Fitness**: Track whether the implemented path stayed aligned
      with the minimum sufficient path, alternatives, A/B route and quality
-     guardrails recorded in artifacts
+     guardrails recorded in artifacts, including the OpenSpec Elons Principles
+     requirement/delete/simplify/speed/automation sequence when triggered
    - **Goal Evidence**: Track Goal Brief stop condition, required evidence,
      LLM/dataflow trace contract, testing contract, browser runtime proof and
      completion review readiness

@@ -12,6 +12,12 @@ Core question:
 What do we want to achieve, and is this the best path to get there?
 ```
 
+For scope that involves new processes, pipelines, agents, optimization,
+acceleration or automation, also read
+`/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`.
+That guard makes the order explicit: requirement -> delete -> simplify ->
+accelerate -> automate.
+
 ## When it applies
 
 Always run a compact check before proposal handoff. Expand it when the change:
@@ -36,6 +42,12 @@ ziel_weg_fitness:
   minimum_sufficient_path: ""
   cut_candidates:
     - ""
+  order_of_operations:
+    requirement_checked: true|false
+    deleted_or_avoided:
+      - ""
+    simplified_before_speed_or_automation: true|false|not_applicable
+    automation_stance: not_needed|deferred|planned_with_reason
   quality_must_not_drop:
     - ""
   plausible_alternatives:
@@ -121,6 +133,8 @@ Review.
 
 - Clarification Ledger asks: Which assumptions must not be hidden?
 - Ziel-Weg-Fitness asks: Is this solution path actually the right way?
+- Elons Principles asks: Did we check the requirement, delete, and simplify
+  before accelerating or automating?
 - Nordstern-to-Task Bridge asks: Did the chosen path become clear tasks and
   evidence?
 - OpenSpec Map asks: Which sources and target paths control correctness?

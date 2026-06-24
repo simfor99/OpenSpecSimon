@@ -38,6 +38,7 @@ SHARED_FILES = [
     "references/openspec-external-side-effect-reality.md",
     "references/openspec-foundation-coverage-matrix.md",
     "references/openspec-foundation-grilling.md",
+    "references/openspec-elons-principles-order-of-operations.md",
     "references/openspec-implementation-ledger.md",
     "references/openspec-intent-driven-testschrift.md",
     "references/openspec-llm-output-contract-testing.md",

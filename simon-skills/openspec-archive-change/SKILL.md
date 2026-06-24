@@ -2,8 +2,8 @@
 name: openspec-archive-change
 version: "1.1.3-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: "WHAT: Archives a completed OpenSpec change after readiness checks. WHEN: Use when the user wants to finalize and archive a change after implementation is complete."
+bundle_version: "2026.06.24.1"
+description: "Use to finalize and archive a completed OpenSpec change after readiness checks."
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:

@@ -2,8 +2,8 @@
 name: openspec-propose
 version: "1.3.15-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: Propose a new change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation.
+bundle_version: "2026.06.24.1"
+description: "Use to turn a requested change into complete OpenSpec proposal artifacts: design, spec deltas, and implementation tasks."
 argument-hint: "[change-name or description] [optional context paths, CTO review, map, or ledger]"
 disable-model-invocation: false
 license: MIT
@@ -118,6 +118,21 @@ validator runs, and the final handoff.
    ambiguity is low-risk and does not control acceptance, carry it visibly in
    `proposal.md`, `design.md`, specs, `tasks.md`, `goal.md` or
    `quality-gates.md` rather than blocking.
+
+1.37. **Elons Principles order-of-operations gate**
+
+   When the change includes expandable scope, a new workflow, process, stage,
+   pipeline, prompt chain, agent, abstraction, optimization, acceleration,
+   parallelization, automation, or reusable machinery, read and apply
+   `/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`.
+
+   Use it before artifact generation as an artifact-subtraction guard:
+   validate the requirement, name cut candidates, delete or defer unneeded
+   tasks/process steps/automation, simplify the kept path before speed, and
+   plan automation only when the remaining process is understood and repeatable.
+   Preserve traceability: deliberate cuts belong in proposal scope, non-goals,
+   design rationale, tasks, quality gates, builder-plan rows, or accepted
+   deferrals; silent drops are not allowed.
 
 1.4. **Ziel-Weg-Fitness and Nordstern bridge gate**
 

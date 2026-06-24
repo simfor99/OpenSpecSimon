@@ -1,59 +1,59 @@
 {
   "$schema": "sanctum-openspec-skill-bundle-v1",
   "name": "openspec-simon",
-  "bundle_version": "2026.06.22.1",
+  "bundle_version": "2026.06.24.1",
   "canonical_source": "codex",
   "canonical_root": "/home/simon/.codex/skills",
   "destination_repo": "/home/simon/projects/OpenSpecSimon",
   "destination_path": "/home/simon/projects/OpenSpecSimon/simon-skills",
   "created_for": "OpenSpecSimon fork backup and drift detection",
-  "updated_at": "2026-06-22T11:04:32",
+  "updated_at": "2026-06-24T13:10:05",
   "self_referential": true,
   "skills": {
     "openspec-apply-change": {
       "version": "1.2.4-sanctum",
       "path": "openspec-apply-change/SKILL.md",
-      "sha256": "b7083b33bbf2ea16c810f38c2c0a5a5c4d6e2a9666a45936eb00313ac7a41bc5"
+      "sha256": "599ed6e7b844e296af396ccc68163524374a6ebea8dc1752a907eace7b0fbd22"
     },
     "openspec-archive-change": {
       "version": "1.1.3-sanctum",
       "path": "openspec-archive-change/SKILL.md",
-      "sha256": "321f003e7cb6bc51997da50042aaa23f0c354b066cdd241fb800578562226aef"
+      "sha256": "72f460af0df9b9336181bf4b6307997e3eb0d8807c09e655c9c2cf51eeea3a3b"
     },
     "openspec-explore": {
       "version": "1.1.9-sanctum",
       "path": "openspec-explore/SKILL.md",
-      "sha256": "9b37b5d38e99788bebfff81c77027cd4bb06ff0ac15d814a7e79d5c8f4a722ee"
+      "sha256": "0ec515f8a29988cd72c339871c3b0df21cd4747430786f922e340f079dedb744"
     },
     "openspec-map": {
       "version": "1.1.10-sanctum",
       "path": "openspec-map/SKILL.md",
-      "sha256": "ffb3d472285f6425307e7c2b298c248dc4deb61afc9fa367526a6904c76a20f6"
+      "sha256": "4b0fb16952de18c21d15bb1551dec819a304042fa038f7582bab3061f47d22d8"
     },
     "openspec-prompt-optimizer": {
       "version": "1.0.0-sanctum",
       "path": "openspec-prompt-optimizer/SKILL.md",
-      "sha256": "c95bc6f5e54799e9d743bdf8eb4502027dc84f0e5230b70767a07a89c4e2b431"
+      "sha256": "922ceade6d6bcbff11e2e1f14d8db8747aa4a990fe771b90792750a6a5622cf9"
     },
     "openspec-propose": {
       "version": "1.3.15-sanctum",
       "path": "openspec-propose/SKILL.md",
-      "sha256": "e679e1c40938c67928e42aebbd9b05642d9b560045c7726a27100640195fe590"
+      "sha256": "02e69a47568395e0171bcfa4f44929b005b638145cd71bca75d79e43930b8e34"
     },
     "openspec-review": {
       "version": "1.0.13-sanctum",
       "path": "openspec-review/SKILL.md",
-      "sha256": "78222949423dec43aad45d21887a3db5d398b5aab48d5499d9998965be0540d4"
+      "sha256": "3af9ce54389d8c024e9a807d46c550f9d4a778256e73d45fd711a586831d0e34"
     },
     "openspec-verify-change": {
       "version": "1.1.12-sanctum",
       "path": "openspec-verify-change/SKILL.md",
-      "sha256": "c9a3900d10da14f4db887073f59a1275909522815fd6a817de5fe7b1812bb010"
+      "sha256": "eda1f399b2937a8834601f0a36722bd4903a02841de81cd586a67fa12461e8cc"
     },
     "openspec-skill-backup": {
       "version": "1.0.3-sanctum",
       "path": "openspec-skill-backup/SKILL.md",
-      "sha256": "d5d62db6ebd86950ca8a619bd3d08fc5abb0cdd2f459eef3bcea39a0eb7905df"
+      "sha256": "0dcb4fdad8b453a023355fab36750da9656820f61676f736b4d61d29284eef94"
     }
   },
   "shared_dependencies": {
@@ -63,6 +63,7 @@
     "references/openspec-external-side-effect-reality.md": "f928967fddc3d7863fd61809903b0650754587ab3e30e67a16c7fda8541722be",
     "references/openspec-foundation-coverage-matrix.md": "cffbaf0ded4c9f5db2f10f4181946030547fb7ef658352a8f7dd751531089ab9",
     "references/openspec-foundation-grilling.md": "3f778122e698cc0fc3aed0bbede1ca14ba544f24355956ff1643c637aad90d72",
+    "references/openspec-elons-principles-order-of-operations.md": "d65b0064a85119bc44a193744188387e20bad98e389d682a1aa76764058b0972",
     "references/openspec-implementation-ledger.md": "a47c1acfb7fe6fad7846cfac2a30e61768aee0c9e2cb11865fbbf35cfa201d6e",
     "references/openspec-intent-driven-testschrift.md": "c6138bd8a6f76e05a5578ab534a8fad5356a3e73740e81e0679a49587addd553",
     "references/openspec-llm-output-contract-testing.md": "3d4529ed6bb84cd85474b2c2c002cde759b23c63ffdcf99323407ff9f4322527",
@@ -70,14 +71,14 @@
     "references/openspec-prompt-request-parity.md": "97e73eb35fb169c009ba2d2501c0e5ed11701b24ad1a310ac1742851ee624e23",
     "references/openspec-quality-gates.md": "cfd4067758f4acb50803805411e37e7e3382e4207b7ec02b43961763c9736184",
     "references/openspec-subagent-policy.md": "689da87ef12401188c4d834f4e970ef4d673c7881aa76196e506be9778a1139a",
-    "references/openspec-ziel-weg-fitness.md": "a89b3fa86801ec718622f5e2a799e3681c84268ac5bcfe401eb9796846ee59b7",
+    "references/openspec-ziel-weg-fitness.md": "8d740ff14548158d072003efbfd97a0bcdc9c281a3a73aebd35bd415c93a695d",
     "scripts/openspec_meta_lint.py": "7739959712e90f8ce9597a9000a36981a1340c954b8782a15a2e14c6d17a5319",
     "scripts/render_prompt_ab_review_surface.py": "94580515090acf3724c7fc810b3bfd73bceafa2517f8baa8ba8fa40946414148",
     "scripts/validate_foundation_brief.py": "df45e2929afc2d62a72479b5ab4762279ff96cd9160e5a98ba9cbb4fd484d3c4",
     "templates/llm-output-contract-inventory-template.md": "61e38d080dd5e18b7d27b519a3ef94aa388e8181b8e83cc2342811f745133ce5",
-    "templates/openspec-prompt-improver/README.md": "5669015f1987250d65895da32a38805f810a0b43af92dac9b7e2a09429d6832b",
-    "templates/openspec-prompt-improver/assets/data.template.json": "84b7b0fc483c97d9fd884b322bd43059ca466d31addc3d7363774209ce1e1604",
-    "templates/openspec-prompt-improver/index.template.html": "e933ff8aca2e31f1f8e7e363fcfd50b3679e9b43ee23004270dda2b48c3c05e9",
+    "templates/openspec-prompt-improver/README.md": "1cb28d3082a6bbff6a5d9c921a94fd63879ee6a3a844fe26c547f67ae43276ad",
+    "templates/openspec-prompt-improver/assets/data.template.json": "279d04b717cf5d6fa42f30f5d03fb7a589b60a530fdd76e2f32f2f505bea9b96",
+    "templates/openspec-prompt-improver/index.template.html": "8c51f1e59146a50723297d81cd72b57668de0df328116657fa541958425e587e",
     "templates/openspec-foundation-brief-template.md": "6c89bf6393dbde23f8e9b7a92d28bdf73fca4ab0d9ccf22868e4c9a642efb68d"
   }
 }

@@ -2,8 +2,8 @@
 name: openspec-review
 version: "1.0.13-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: Use when Simon wants a paranoid Team-Red review of an OpenSpec change or a CTO Review foundation memo; auto-detects CTO Review files by `_cto-review_` in the filename and challenges assumptions, evidence, decisions, specs, tests, implementation sense, and handoff claims before OpenSpec relies on them.
+bundle_version: "2026.06.24.1"
+description: "Use for paranoid Team-Red review of OpenSpec changes, CTO Review memos, target contracts, assumptions, evidence, specs, tests, or handoffs."
 argument-hint: "[change name, OpenSpec path, CTO Review filename/path, or empty]"
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash, Glob, Grep, Task
@@ -47,6 +47,15 @@ The Meta-Contract Linter is a smoke detector, not the reviewer. Use it as an
 additional pre-scan for `quality-gates.md`,
 `implementation-ledger.md` and `builder-plan.md`; never treat a green linter
 run as proof that gates are fachlich correct, complete or sufficient.
+
+When the target includes expandable scope, new workflows, processes, stages,
+pipelines, prompt chains, agents, abstraction, optimization, acceleration,
+parallelization, automation, reusable machinery, cut candidates, non-goals or
+deferrals, read
+`/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`.
+Use it as a Team-Red lens: challenge whether the OpenSpec contract
+professionalized the wrong thing, overbuilt the path, or automated a brittle
+workaround before earlier requirement/delete/simplify checks were satisfied.
 
 ## When to Use
 

@@ -1,11 +1,11 @@
 # OpenSpec Prompt Improver Review Surface
 
-Diese Vorlage erzeugt eine lesbare HTML-Review-Oberfläche für Prompt- und Provider-A/B-Tests. Sie ist für zwei Skill-Flüsse gedacht:
+Diese Vorlage erzeugt eine lesbare statische HTML-Review-Oberfläche für Prompt- und Provider-A/B-Tests. Sie ist für zwei Skill-Flüsse gedacht:
 
 - `ab-test-lab`: als `html/index.html` im Evidence-Paket.
 - `prompt-improver` und `openspec-prompt-optimizer`: als HITL-Entscheidungsoberfläche nach einem Prompt-A/B- oder Sanity-Test.
 
-Markdown, JSON, Run-Artefakte und Trace-Dateien bleiben kanonisch. Die HTML ist nur die Oberfläche, in der Simon System Prompt, User Prompt, Provider-Rückgabe, Metriken und qualitative Bewertung nebeneinander entscheiden kann.
+Markdown, JSON, Run-Artefakte und Trace-Dateien bleiben kanonisch. Für Sanctum/OpenSpec ist `html/assets/data.json` der gemeinsame UI-Datenvertrag und die React-Route `/app/review/prompt-ab?path=...` die kanonische interaktive Review-Oberfläche. Diese statische HTML ist nur Export, Archiv-Snapshot oder Offline-Fallback. Dauerhafte Verbesserungen an Layout, Farben, Navigation, Collapse-Logik, Metriken oder Interpretation müssen zuerst in die React-Route und dürfen erst danach hier nachgezogen werden.
 
 ## Dateien
 
@@ -34,10 +34,17 @@ __PROMPT_AB_REVIEW_DATA_JSON__
 - `parsedOutput`: parsebarer Output, wenn vorhanden.
 - `providerRoute`, `model`, `durationMs`, `tokenUsage`: Provider-/Modell- und Laufzeitkontext, sofern verfügbar.
 - `recommendation`: klare HITL-Empfehlung mit nächstem Schritt; nicht als Promotion-Entscheidung missverstehen.
+- `goalProgress`: Ziel, Fortschritt, offener Abstand und nächster sinnvoller Schritt.
+- `overallAnalysis`: Gesamtbefund über alle Cases; `assistant_review`, nicht Provider-Output.
+- `decisionScorecard`: kompakte Ampel aus Primary, Guardrails, Monitoring, Evidence und HITL-Status.
+- `assistant_recommendation`: neutrale Empfehlung. Darf auch Baseline behalten, alle Varianten ablehnen oder `inconclusive` melden.
 - `outputTreeDefaultExpanded`, `outputTreeDefaultDepth`, `outputTreeMaxInitialArrayItems`: Standardverhalten des JSON-Baums.
 - `jsonFieldRolePatterns`: optionale, generische Rollen-Zuordnung für beliebige JSONs; keine fallbezogenen Firmennamen oder URLs.
 - `assistantEvaluation`: vereinbarte Standard- und Rundenfokus-Achsen für Radar/Spinnennetz; das ist `assistant_review`, keine Provider-Metrik.
 - `assistantEvaluation.standardAxes[]` und `assistantEvaluation.contextAxes[]` sollten `description` enthalten. Diese 1–2 Sätze werden als Hover-Erklärung im Radar und in der Legende angezeigt.
+- `metricMatrix`: typed Vergleichsledger für Primary-, Guardrail-, Monitoring- und Assistant-Review-Metriken.
+- `decisionMetrics`: renderfertiges Bundle für Spinnennetz, Metrik-Karten, Detailtexte, Guardrails und Monitoring. Es sollte vom Builder aus `metricMatrix`, Provider-Metriken und Trace-Artefakten abgeleitet werden; manuelle Texte sind nur Overrides.
+- `traceIntegrity`, `hitlDecision`, `preflightChecks`: Evidence-Status, menschliche Entscheidung und deterministische Vorprüfung. Fehlende Belege werden sichtbar markiert, nicht simuliert.
 - `iterationPath`: strukturierte HITL-Feedbackspur (`must_survive`, `must_reject`, `evaluation_focus`, `investigation_question`).
 - `interpretationNotes`: qualitative Entscheidung anhand konkreter Inhalte, bevorzugt pro Case (`interpretationNotes[caseId]`) und pro rechter Variante (`variants[variantId]`) befüllt.
 
@@ -51,11 +58,13 @@ python ~/.codex/skills/shared/scripts/render_prompt_ab_review_surface.py \
 
 `ab-test-lab` nutzt diese Vorlage beim Scaffolding mit `--html`. Für echte Runs muss `html/assets/data.json` anschließend mit den tatsächlichen Prompt-, Provider- und Bewertungsdaten gefüllt und erneut gerendert werden.
 
+Für Sanctum/OpenSpec gilt: Erst `html/assets/data.json` über die React-Route `/app/review/prompt-ab?path=...` prüfen. Statisches HTML nur rendern, wenn ein portabler Snapshot gebraucht wird oder die React-Route nicht verfügbar ist.
+
 ## Design-Regeln
 
 - GTM-Audit Design System v3 Tokens verwenden.
 - Light/Dark Mode erhalten.
-- System Prompt und User Prompt werden standardmäßig als Lesefassung gerendert; der kanonische Rohtext bleibt in `data.json` und den Run-Artefakten.
+- System Prompt und User Prompt zeigen standardmäßig den kanonischen Rohtext, der an das LLM übergeben wurde; über das Subject-Icon kann pro Panel optional eine abgeleitete Lesefassung angezeigt werden.
 - User Prompts mit eingebetteten JSON-Blöcken zeigen Rollen-Legende, Pastell-Segmente und semantisch gefärbte JSON-Keys.
 - Parsebare Provider-Outputs zeigen standardmäßig den vollständig aufgeklappten JSON-Baum.
 - Header, System Prompt, User Prompt, Provider-Output und Interpretation haben synchronisierte Einklapp-Buttons in der Schwebekopfzeile; System/User/Output klappen links und rechts immer gemeinsam.

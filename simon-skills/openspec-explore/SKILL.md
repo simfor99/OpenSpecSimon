@@ -2,10 +2,8 @@
 name: openspec-explore
 version: "1.1.9-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: |
-  WHAT: Analyze and explore OpenSpec ideas, risks, assumptions, Zielbild needs, and proposal readiness as a thinking partner.
-  WHEN: Use when the user wants to think through something before or during a change.
+bundle_version: "2026.06.24.1"
+description: "Use to explore OpenSpec ideas, risks, assumptions, Zielbild needs, and proposal readiness before or during a change."
 argument-hint: "[idea, problem, OpenSpec change name, or empty for open exploration]"
 disable-model-invocation: false
 license: MIT
@@ -38,6 +36,14 @@ available or explicitly authorized, follow
 `/home/simon/.codex/skills/shared/references/openspec-subagent-policy.md`.
 Explore may use read-only scouts for context inventory, but the main agent owns
 the conversation with Simon, decision shaping, and any Foundation Brief.
+
+**Elons Principles guard:** When exploration touches expandable scope, a new
+workflow/process/stage/pipeline/prompt chain/agent, optimization,
+parallelization or automation, read and apply
+`/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`.
+Use it before proposal-readiness handoff: pressure-test the requirement, surface
+what can be deleted or narrowed, simplify before speed, and treat automation as
+the last step rather than the default answer.
 
 ---
 

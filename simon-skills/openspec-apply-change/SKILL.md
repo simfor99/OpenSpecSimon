@@ -2,8 +2,8 @@
 name: openspec-apply-change
 version: "1.2.4-sanctum"
 bundle: openspec-simon
-bundle_version: "2026.06.22.1"
-description: "WHAT: Executes and builds tasks from an OpenSpec change. WHEN: Use when the user wants to start implementing, continue implementation, or work through tasks."
+bundle_version: "2026.06.24.1"
+description: "Use to start, continue, or work through implementation tasks from an OpenSpec change."
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:
@@ -61,6 +61,21 @@ Implement tasks from an OpenSpec change.
    The files depend on the schema being used:
    - **spec-driven**: proposal, specs, design, tasks
    - Other schemas: follow the contextFiles from CLI output
+
+4.1. **Elons Principles implementation guard**
+
+   If the loaded artifacts mention expandable scope, new workflow, process,
+   stage, pipeline, prompt chain, agent, abstraction, optimization,
+   acceleration, parallelization, automation, or reusable machinery, read
+   `/home/simon/.codex/skills/shared/references/openspec-elons-principles-order-of-operations.md`.
+
+   Use it lightly during implementation: execute the accepted OpenSpec path, do
+   not reopen settled product scope, but pause if a task mainly supports
+   avoidable complexity or premature automation. Prefer the simplest
+   implementation that satisfies specs, gates, `goal.md`, builder-plan rows and
+   evidence obligations. Do not add scripts, agents, broad parallelism or
+   automation beyond the artifacts unless the remaining process is stable and
+   the OpenSpec contract supports it.
 
 4.25. **Source Foundation bridge check**
 

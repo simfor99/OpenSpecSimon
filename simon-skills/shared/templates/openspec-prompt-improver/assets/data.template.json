@@ -80,6 +80,83 @@
     "title": "Entscheidung offen, bis echte Run-Evidence eingetragen ist.",
     "body": "Diese Vorlage zeigt die Struktur. Promotion braucht echte Provider-/Runner-Rückgaben, parsebare Outputs, qualitative Bewertung, dokumentierte Risiken und einen konkreten nächsten Schritt."
   },
+  "goalProgress": {
+    "label": "Stand der Zielerreichung",
+    "title": "Rundenziel offen, bis echte Evidence eingetragen ist.",
+    "summary": "Beschreibt, was die Runde erreichen sollte, ob sie dem Ziel näher kam, was offen bleibt und welcher nächste Schritt sinnvoll ist.",
+    "metrics": [],
+    "items": []
+  },
+  "overallAnalysis": {
+    "label": "Overall-Endurteil",
+    "title": "Gesamtbefund über alle Cases",
+    "summary": "Fasst die Entscheidungslage aus Primary, Guardrails, Monitoring, Assistant Review und Trace-Evidence zusammen.",
+    "metrics": [],
+    "items": []
+  },
+  "decisionScorecard": {
+    "provenance": "derived_from_metric_matrix",
+    "primary": {
+      "status": "neutral",
+      "summary": "Keine Primary-Entscheidung ohne echte A/B-Evidence.",
+      "recommendedVariant": "inconclusive"
+    },
+    "guardrails": {
+      "status": "neutral",
+      "blockingGuardrails": []
+    },
+    "monitoring": {
+      "status": "info",
+      "summary": "Monitoring erklärt Kosten, Laufzeit, Tokens und Output-Länge; es beweist keine Qualität."
+    },
+    "evidenceCompleteness": {
+      "status": "yellow",
+      "summary": "Template-Beispiel: echte Trace-Evidence muss vom Builder eingetragen werden."
+    },
+    "decisionState": {
+      "status": "hitl_required",
+      "summary": "Promotion bleibt HITL."
+    },
+    "reviewerAttention": [
+      "Echte Provider-/Runner-Rückgaben eintragen",
+      "Rote Guardrails vor Promotion prüfen"
+    ]
+  },
+  "traceIntegrity": {
+    "provenance": "template_example",
+    "status": "not_available",
+    "expectedArtifacts": [
+      "request",
+      "renderedPrompt",
+      "rawResponse",
+      "responseText",
+      "parsedOutput",
+      "metrics"
+    ],
+    "summary": "Noch keine echte Trace-Prüfung vorhanden.",
+    "items": []
+  },
+  "hitlDecision": {
+    "provenance": "pending_hitl_decision",
+    "status": "pending",
+    "decision": null,
+    "hitl_required": true
+  },
+  "preflightChecks": {
+    "provenance": "template_example",
+    "status": "neutral",
+    "variants": {},
+    "items": []
+  },
+  "assistant_recommendation": {
+    "provenance": "assistant_recommendation_from_metric_matrix",
+    "recommended_variant": "inconclusive",
+    "recommendation_type": "hitl_required",
+    "confidence": "low",
+    "rationale_short": "Template-Beispiel ohne echte Evidence; HITL-Review nötig.",
+    "blocking_guardrails": [],
+    "hitl_required": true
+  },
   "notProven": {
     "label": "Nicht bewiesen",
     "items": [
@@ -260,6 +337,73 @@
             }
           }
         }
+      }
+    }
+  },
+  "decisionMetrics": {
+    "label": "Metrik-Auswertung",
+    "title": "Prompt-A/B: Pflichtmetriken im Spinnennetz",
+    "note": "Diese Daten werden vom Builder aus metricMatrix, Provider-Metriken und Trace-Artefakten abgeleitet. Manuelle Texte sind nur Overrides.",
+    "provenance": "assistant_review",
+    "axes": [
+      {
+        "id": "round_goal_fit",
+        "label": "Rundenziel-Fit",
+        "shortLabel": "Ziel",
+        "listLabel": "Rundenziel",
+        "description": "Passt die Variante zum Zweck dieser Runde?"
+      },
+      {
+        "id": "parsed_ok",
+        "label": "Parsebarkeit",
+        "shortLabel": "Parse",
+        "description": "Der Provider-Output ist parsebar."
+      }
+    ],
+    "cases": {
+      "example_case": {
+        "title": "Beispiel-Case: Entscheidungssignale",
+        "note": "Scores sind assistant_review-Entscheidungshilfe, keine Provider-Metrik.",
+        "provenance": "assistant_review",
+        "primarySentences": [
+          {
+            "title": "Rundenziel",
+            "status": "neutral",
+            "text": "Die Variante wird gegen Rundenziel, Guardrails und Trace-Evidence gelesen."
+          }
+        ],
+        "variants": {
+          "A_current": {
+            "scores": {
+              "round_goal_fit": 0,
+              "parsed_ok": 0
+            },
+            "values": {
+              "round_goal_fit": "n/a",
+              "parsed_ok": "nicht parsebar"
+            },
+            "interpretations": {
+              "round_goal_fit": "A wird gegen das Rundenziel gelesen.",
+              "parsed_ok": "A muss ohne Rettungsversuch lesbar sein."
+            }
+          },
+          "B_candidate": {
+            "scores": {
+              "round_goal_fit": 0,
+              "parsed_ok": 0
+            },
+            "values": {
+              "round_goal_fit": "n/a",
+              "parsed_ok": "nicht parsebar"
+            },
+            "interpretations": {
+              "round_goal_fit": "B wird gegen das Rundenziel gelesen.",
+              "parsed_ok": "B muss ohne Rettungsversuch lesbar sein."
+            }
+          }
+        },
+        "guardrails": [],
+        "monitoring": []
       }
     }
   },
